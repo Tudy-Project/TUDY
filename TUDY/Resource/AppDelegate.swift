@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  TEAM-TUDY
+//  TUDY
 //
 //  Created by Hojin Jang on 2022/05/18.
 //
