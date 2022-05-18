@@ -12,6 +12,7 @@
 		4AEEC0B9283496F4004A08F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* ViewController.swift */; };
 		4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BD283496F5004A08F8 /* Assets.xcassets */; };
 		4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */; };
+		4AEEC0CE28349913004A08F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0CD28349913004A08F8 /* GoogleService-Info.plist */; };
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		4AEEC0BD283496F5004A08F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4AEEC0C0283496F5004A08F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4AEEC0C2283496F5004A08F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4AEEC0CD28349913004A08F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.debug.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.debug.xcconfig"; sourceTree = "<group>"; };
 		931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUDY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				4AEEC0BD283496F5004A08F8 /* Assets.xcassets */,
 				4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */,
 				4AEEC0C2283496F5004A08F8 /* Info.plist */,
+				4AEEC0CD28349913004A08F8 /* GoogleService-Info.plist */,
 			);
 			path = TUDY;
 			sourceTree = "<group>";
@@ -117,7 +120,6 @@
 				74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */,
 				F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -137,6 +139,7 @@
 			buildConfigurationList = 4AEEC0C5283496F5004A08F8 /* Build configuration list for PBXNativeTarget "TUDY" */;
 			buildPhases = (
 				9509241B594B06C53DE06E7F /* [CP] Check Pods Manifest.lock */,
+				4AEEC0CF283499C2004A08F8 /* Run SwiftLint */,
 				4AEEC0AD283496F4004A08F8 /* Sources */,
 				4AEEC0AE283496F4004A08F8 /* Frameworks */,
 				4AEEC0AF283496F4004A08F8 /* Resources */,
@@ -191,12 +194,31 @@
 			files = (
 				4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */,
 				4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */,
+				4AEEC0CE28349913004A08F8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4AEEC0CF283499C2004A08F8 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		9509241B594B06C53DE06E7F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
