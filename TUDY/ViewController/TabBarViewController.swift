@@ -12,7 +12,7 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setTabBarBackgroundColor()
-        let vc1 = HomeViewController()
+        let vc1 = TestViewController()
 //        let vc2 = ChatViewController()
         vc1.title = "Home"
         

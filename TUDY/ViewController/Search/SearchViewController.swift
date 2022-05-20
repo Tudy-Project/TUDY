@@ -7,107 +7,102 @@
 
 import UIKit
 
+
 class SearchViewController: UIViewController {
 
-    let cellId = "Cell"
-    let progTheme = ["웹개발", "iOS개발", "안드로이드개발", "서버개발", "AI개발", "게임개발"]
-    let designTheme = ["UI/UX디자인", "게임디자인"]
+    let cellId: String = "Cell"
+    let list = ["이커머스", "ios개발", "취준"]
+
+    lazy var searchbar: UISearchBar = {
+       let searchbar = UISearchBar()
+        searchbar.placeholder = "검색어를 입력해주세요."
+        searchbar.searchTextField.layer.cornerRadius = 15
+        searchbar.searchTextField.layer.masksToBounds = true
+        return searchbar
+    }()
+
+    let bodyview = UIView()
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "직무를 선택해주세요."
+        label.text = "최근 검색어"
         label.textColor = .black
-        label.font = label.font.withSize(20)
+        label.font = UIFont.boldSystemFont(ofSize: 17)
         return label
     }()
     
-    lazy var computerLabel: UILabel = {
+    lazy var alldeleteLabel: UILabel = {
         let label = UILabel()
-        label.text = "개발자"
+        label.text = "전체 삭제"
         label.textColor = .lightGray
-        label.font = label.font.withSize(15)
+        label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
     
-    lazy var designLabel: UILabel = {
-        let label = UILabel()
-        label.text = "디자이너"
-        label.textColor = .lightGray
-        label.font = label.font.withSize(15)
-        return label
+    
+    lazy var bodytitlestackView: UIStackView = {
+        let stackV = UIStackView(arrangedSubviews: [titleLabel, alldeleteLabel])
+        stackV.translatesAutoresizingMaskIntoConstraints = false
+        stackV.axis = .horizontal
+        stackV.alignment = .center
+        stackV.distribution = .equalSpacing
+        return stackV
     }()
     
-    lazy var themeCollectionView: UICollectionView = {
-        let flowlayout = CollectionViewLeftAlignFlowLayout()
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: flowlayout)
-        cv.backgroundColor = .yellow
-        cv.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-        if let flowLayout = cv.collectionViewLayout as? UICollectionViewFlowLayout {
-                    flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-                  }
+    lazy var searchTableView: UITableView = {
+        let cv = UITableView()
+        cv.backgroundColor = .purple
         return cv
     }()
-    
-    
+
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        self.navigationItem.title = "TUDY"
+        searchTableView.delegate = self
+        searchTableView.dataSource = self
+        setNav()
         setUp()
-        themeCollectionView.delegate = self
-        themeCollectionView.dataSource = self
     }
     
     func setUp() {
-        view.addSubview(titleLabel)
-        view.addSubview(computerLabel)
-        view.addSubview(designLabel)
-        view.addSubview(themeCollectionView)
+        view.addSubview(bodyview)
+        bodyview.addSubview(bodytitlestackView)
         
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(100)
-            make.leading.equalToSuperview().offset(20)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalToSuperview().multipliedBy(0.05)
+        
+        bodyview.backgroundColor = .red
+        bodyview.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+            make.leading.bottom.trailing.equalToSuperview()
         }
         
-        themeCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+        bodytitlestackView.backgroundColor = .yellow
+        bodytitlestackView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.9)
-            make.height.equalToSuperview().multipliedBy(0.5)
-        }
-        
-        computerLabel.snp.makeConstraints { make in
-            make.top.equalTo(themeCollectionView.snp.bottom)
-            make.leading.equalToSuperview().offset(20)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(titleLabel)
-        }
-    
-        designLabel.snp.makeConstraints { make in
-            make.top.equalTo(computerLabel.snp.bottom).offset(100)
-            make.leading.equalToSuperview().offset(20)
-            make.width.equalToSuperview().multipliedBy(0.5)
-            make.height.equalTo(titleLabel)
+            make.bottom.equalToSuperview().multipliedBy(0.1)
+            make.width.equalToSuperview().multipliedBy(0.92)
         }
     }
+
+    func setNav() {
+        self.navigationItem.titleView = searchbar
+        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.topItem?.title = ""
+    }
+ 
 }
 
-
-extension SearchViewController: UICollectionViewDelegate {
-    
-}
-
-extension SearchViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return progTheme.count
+extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return list.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SearchCollectionViewCell
-        cell.label.text = progTheme[indexPath.item]
-        cell.backgroundColor = .white
-        return cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! SearchTableViewCell
+        cell.
     }
+    
+    
 }
