@@ -11,6 +11,8 @@ import SnapKit
 
 class HomeViewController: UIViewController {
     
+    private var collectionView: UICollectionView?
+    
     private let floatingButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         button.backgroundColor = .systemGray
@@ -41,11 +43,11 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private let homeFeedTable: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
-        table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.idendifier)
-        return table
-    }()
+//    private let homeFeedTable: UITableView = {
+//        let table = UITableView(frame: .zero, style: .grouped)
+//        table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.idendifier)
+//        return table
+//    }()
 
     
     override func viewDidLoad() {
@@ -54,7 +56,11 @@ class HomeViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
         
         view.addSubview(customTopBar)
-        view.addSubview(homeFeedTable)
+//        view.addSubview(homeFeedTable)
+        guard let collectionView = collectionView else {
+            return
+        }
+        view.addSubview(collectionView)
         view.bringSubviewToFront(customTopBar)
         view.addSubview(floatingButton)
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
@@ -66,22 +72,22 @@ class HomeViewController: UIViewController {
                 customTopBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
                 customTopBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
                 
-                homeFeedTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                homeFeedTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-                homeFeedTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                homeFeedTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+               
+//                homeFeedTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//                homeFeedTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//                homeFeedTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
                ])
         
        
-        homeFeedTable.delegate = self
-        homeFeedTable.dataSource = self
-        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x:0, y:0, width: view.bounds.width, height: 150))
-        homeFeedTable.backgroundColor = .yellow
+//        homeFeedTable.delegate = self
+//        homeFeedTable.dataSource = self
+//        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x:0, y:0, width: view.bounds.width, height: 150))
+//        homeFeedTable.backgroundColor = .yellow
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTable.frame = view.frame
+//        homeFeedTable.frame = view.safeAreaLayoutGuide.layoutFrame
         floatingButton.frame = CGRect(x: view.frame.size.width - 80, y: view.frame.size.height - 80, width: 60, height: 60)
     }
     
@@ -91,6 +97,17 @@ class HomeViewController: UIViewController {
         present(alert, animated: true)
     }
     
+}
+
+private extension UIConfigurationStateCustomKey {
+    static let post = UIConfigurationStateCustomKey("post")
+}
+
+extension UIConfigurationState {
+    var postData: Post?{
+        get{ return self[.post]as? Post}
+        set{ self[.post] = newValue }
+    }
 }
 
 extension HomeViewController:UITableViewDelegate, UITableViewDataSource {
@@ -180,7 +197,7 @@ struct InfoVCPreview: PreviewProvider {
         // view controller using programmatic UI
         Group {
             HomeViewController().toPreview()
-            HomeViewController().toPreview()
+            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
         }
     }
 }
