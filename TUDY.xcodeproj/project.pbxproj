@@ -16,7 +16,8 @@
 		4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */; };
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
 		D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */; };
-		FF13AFA228372C69006E678D /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostCollectionViewCell.swift */; };
+		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
+		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
 		FFD4624E2834BDBF002A2022 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624D2834BDBF002A2022 /* TabBarViewController.swift */; };
@@ -38,7 +39,8 @@
 		931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUDY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckProtocol.swift; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
-		FF13AFA128372C69006E678D /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostCollectionViewCell.swift; path = TUDY/ViewController/PostCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
+		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/ViewController/PostListCell.swift; sourceTree = SOURCE_ROOT; };
+		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/ViewController/Post.swift; sourceTree = SOURCE_ROOT; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
 		FFD4624D2834BDBF002A2022 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabBarViewController.swift; path = TUDY/ViewController/TabBarViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -123,7 +125,8 @@
 			children = (
 				FFD4624B2834BB13002A2022 /* HomeViewController.swift */,
 				FFD4624F28354EF3002A2022 /* CollectionViewTableViewCell.swift */,
-				FF13AFA128372C69006E678D /* PostCollectionViewCell.swift */,
+				FF13AFA128372C69006E678D /* PostListCell.swift */,
+				FF13AFA3283739BC006E678D /* Post.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -291,11 +294,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
+				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
 				4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
 				FFD4625028354EF3002A2022 /* CollectionViewTableViewCell.swift in Sources */,
-				FF13AFA228372C69006E678D /* PostCollectionViewCell.swift in Sources */,
+				FF13AFA228372C69006E678D /* PostListCell.swift in Sources */,
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				FFD4624E2834BDBF002A2022 /* TabBarViewController.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,

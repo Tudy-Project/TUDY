@@ -8,11 +8,18 @@
 import UIKit
 import SnapKit
 
+enum Section {
+    case main
+}
 
 class HomeViewController: UIViewController {
     
-    private var collectionView: UICollectionView?
+    var postData: [Post] = []
     
+    var collectionView: UICollectionView!
+    // MARK: - 데이터 관리, cell들을 collectionView에 제공해주는 객체
+    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+
     private let floatingButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         button.backgroundColor = .systemGray
@@ -43,51 +50,31 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-//    private let homeFeedTable: UITableView = {
-//        let table = UITableView(frame: .zero, style: .grouped)
-//        table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.idendifier)
-//        return table
-//    }()
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationController?.isNavigationBarHidden = true
         
-        view.addSubview(customTopBar)
-//        view.addSubview(homeFeedTable)
-        guard let collectionView = collectionView else {
-            return
-        }
+        self.configureCollectionView()
+        self.configureDataSource()
         view.addSubview(collectionView)
-        view.bringSubviewToFront(customTopBar)
+        view.addSubview(customTopBar)
         view.addSubview(floatingButton)
+        view.bringSubviewToFront(customTopBar)
+        
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-                
+                collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 customTopBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 customTopBar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.13),
                 customTopBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
                 customTopBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-                
-               
-//                homeFeedTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-//                homeFeedTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-//                homeFeedTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
                ])
-        
-       
-//        homeFeedTable.delegate = self
-//        homeFeedTable.dataSource = self
-//        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x:0, y:0, width: view.bounds.width, height: 150))
-//        homeFeedTable.backgroundColor = .yellow
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        homeFeedTable.frame = view.safeAreaLayoutGuide.layoutFrame
         floatingButton.frame = CGRect(x: view.frame.size.width - 80, y: view.frame.size.height - 80, width: 60, height: 60)
     }
     
@@ -99,40 +86,37 @@ class HomeViewController: UIViewController {
     
 }
 
-private extension UIConfigurationStateCustomKey {
-    static let post = UIConfigurationStateCustomKey("post")
-}
-
-extension UIConfigurationState {
-    var postData: Post?{
-        get{ return self[.post]as? Post}
-        set{ self[.post] = newValue }
-    }
-}
-
-extension HomeViewController:UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 20
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+extension HomeViewController {
+    func createListLayout() -> UICollectionViewCompositionalLayout {
+        let config = UICollectionLayoutListConfiguration(appearance: .plain)
+        return UICollectionViewCompositionalLayout.list(using:  config)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.idendifier, for: indexPath) as? CollectionViewTableViewCell else {
-            return UITableViewCell()
+    // MARK: - 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
+    func configureCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createListLayout())
+        view.addSubview(collectionView!)
+    }
+    
+    func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<PostListCell, Post> {
+            (cell, indexPath, post) in
+            cell.update(with: post)
+            cell.accessories = [.disclosureIndicator()]
         }
-        return cell
-    }
+        
+        dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
+            (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+        }
+        
+        
+        // MARK: - 특정 시점에서 view 내의 데이터의 state를 나타낸다.
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(postData)
+        dataSource.apply(snapshot)
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-    }
 }
 
     class CustomTopBar: UIView {
@@ -186,44 +170,47 @@ extension HomeViewController:UITableViewDelegate, UITableViewDataSource {
                ])
            }
     }
-
-#if DEBUG
-import SwiftUI
-
-@available(iOS 13, *)
-struct InfoVCPreview: PreviewProvider {
-    
-    static var previews: some View {
-        // view controller using programmatic UI
-        Group {
-            HomeViewController().toPreview()
-            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
-        }
-    }
 }
-#endif
 
-
-#if DEBUG
-import SwiftUI
-
-@available(iOS 13, *)
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        // this variable is used for injecting the current view controller
-        let viewController: UIViewController
-
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
-
-    func toPreview() -> some View {
-        // inject self (the current view controller) for the preview
-        Preview(viewController: self)
-    }
-}
-#endif
+//
+//#if DEBUG
+//import SwiftUI
+//
+//@available(iOS 13, *)
+//struct InfoVCPreview: PreviewProvider {
+//
+//    static var previews: some View {
+//        // view controller using programmatic UI
+//        Group {
+//            HomeViewController().toPreview()
+//            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
+//        }
+//    }
+//}
+//#endif
+//
+//
+//#if DEBUG
+//import SwiftUI
+//
+//@available(iOS 13, *)
+//extension UIViewController {
+//    private struct Preview: UIViewControllerRepresentable {
+//        // this variable is used for injecting the current view controller
+//        let viewController: UIViewController
+//
+//        func makeUIViewController(context: Context) -> UIViewController {
+//            return viewController
+//        }
+//
+//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+//        }
+//    }
+//
+//    func toPreview() -> some View {
+//        // inject self (the current view controller) for the preview
+//        Preview(viewController: self)
+//    }
+//}
+//#endif
+//
