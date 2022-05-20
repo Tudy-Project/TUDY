@@ -29,6 +29,8 @@ class TabBarViewController: UITabBarController {
     
     
     func setTabBarBackgroundColor() {
+        tabBar.backgroundColor = .gray
+        tabBar.tintColor = .white
         tabBar.isTranslucent = false
     }
     

@@ -60,21 +60,28 @@ class HomeViewController: UIViewController {
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-                homeFeedTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                
                 customTopBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                customTopBar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.13),
                 customTopBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                customTopBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+                customTopBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                
+                homeFeedTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                homeFeedTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                homeFeedTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                homeFeedTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
                ])
         
        
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
-        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x:0, y:0, width: view.bounds.width, height: 100))
+        homeFeedTable.tableHeaderView = UIView(frame: CGRect(x:0, y:0, width: view.bounds.width, height: 150))
+        homeFeedTable.backgroundColor = .yellow
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTable.frame = view.bounds
+        homeFeedTable.frame = view.frame
         floatingButton.frame = CGRect(x: view.frame.size.width - 80, y: view.frame.size.height - 80, width: 60, height: 60)
     }
     
@@ -171,7 +178,10 @@ struct InfoVCPreview: PreviewProvider {
     
     static var previews: some View {
         // view controller using programmatic UI
-       HomeViewController().toPreview()
+        Group {
+            HomeViewController().toPreview()
+            HomeViewController().toPreview()
+        }
     }
 }
 #endif
