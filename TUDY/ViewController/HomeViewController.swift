@@ -87,34 +87,48 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController {
-    func createListLayout() -> UICollectionViewCompositionalLayout {
-        let config = UICollectionLayoutListConfiguration(appearance: .plain)
-        return UICollectionViewCompositionalLayout.list(using:  config)
+    func createLayout() -> UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout {
+            (Section, env) -> NSCollectionLayoutSection? in
+            
+            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.7)))
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200)), subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        return section
+        }
     }
     
     // MARK: - 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createListLayout())
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         view.addSubview(collectionView!)
     }
     
     func configureDataSource() {
+        // MARK: - 셀 꾸미기
         let cellRegistration = UICollectionView.CellRegistration<PostListCell, Post> {
             (cell, indexPath, post) in
+            
+            cell.layer.cornerRadius = 10
+            cell.layer.masksToBounds = true
+            cell.tintColor = .white
             cell.update(with: post)
-            cell.accessories = [.disclosureIndicator()]
+            cell.contentView.backgroundColor = .systemGray4
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
             (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+            
         }
         
         
         // MARK: - 특정 시점에서 view 내의 데이터의 state를 나타낸다.
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(postData)
+        //postData 대신 더미데이터 적용
+        snapshot.appendItems(Post.dummyPostList)
         dataSource.apply(snapshot)
     
 }
@@ -172,45 +186,46 @@ extension HomeViewController {
     }
 }
 
-//
-//#if DEBUG
-//import SwiftUI
-//
-//@available(iOS 13, *)
-//struct InfoVCPreview: PreviewProvider {
-//
-//    static var previews: some View {
-//        // view controller using programmatic UI
-//        Group {
-//            HomeViewController().toPreview()
-//            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max"))
-//        }
-//    }
-//}
-//#endif
-//
-//
-//#if DEBUG
-//import SwiftUI
-//
-//@available(iOS 13, *)
-//extension UIViewController {
-//    private struct Preview: UIViewControllerRepresentable {
-//        // this variable is used for injecting the current view controller
-//        let viewController: UIViewController
-//
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            return viewController
-//        }
-//
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//        }
-//    }
-//
-//    func toPreview() -> some View {
-//        // inject self (the current view controller) for the preview
-//        Preview(viewController: self)
-//    }
-//}
-//#endif
-//
+
+#if DEBUG
+import SwiftUI
+
+@available(iOS 13, *)
+struct InfoVCPreview: PreviewProvider {
+
+    static var previews: some View {
+        // view controller using programmatic UI
+        Group {
+            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone XS"))
+                .previewDisplayName("iPhone XS")
+            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max")).previewDisplayName("iPhone 12 Pro Max")
+        }
+    }
+}
+#endif
+
+
+#if DEBUG
+import SwiftUI
+
+@available(iOS 13, *)
+extension UIViewController {
+    private struct Preview: UIViewControllerRepresentable {
+        // this variable is used for injecting the current view controller
+        let viewController: UIViewController
+
+        func makeUIViewController(context: Context) -> UIViewController {
+            return viewController
+        }
+
+        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        }
+    }
+
+    func toPreview() -> some View {
+        // inject self (the current view controller) for the preview
+        Preview(viewController: self)
+    }
+}
+#endif
+
