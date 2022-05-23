@@ -12,15 +12,21 @@ import KakaoSDKAuth
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    var appCoordinator: AppCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene) // SceneDelegate의 프로퍼티에 설정해줌
-        let mainViewController = TabBarViewController() // 맨 처음 보여줄 ViewController
-
-        window?.rootViewController = mainViewController
+        //let mainViewController = TabBarViewController() // 맨 처음 보여줄 ViewController
+        let navigationController: UINavigationController = .init()
+        
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+        
+        appCoordinator = AppCoordinator.init(navigationController)
+        appCoordinator?.start()
+        
+        return
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
