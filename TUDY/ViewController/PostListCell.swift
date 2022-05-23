@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 private extension UIConfigurationStateCustomKey {
     static let post = UIConfigurationStateCustomKey("post")
@@ -21,23 +22,61 @@ extension UIConfigurationState {
 class PostListCell: UICollectionViewListCell {
     private var postData: Post?
     
-        let titleLabel = UILabel()
-        let descLabel = UILabel()
+    lazy var postTitle: UILabel = {
+        let Label = UILabel()
+        Label.adjustsFontForContentSizeCategory = true
+        Label.numberOfLines = 0
+        Label.textColor = .white
+        Label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+        Label.text = postData?.title
+        return Label
+        
+    }()
     
-        let starButton : UIButton = {
-         let starButton = UIButton()
-         let starImage = UIImage(systemName: "star")
-         starButton.setImage(starImage, for: .normal)
-         return starButton
-        }()
+    lazy var postDesc: UILabel = {
+        let Label = UILabel()
+        Label.adjustsFontForContentSizeCategory = true
+        Label.numberOfLines = 1
+        Label.textColor = .white
+        Label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        Label.text = postData?.desc
+        return Label
+    }()
 
-        let starLabel = UILabel()
+    lazy var starButton: UIButton = {
+        let Button = UIButton()
+        let starImage = UIImage(systemName: "star")
+        Button.setImage(starImage, for: .normal)
+        return Button
+    }()
+    
+    lazy var starCount: UILabel = {
+        let Label = UILabel()
+        Label.textColor = .white
+        Label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        Label.text = postData?.starCount
+        return Label
+    }()
+    
+    lazy var authorName: UILabel = {
+        let Label = UILabel()
+        Label.textColor = .white
+        Label.font = UIFont.preferredFont(forTextStyle: .body)
+        Label.text = postData?.writer
+        return Label
+    }()
+    
+    lazy var authorImage: UIImageView = {
+        let ImageView = UIImageView()
+        ImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        return ImageView
+    }()
+
      let postImage: UIImageView = {
          let postImage = UIImageView()
-         postImage.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+         postImage.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
          return postImage
     }()
-        let writerLabel = UILabel()
     
     func update(with newPostData: Post) {
         guard postData != newPostData else {
@@ -61,68 +100,52 @@ extension PostListCell {
 //            return
 //        }
         
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        descLabel.translatesAutoresizingMaskIntoConstraints = false
-        starButton.translatesAutoresizingMaskIntoConstraints = false
-        starLabel.translatesAutoresizingMaskIntoConstraints = false
-        postImage.translatesAutoresizingMaskIntoConstraints = false
-        writerLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        titleLabel.adjustsFontForContentSizeCategory = true
-        descLabel.adjustsFontForContentSizeCategory = true
-        starLabel.adjustsFontForContentSizeCategory = true
-        writerLabel.adjustsFontForContentSizeCategory = true
-        
-        titleLabel.numberOfLines = 0
-        descLabel.numberOfLines = 1
-        
-        
-        titleLabel.textColor = .white
-        descLabel.textColor = .white
-        starLabel.textColor = .white
-        writerLabel.textColor = .white
-        
-        titleLabel.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
-        descLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        starLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        writerLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        
-        titleLabel.text = postData?.title
-        descLabel.text = postData?.desc
-        starLabel.text = postData?.starCount
-        
         postImage.loadFrom(URLAddress: postData!.imageUrl)
         postImage.contentMode = .scaleAspectFit
         postImage.layer.cornerRadius = postImage.frame.width / 2
         postImage.clipsToBounds = true
         
-        writerLabel.text = postData?.writer
-        
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(descLabel)
+        contentView.addSubview(postTitle)
+        contentView.addSubview(postDesc)
         contentView.addSubview(starButton)
-        contentView.addSubview(starLabel)
+        contentView.addSubview(starCount)
         contentView.addSubview(postImage)
-        contentView.addSubview(writerLabel)
+        contentView.addSubview(authorName)
         
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            titleLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.85),
-            descLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            descLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            starButton.topAnchor.constraint(equalTo: descLabel.bottomAnchor, constant: 10),
-            starButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            starLabel.leadingAnchor.constraint(equalTo: starButton.trailingAnchor, constant: 5),
-            starLabel.topAnchor.constraint(equalTo: descLabel.bottomAnchor, constant: 15),
-            postImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
-            postImage.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3),
-            postImage.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.3),
-            postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 130),
-            postImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 30),
-            writerLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 130),
-            writerLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 30)
-        ])
+        
+        postTitle.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(40)
+            make.leading.equalToSuperview().offset(20)
+            make.width.equalToSuperview().multipliedBy(0.83)
+        }
+        
+        postDesc.snp.makeConstraints { make in
+            make.top.equalTo(postTitle.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(20)
+        }
+        
+        starButton.snp.makeConstraints { make in
+            make.top.equalTo(postDesc.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(20)
+        }
+        
+        starCount.snp.makeConstraints { make in
+            make.leading.equalTo(starButton.snp.trailing).offset(5)
+            make.top.equalTo(postDesc.snp.bottom).offset(15)
+        }
+        
+        authorName.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(120)
+            make.bottom.equalToSuperview().offset(-40)
+        }
+        
+//        NSLayoutConstraint.activate([
+//            postImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
+//            postImage.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3),
+//            postImage.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.3),
+//            postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 130),
+//            postImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 30),
+//        ])
     }
     
     override func  updateConfiguration(using state: UICellConfigurationState) {

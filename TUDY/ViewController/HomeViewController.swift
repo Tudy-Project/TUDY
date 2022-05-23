@@ -14,13 +14,14 @@ enum Section {
 
 class HomeViewController: UIViewController {
     
-    var postData: [Post] = []
-    
-    var collectionView: UICollectionView!
+    private var postData: [Post] = []
+    private var collectionView: UICollectionView!
+    private var refreshControl = UIRefreshControl()
+
     // MARK: - 데이터 관리, cell들을 collectionView에 제공해주는 객체
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
-
-    private let floatingButton: UIButton = {
+    
+    lazy var floatingButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         button.backgroundColor = .systemGray
         
@@ -39,43 +40,54 @@ class HomeViewController: UIViewController {
     lazy var customTopBar: CustomTopBar = {
         let view = CustomTopBar()
         view.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        
-        let blurEffect = UIBlurEffect(style: .extraLight)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = view.frame
-        
-        self.view.insertSubview(blurEffectView, at: 0)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        self.configureCollectionView()
+        self.configureDataSource()
+        self.collectionView.addSubview(refreshControl)
+        self.configureUI()
+    }
+    
+    @objc func refresh(send: UIRefreshControl) {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    private func configureUI() {
         view.backgroundColor = .systemBackground
         navigationController?.isNavigationBarHidden = true
         
-        self.configureCollectionView()
-        self.configureDataSource()
-        view.addSubview(collectionView)
         view.addSubview(customTopBar)
         view.addSubview(floatingButton)
-        view.bringSubviewToFront(customTopBar)
-        
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
-        NSLayoutConstraint.activate([
-                collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                customTopBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                customTopBar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.13),
-                customTopBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                customTopBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-               ])
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        floatingButton.frame = CGRect(x: view.frame.size.width - 80, y: view.frame.size.height - 80, width: 60, height: 60)
+        floatingButton.snp.makeConstraints { make in
+            make.width.equalTo(60)
+            make.height.equalTo(60)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+        }
+        
+        customTopBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(view.snp.height).multipliedBy(0.13)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalToSuperview().multipliedBy(1)
+            make.trailing.leading.equalToSuperview()
+        }
     }
     
     @objc private func didTapButton() {
@@ -91,18 +103,19 @@ extension HomeViewController {
         return UICollectionViewCompositionalLayout {
             (Section, env) -> NSCollectionLayoutSection? in
             
-            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.7)))
+            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(CGFloat(150))))
             item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200)), subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        return section
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(180)), subitems: [item])
+            print(item)
+            let section = NSCollectionLayoutSection(group: group)
+            return section
         }
     }
     
     // MARK: - 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        view.addSubview(collectionView!)
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        view.addSubview(collectionView)
     }
     
     func configureDataSource() {
@@ -123,23 +136,30 @@ extension HomeViewController {
             
         }
         
-        
         // MARK: - 특정 시점에서 view 내의 데이터의 state를 나타낸다.
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         //postData 대신 더미데이터 적용
         snapshot.appendItems(Post.dummyPostList)
         dataSource.apply(snapshot)
+        
+    }
     
-}
-
     class CustomTopBar: UIView {
         
         lazy var searchButton : UIButton  = {
             let button = UIButton()
             let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
             let systemImage = UIImage(systemName: "magnifyingglass",withConfiguration: largeConfig )
-            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setImage(systemImage, for: .normal)
+            button.tintColor = UIColor.black
+            return button
+        }()
+        
+        lazy var profileButton : UIButton = {
+            let button = UIButton()
+            let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
+            let systemImage = UIImage(systemName: "person",withConfiguration: largeConfig )
             button.setImage(systemImage, for: .normal)
             button.tintColor = UIColor.black
             return button
@@ -147,7 +167,6 @@ extension HomeViewController {
         
         lazy var logoLabel: UILabel = {
             let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
             label.text = "TUDY"
             label.font = UIFont.boldSystemFont(ofSize: 25)
             return label
@@ -164,25 +183,26 @@ extension HomeViewController {
         }
         
         func setupView() {
+            addSubview(profileButton)
+            profileButton.snp.makeConstraints { make in
+                make.width.equalTo(30)
+                make.height.equalTo(28)
+                make.leading.equalToSuperview().offset(16)
+                make.centerY.equalToSuperview()
+            }
+            
             addSubview(logoLabel)
+            logoLabel.snp.makeConstraints { make in
+                make.centerX.centerY.equalToSuperview()
+            }
+            
             addSubview(searchButton)
-               
-
-               NSLayoutConstraint.activate([
-                
-                logoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-                 logoLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-                logoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-                
-                   //가로 크기
-                   searchButton.widthAnchor.constraint(equalToConstant: 24),
-                   //세로 크기
-                   searchButton.heightAnchor.constraint(equalTo: searchButton.widthAnchor),
-                   //서치버튼의 끝위치는 부모뷰의 끝위치와 같다
-                   searchButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                   searchButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-               ])
-           }
+            searchButton.snp.makeConstraints { make in
+                make.width.height.equalTo(24)
+                make.trailing.equalToSuperview().offset(-16)
+                make.centerY.equalToSuperview()
+            }
+        }
     }
 }
 
@@ -192,7 +212,7 @@ import SwiftUI
 
 @available(iOS 13, *)
 struct InfoVCPreview: PreviewProvider {
-
+    
     static var previews: some View {
         // view controller using programmatic UI
         Group {
@@ -213,15 +233,15 @@ extension UIViewController {
     private struct Preview: UIViewControllerRepresentable {
         // this variable is used for injecting the current view controller
         let viewController: UIViewController
-
+        
         func makeUIViewController(context: Context) -> UIViewController {
             return viewController
         }
-
+        
         func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         }
     }
-
+    
     func toPreview() -> some View {
         // inject self (the current view controller) for the preview
         Preview(viewController: self)
