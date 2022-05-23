@@ -8,18 +8,45 @@
 import UIKit
 
 class SearchTableViewCell: UITableViewCell {
-
-    let currentsearchText = UILabel()
-    let cancelButton = UIButton()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    // MARK: - Properties
+    lazy var currentsearchText: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .black
+        return label
+    }()
+    
+    var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("x", for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
+        return button
+    }()
+
+    // MARK: - Lift Cycle
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUp()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    private func setUp() {
+        self.addSubview(currentsearchText)
+        self.contentView.addSubview(cancelButton)
         
+        currentsearchText.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
+            make.centerY.equalToSuperview()
+        }
+        
+        cancelButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalToSuperview()
+        }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
-
 }
