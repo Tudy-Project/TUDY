@@ -11,7 +11,7 @@ class TabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setTabBarBackgroundColor()
+        
         let vc1 = HomeViewController()
 //        let vc2 = ChatViewController()
         vc1.title = "Home"
@@ -26,12 +26,4 @@ class TabBarViewController: UITabBarController {
         setViewControllers([nav1], animated: false)
         
     }
-    
-    
-    func setTabBarBackgroundColor() {
-        tabBar.backgroundColor = .gray
-        tabBar.tintColor = .white
-        tabBar.isTranslucent = false
-    }
-    
 }
