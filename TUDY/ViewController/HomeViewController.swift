@@ -14,11 +14,12 @@ enum Section {
 
 class HomeViewController: UIViewController {
     
+    // MARK: - Property
     private var postData: [Post] = []
     private var collectionView: UICollectionView!
     private var refreshControl = UIRefreshControl()
 
-    // MARK: - 데이터 관리, cell들을 collectionView에 제공해주는 객체
+    //데이터 관리, cell들을 collectionView에 제공해주는 객체
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
     
     lazy var floatingButton: UIButton = {
@@ -44,7 +45,6 @@ class HomeViewController: UIViewController {
     }()
     
     // MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
@@ -78,7 +78,7 @@ class HomeViewController: UIViewController {
         
         customTopBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(view.snp.height).multipliedBy(0.13)
+            make.height.equalTo(55)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
         }

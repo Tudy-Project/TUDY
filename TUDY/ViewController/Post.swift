@@ -28,10 +28,10 @@ struct Post: Codable, Hashable {
         self.postType = postType
     }
     static var dummyPostList = [
-        Post(id:1, writer: "튜디", title: "튜디 프로젝트 창립 멤버 구합니다.", desc: "우리, 여기, 바로, 협업", starCount: "123", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYDsXS6u6L3DcmnOgVmqo8RxD4vYVc4VbfMsZVKkR3_Aw4OGSawqmZQtwyBZOSNkFSscQ&usqp=CAU", postType: "project"),
+        Post(id:1, writer: "튜디", title: "튜디 프로젝트 창립 멤버 구합니다.", desc: "우리, 여기, 바로, 협업", starCount: "123", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyEwhcJ2xv6Yl5GrM5huSB7QX2Bs5HAInHllD78ZBjofUM83N5n_hCoMcmdcjE9LmSAe0&usqp=CAU", postType: "project"),
         Post(id:2, writer: "상운", title: "스터디1 구합니다.", desc: "우리, 여기, 바로, 스터디1", starCount: "21", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyEwhcJ2xv6Yl5GrM5huSB7QX2Bs5HAInHllD78ZBjofUM83N5n_hCoMcmdcjE9LmSAe0&usqp=CAU", postType: "study"),
-    Post(id:3, writer: "하늘", title: "스터디2 구합니다.", desc: "우리, 여기, 바로, 스터디2", starCount: "48", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAwefCiLWB0F_fdWrLp4Ci7RFoTMi_SUVrE5TImXZ9KK0xPY7IKy8ngI-sLn1YoSVb9fE&usqp=CAU", postType: "study"),
-    Post(id:4, writer: "호진", title: "스터디3 구합니다.", desc: "우리, 여기, 바로, 스터디3", starCount: "12", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpsIX4Eyjdf21xwCor32qxJyivuGxTEcfZ2lUyGCTWso8eROH4y58pXu5kE0aTMqMiF50&usqp=CAU", postType: "study")
+    Post(id:3, writer: "하늘", title: "스터디2 구합니다.", desc: "우리, 여기, 바로, 스터디2", starCount: "48", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyEwhcJ2xv6Yl5GrM5huSB7QX2Bs5HAInHllD78ZBjofUM83N5n_hCoMcmdcjE9LmSAe0&usqp=CAU", postType: "study"),
+    Post(id:4, writer: "호진", title: "스터디3 구합니다.", desc: "우리, 여기, 바로, 스터디3", starCount: "12", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyEwhcJ2xv6Yl5GrM5huSB7QX2Bs5HAInHllD78ZBjofUM83N5n_hCoMcmdcjE9LmSAe0&usqp=CAU", postType: "study")
     ]
 }
 

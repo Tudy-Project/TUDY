@@ -20,12 +20,14 @@ extension UIConfigurationState {
 }
 
 class PostListCell: UICollectionViewListCell {
+    
+    // MARK: - Property
     private var postData: Post?
     
     lazy var postTitle: UILabel = {
         let Label = UILabel()
         Label.adjustsFontForContentSizeCategory = true
-        Label.numberOfLines = 0
+        Label.numberOfLines = 2
         Label.textColor = .white
         Label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         Label.text = postData?.title
@@ -69,13 +71,11 @@ class PostListCell: UICollectionViewListCell {
     lazy var authorImage: UIImageView = {
         let ImageView = UIImageView()
         ImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        ImageView.loadFrom(URLAddress: postData!.imageUrl)
+        ImageView.contentMode = .scaleAspectFit
+        ImageView.layer.cornerRadius = ImageView.frame.width / 2
+        ImageView.clipsToBounds = true
         return ImageView
-    }()
-
-     let postImage: UIImageView = {
-         let postImage = UIImageView()
-         postImage.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-         return postImage
     }()
     
     func update(with newPostData: Post) {
@@ -99,17 +99,12 @@ extension PostListCell {
 //        guard postTypeConstraints == nil else {
 //            return
 //        }
-        
-        postImage.loadFrom(URLAddress: postData!.imageUrl)
-        postImage.contentMode = .scaleAspectFit
-        postImage.layer.cornerRadius = postImage.frame.width / 2
-        postImage.clipsToBounds = true
-        
+    
         contentView.addSubview(postTitle)
         contentView.addSubview(postDesc)
         contentView.addSubview(starButton)
         contentView.addSubview(starCount)
-        contentView.addSubview(postImage)
+        contentView.addSubview(authorImage)
         contentView.addSubview(authorName)
         
         
@@ -130,22 +125,22 @@ extension PostListCell {
         }
         
         starCount.snp.makeConstraints { make in
-            make.leading.equalTo(starButton.snp.trailing).offset(5)
             make.top.equalTo(postDesc.snp.bottom).offset(15)
+            make.leading.equalTo(starButton.snp.trailing).offset(5)
+            
         }
         
+        authorImage.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(40)
+            make.trailing.equalToSuperview().offset(-40)
+            make.width.height.equalTo(50)
+        }
+
         authorName.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(120)
-            make.bottom.equalToSuperview().offset(-40)
+            make.top.equalTo(authorImage.snp.bottom).offset(10)
+            make.trailing.equalToSuperview().offset(-40)
+
         }
-        
-//        NSLayoutConstraint.activate([
-//            postImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
-//            postImage.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3),
-//            postImage.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.3),
-//            postImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 130),
-//            postImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 30),
-//        ])
     }
     
     override func  updateConfiguration(using state: UICellConfigurationState) {
