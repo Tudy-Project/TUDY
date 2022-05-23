@@ -139,7 +139,11 @@ extension SearchViewController: UISearchBarDelegate {
         guard let text = searchbar.text else {
             return
         }
+        if (list.isEmpty) {
+            setUp()
+        }
         list.append(text)
+        searchbar.text = ""
         searchTableView.reloadData()
     }
 }
