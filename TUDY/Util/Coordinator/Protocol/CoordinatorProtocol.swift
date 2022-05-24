@@ -17,10 +17,10 @@ protocol Coordinator: AnyObject {
     /// 코디네이터 타입
     var type: CoordinatorType { get }
     
+    init(_ navigationController: UINavigationController)
+    
     func start()
     func finish()
-    
-    init(_ navigationController: UINavigationController)
 }
 
 extension Coordinator {

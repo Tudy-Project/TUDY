@@ -16,7 +16,7 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .chat
     
-    init(_ navigationController: UINavigationController) {
+    required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.chatViewController = ChatViewController()
     }
