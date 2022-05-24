@@ -16,15 +16,35 @@ class HomeViewController: UIViewController {
     
     // MARK: - Property
     private var postData: [Post] = []
-    private var collectionView: UICollectionView!
-    private var refreshControl = UIRefreshControl()
-
+    
+//    private var refreshControl = UIRefreshControl()
+    private var collectionView: UICollectionView! = nil
+    
+    static let sectionHeaderElementKind = "section-header-element-kind"
+    
     //데이터 관리, cell들을 collectionView에 제공해주는 객체
     var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+        
+    lazy var customTopBar: CustomTopBar = {
+        let view = CustomTopBar()
+        view.backgroundColor = UIColor.systemGray4.withAlphaComponent(0.5)
+        return view
+    }()
+    
+    var jobOfInterestButton: UIButton = {
+        let button = UIButton()
+        let arrowImage = UIImage(systemName: "arrowtriangle.down.fill")
+        button.setTitle("관심 직무", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.tintColor = .black
+        button.setImage(arrowImage, for: .normal)
+        button.semanticContentAttribute = .forceRightToLeft
+        return button
+    }()
     
     lazy var floatingButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        button.backgroundColor = .systemGray
+        button.backgroundColor = .systemGray4
         
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
         
@@ -38,19 +58,17 @@ class HomeViewController: UIViewController {
         return button
     }()
     
-    lazy var customTopBar: CustomTopBar = {
-        let view = CustomTopBar()
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        return view
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        return refreshControl
     }()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         self.configureCollectionView()
         self.configureDataSource()
-        self.collectionView.addSubview(refreshControl)
         self.configureUI()
     }
     
@@ -64,8 +82,15 @@ class HomeViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .systemBackground
         navigationController?.isNavigationBarHidden = true
-        
+      
         view.addSubview(customTopBar)
+        customTopBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(55)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+        }
+        
         view.addSubview(floatingButton)
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         customTopBar.searchButton.addTarget(self, action: #selector(searchButtonPressed(_:)), for: .touchUpInside)
@@ -77,8 +102,9 @@ class HomeViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
-        customTopBar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        view.addSubview(jobOfInterestButton)
+        jobOfInterestButton.snp.makeConstraints { make in
+            make.top.equalTo(customTopBar.snp.bottom)
             make.height.equalTo(55)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
@@ -114,35 +140,49 @@ extension HomeViewController {
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(180)), subitems: [item])
             print(item)
             let section = NSCollectionLayoutSection(group: group)
+
+            //headerView 설정
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: HomeViewController.sectionHeaderElementKind, alignment: .top)
+            section.boundarySupplementaryItems = [sectionHeader]
             return section
         }
     }
     
-    // MARK: - 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
+    // 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
     func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         view.addSubview(collectionView)
+        collectionView.addSubview(refreshControl)
+//        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
     }
     
     func configureDataSource() {
-        // MARK: - 셀 꾸미기
+        // cell custom
         let cellRegistration = UICollectionView.CellRegistration<PostListCell, Post> {
             (cell, indexPath, post) in
-            
             cell.layer.cornerRadius = 10
             cell.layer.masksToBounds = true
             cell.tintColor = .white
             cell.update(with: post)
             cell.contentView.backgroundColor = .systemGray4
         }
-        
+
         dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
             (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
-            
         }
         
-        // MARK: - 특정 시점에서 view 내의 데이터의 state를 나타낸다.
+        
+        //collectionview headerView custom
+        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: HomeViewController.sectionHeaderElementKind) {supplementaryView,elementKind,indexPath in
+            supplementaryView.backgroundColor = .white
+        }
+        dataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
+        }
+        
+        // 특정 시점에서 view 내의 데이터의 state를 나타낸다.
         var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
         snapshot.appendSections([.main])
         //postData 대신 더미데이터 적용
@@ -152,15 +192,6 @@ extension HomeViewController {
     }
     
     class CustomTopBar: UIView {
-        
-        lazy var searchButton : UIButton  = {
-            let button = UIButton()
-            let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-            let systemImage = UIImage(systemName: "magnifyingglass",withConfiguration: largeConfig )
-            button.setImage(systemImage, for: .normal)
-            button.tintColor = UIColor.black
-            return button
-        }()
         
         lazy var profileButton : UIButton = {
             let button = UIButton()
@@ -178,6 +209,15 @@ extension HomeViewController {
             return label
         }()
         
+        lazy var searchButton : UIButton  = {
+            let button = UIButton()
+            let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
+            let systemImage = UIImage(systemName: "magnifyingglass",withConfiguration: largeConfig )
+            button.setImage(systemImage, for: .normal)
+            button.tintColor = UIColor.black
+            return button
+        }()
+        
         override init(frame: CGRect) {
             super.init(frame: frame)
             setupView()
@@ -192,7 +232,7 @@ extension HomeViewController {
             addSubview(profileButton)
             profileButton.snp.makeConstraints { make in
                 make.width.equalTo(30)
-                make.height.equalTo(28)
+                make.height.equalTo(24)
                 make.leading.equalToSuperview().offset(16)
                 make.centerY.equalToSuperview()
             }
@@ -201,7 +241,7 @@ extension HomeViewController {
             logoLabel.snp.makeConstraints { make in
                 make.centerX.centerY.equalToSuperview()
             }
-
+          
             addSubview(searchButton)
             searchButton.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
