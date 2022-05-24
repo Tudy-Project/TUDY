@@ -11,7 +11,6 @@ class TabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let vc1 = HomeViewController()
 //        let vc2 = ChatViewController()
         vc1.title = "Home"
