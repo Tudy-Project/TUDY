@@ -7,17 +7,88 @@
 
 import UIKit
 
-class WorkThemeView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
+class WorkThemeHeader: UICollectionReusableView {
+    
+    static var cellId = "cell"
+    
+    lazy var headerlabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        return label
+    }()
 }
+
+class WorkThemeView: UIView {
+    
+    let ProgList = ["프론트엔드", "백엔드", "Android", "iOS"]
+    let DesignList = ["UX/UI", "그래픽디자인", "브랜딩", "3D/모션그래픽"]
+
+//    lazy var workThemeCollectionView: UICollectionView = {
+//        let cv = UICollectionView()
+//        cv.register(WorkThemeCollectionViewCell.self, forCellWithReuseIdentifier: WorkThemeCollectionViewCell.cellId)
+//        cv.register(WorkThemeHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WorkThemeHeader.cellId)
+//        return cv
+//    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+//        configureUI()
+//        workThemeCollectionView.delegate = self
+//        workThemeCollectionView.dataSource = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+//extension WorkThemeView {
+//    func configureUI() {
+//        self.addSubview(workThemeCollectionView)
+//        
+//        workThemeCollectionView.snp.makeConstraints { make in
+//            make.top.bottom.leading.trailing.equalToSuperview()
+//        }
+//    }
+//}
+
+//extension WorkThemeView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        if section == 0 {
+//            return ProgList.count
+//        }
+//        else {
+//            return DesignList.count
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WorkThemeCollectionViewCell.cellId, for: indexPath) as! WorkThemeCollectionViewCell
+//        if indexPath.section == 0 {
+//            cell.workThemeButton.titleLabel?.text = ProgList[indexPath.row]
+//        }
+//        else if indexPath.section == 1 {
+//            cell.workThemeButton.titleLabel?.text = DesignList[indexPath.row]
+//        }
+//        return cell
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WorkThemeHeader.cellId, for: indexPath) as! WorkThemeHeader
+//        if indexPath.section == 0 {
+//            header.headerlabel.text = "개발"
+//        }
+//        else {
+//            header.headerlabel.text = "디자인"
+//        }
+//        return header
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: self.frame.size.width, height: 200)
+//    }
+//}
 
 
 //class SearchViewController: UIViewController {

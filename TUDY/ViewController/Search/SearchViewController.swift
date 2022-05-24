@@ -10,7 +10,7 @@ import SwiftUI
 
 
 class SearchViewController: UIViewController {
-
+    
     // MARK: - Properties
     let cellId: String = "Cell"
     var list = ["이커머스", "ios개발", "취준"]
@@ -55,71 +55,81 @@ class SearchViewController: UIViewController {
     lazy var searchTableView: UITableView = {
         let cv = UITableView()
         cv.register(SearchTableViewCell.self, forCellReuseIdentifier: cellId)
+        cv.separatorStyle = .none
         return cv
     }()
 
     // MARK: - Lift Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        searchTableView.delegate = self
-        searchTableView.dataSource = self
-        searchbar.delegate = self
-        setNav()
-        setUp()
-        self.searchbar.becomeFirstResponder()
-    }
-    
-    // MARK: - Methods
-    func setUp() {
-        view.addSubview(bodyview)
-        bodyview.addSubview(bodytitlestackView)
-        bodyview.addSubview(searchTableView)
-        
-        bodyview.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
-            make.leading.bottom.trailing.equalToSuperview()
-        }
-        
-        bodytitlestackView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.08)
-            make.width.equalToSuperview().multipliedBy(0.92)
-        }
-        
-        searchTableView.snp.makeConstraints { make in
-            make.top.equalTo(bodytitlestackView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-    }
-
-    func setNav() {
-        self.navigationItem.titleView = searchbar
-        self.navigationController?.navigationBar.tintColor = .black
-        self.navigationController?.navigationBar.topItem?.title = ""
-    }
-    
-    @objc func deleteSearch(_ sender:UIButton) {
-        let indexRow = sender.tag
-        list.remove(at: indexRow)
-        searchTableView.deleteRows(at: [IndexPath(row: indexRow, section: 0)], with: .left)
-        searchTableView.reloadData()
-        if (list == []) {
-            bodyview.removeFromSuperview()
-        }
-    }
-    
-    @objc func deleteAllSearch(_: UIButton) {
-        list.removeAll()
-        searchTableView.reloadData()
-        bodyview.removeFromSuperview()
+        configureNav()
+        configureUI()
+        configureDelegate()
     }
 }
 
     // MARK: - extensions
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+ extension SearchViewController {
+    
+     private func configureNav() {
+         self.navigationItem.titleView = searchbar
+         self.navigationController?.navigationBar.tintColor = .black
+         self.navigationController?.navigationBar.topItem?.title = ""
+     }
+     
+     private func configureUI() {
+         self.searchbar.becomeFirstResponder()
+         view.backgroundColor = .white
+         
+         view.addSubview(bodyview)
+         bodyview.addSubview(bodytitlestackView)
+         bodyview.addSubview(searchTableView)
+         
+         bodyview.snp.makeConstraints { make in
+             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+             make.leading.bottom.trailing.equalToSuperview()
+             
+         }
+         
+         bodytitlestackView.snp.makeConstraints { make in
+             make.top.equalToSuperview()
+             make.width.equalToSuperview().multipliedBy(0.92)
+             make.height.equalToSuperview().multipliedBy(0.08)
+             make.centerX.equalToSuperview()
+        }
+         
+         searchTableView.snp.makeConstraints { make in
+             make.top.equalTo(bodytitlestackView.snp.bottom)
+             make.bottom.equalToSuperview()
+             make.leading.trailing.equalToSuperview()
+         }
+     }
+     
+     private func configureDelegate() {
+         searchTableView.delegate = self
+         searchTableView.dataSource = self
+         searchbar.delegate = self
+     }
+     
+     @objc func deleteSearch(_ sender:UIButton) {
+         let indexRow = sender.tag
+         list.remove(at: indexRow)
+         searchTableView.deleteRows(at: [IndexPath(row: indexRow, section: 0)], with: .left)
+         searchTableView.reloadData()
+         if (list == []) {
+             bodyview.removeFromSuperview()
+         }
+     }
+     
+     @objc func deleteAllSearch(_: UIButton) {
+         list.removeAll()
+         searchTableView.reloadData()
+         bodyview.removeFromSuperview()
+     }
+}
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.count
@@ -134,13 +144,14 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+// MARK: - UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchbar.text else {
             return
         }
         if (list.isEmpty) {
-            setUp()
+            configureUI()
         }
         list.append(text)
         searchbar.text = ""

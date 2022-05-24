@@ -17,7 +17,7 @@ class SearchTableViewCell: UITableViewCell {
         return label
     }()
     
-    var cancelButton: UIButton = {
+    lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("x", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
@@ -27,15 +27,17 @@ class SearchTableViewCell: UITableViewCell {
     // MARK: - Lift Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUp()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Methods
-    private func setUp() {
+}
+
+// MARK: - extensions
+extension SearchTableViewCell {
+    private func configureUI() {
         self.addSubview(currentsearchText)
         self.contentView.addSubview(cancelButton)
         
