@@ -68,6 +68,7 @@ class HomeViewController: UIViewController {
         view.addSubview(customTopBar)
         view.addSubview(floatingButton)
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        customTopBar.searchButton.addTarget(self, action: #selector(searchButtonPressed(_:)), for: .touchUpInside)
         
         floatingButton.snp.makeConstraints { make in
             make.width.equalTo(60)
@@ -96,6 +97,11 @@ class HomeViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    @objc private func searchButtonPressed(_: UIButton) {
+        let searchVC = SearchViewController()
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.pushViewController(searchVC, animated: true)
+    }
 }
 
 extension HomeViewController {
@@ -195,7 +201,7 @@ extension HomeViewController {
             logoLabel.snp.makeConstraints { make in
                 make.centerX.centerY.equalToSuperview()
             }
-            
+
             addSubview(searchButton)
             searchButton.snp.makeConstraints { make in
                 make.width.height.equalTo(24)
