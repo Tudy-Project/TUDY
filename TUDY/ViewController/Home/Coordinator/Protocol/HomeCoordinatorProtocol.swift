@@ -8,5 +8,5 @@
 import Foundation
 
 protocol HomeCoordinatorProtocol: Coordinator {
-    
+    func pushSearchViewController()
 }

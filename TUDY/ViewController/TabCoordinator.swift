@@ -49,9 +49,10 @@ class TabCoordinator: NSObject, TabCoordinatorProtocol {
         
         switch page {
         case .home:
-            /// 각 탭은 자체 코디네이터를 가질 수 있습니다.
-            let homeViewController = HomeViewController()
-            navigationController.pushViewController(homeViewController, animated: true)
+            let homeCoordinator = HomeCoordinator(navigationController)
+            homeCoordinator.finishDelegate = self
+            self.childCoordinators.append(homeCoordinator)
+            homeCoordinator.start()
         case .chat:
             let chatCoordinator = ChatCoordinator(navigationController)
             chatCoordinator.finishDelegate = self
