@@ -11,6 +11,9 @@
 		4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F828376E1300B954B9 /* WorkThemeView.swift */; };
 		4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */; };
 		4A6E64FD283C7C7D00B954B9 /* WorkThemeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64FC283C7C7D00B954B9 /* WorkThemeCollectionViewCell.swift */; };
+		4A6E64F72837631700B954B9 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F62837631700B954B9 /* TestViewController.swift */; };
+		4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F828376E1300B954B9 /* WorkThemeView.swift */; };
+		4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */; };
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
@@ -33,6 +36,9 @@
 		4A6E64F828376E1300B954B9 /* WorkThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkThemeView.swift; sourceTree = "<group>"; };
 		4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		4A6E64FC283C7C7D00B954B9 /* WorkThemeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkThemeCollectionViewCell.swift; sourceTree = "<group>"; };
+		4A6E64F62837631700B954B9 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		4A6E64F828376E1300B954B9 /* WorkThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkThemeView.swift; sourceTree = "<group>"; };
+		4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		4AEEC0B1283496F4004A08F8 /* TUDY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUDY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +150,8 @@
 				4A6E64F12837260700B954B9 /* SearchViewController.swift */,
 				4A6E64F828376E1300B954B9 /* WorkThemeView.swift */,
 				4A6E64FC283C7C7D00B954B9 /* WorkThemeCollectionViewCell.swift */,
+				4A6E64F62837631700B954B9 /* TestViewController.swift */,
+				4A6E64F828376E1300B954B9 /* WorkThemeView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -326,6 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A6E64F72837631700B954B9 /* TestViewController.swift in Sources */,
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
