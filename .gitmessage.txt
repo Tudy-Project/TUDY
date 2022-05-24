@@ -1,0 +1,22 @@
+# --- Head ---
+# [Type] Message 
+# Title은 최대 50글자 정도로만 입력
+# Title 끝에 마침표 금지, 무엇을 했는지 명확하게 작성
+### ex)
+### [Feat] message
+
+# --- Body ---
+# - issue: (#tagNumber)
+
+# --- Type ---
+#   Feat    : 새로운 기능 추가
+#   Fix     : 버그 수정
+#   Style   : 코드 의미에 영향을 주지 않는 변경사항 (세미콜론, 줄 간격 등등)
+#   Design  : Storyboard, UI 수정
+#   Refactor: 코드 리팩토링
+#   Test    : 모든 테스트 작업
+#   Docs    : 문서 추가 및 수정
+#   Chore   : 빌드 부분, 패키지 매니저, 세팅 관련 파일 추가 및 수정
+#   Rename  : 파일 네이밍 변경
+#   Remove  : 파일 제거
+#   !HOTFIX  : 빠른 버그수정 필요(해당 내용이 오류일 경우 앱 크래시 증상 등등)
