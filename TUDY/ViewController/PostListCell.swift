@@ -43,7 +43,7 @@ class PostListCell: UICollectionViewListCell {
         Label.text = postData?.desc
         return Label
     }()
-    
+  
     lazy var starButton: UIButton = {
         let Button = UIButton()
         let starImage = UIImage(systemName: "star")
