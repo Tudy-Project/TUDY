@@ -21,7 +21,7 @@ extension UIConfigurationState {
 
 class PostListCell: UICollectionViewListCell {
     
-    // MARK: - Property
+    // MARK: - Properties
     private var postData: Post?
     
     lazy var postTitle: UILabel = {
@@ -32,7 +32,6 @@ class PostListCell: UICollectionViewListCell {
         Label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
         Label.text = postData?.title
         return Label
-        
     }()
     
     lazy var postDesc: UILabel = {
@@ -44,7 +43,7 @@ class PostListCell: UICollectionViewListCell {
         Label.text = postData?.desc
         return Label
     }()
-
+  
     lazy var starButton: UIButton = {
         let Button = UIButton()
         let starImage = UIImage(systemName: "star")
@@ -96,10 +95,10 @@ class PostListCell: UICollectionViewListCell {
 extension PostListCell {
     func setupViewsIfNeeded() {
         //커스텀View에 대한 제약이 기존에 주어지면 다시 layout을 적용하지 않도록함
-//        guard postTypeConstraints == nil else {
-//            return
-//        }
-    
+        //        guard postTypeConstraints == nil else {
+        //            return
+        //        }
+        
         contentView.addSubview(postTitle)
         contentView.addSubview(postDesc)
         contentView.addSubview(starButton)
@@ -127,48 +126,46 @@ extension PostListCell {
         starCount.snp.makeConstraints { make in
             make.top.equalTo(postDesc.snp.bottom).offset(15)
             make.leading.equalTo(starButton.snp.trailing).offset(5)
-            
         }
         
         authorImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(40)
-            make.trailing.equalToSuperview().offset(-40)
+            make.trailing.equalToSuperview().offset(-30)
             make.width.height.equalTo(50)
         }
-
+        
         authorName.snp.makeConstraints { make in
             make.top.equalTo(authorImage.snp.bottom).offset(10)
-            make.trailing.equalToSuperview().offset(-40)
-
+            make.centerX.equalTo(authorImage)
         }
     }
     
     override func  updateConfiguration(using state: UICellConfigurationState) {
         setupViewsIfNeeded()
-//        var content = defaultPostConfiguration().updated(for: state)
-//
-//        content.image = urlToImage(state.postData?.imageLink ?? "")
-//        content.imageProperties.maximumSize = CGSize(width: 50, height: 50)
-//        content.text = state.postData?.title
-//        content.textProperties.font = .preferredFont(forTextStyle: .headline)
-//
-//        postListContentView.configuration = content
-//        postTypeLabel.text = state.postData?.postType ?? "1"
+        //        var content = defaultPostConfiguration().updated(for: state)
+        //
+        //        content.image = urlToImage(state.postData?.imageLink ?? "")
+        //        content.imageProperties.maximumSize = CGSize(width: 50, height: 50)
+        //        content.text = state.postData?.title
+        //        content.textProperties.font = .preferredFont(forTextStyle: .headline)
+        //
+        //        postListContentView.configuration = content
+        //        postTypeLabel.text = state.postData?.postType ?? "1"
     }
 }
 
 extension UIImageView {
     func loadFrom(URLAddress: String) {
-           guard let url = URL(string: URLAddress) else {
-               return
-           }
-           
-           DispatchQueue.main.async { [weak self] in
-               if let imageData = try? Data(contentsOf: url) {
-                   if let loadedImage = UIImage(data: imageData) {
-                           self?.image = loadedImage
-                   }
-               }
-           }
-       }
+        guard let url = URL(string: URLAddress) else {
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            if let imageData = try? Data(contentsOf: url) {
+                if let loadedImage = UIImage(data: imageData) {
+                    self?.image = loadedImage
+                }
+            }
+        }
+    }
 }
