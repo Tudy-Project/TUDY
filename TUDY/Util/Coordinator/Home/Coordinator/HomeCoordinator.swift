@@ -28,13 +28,11 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
                 self?.pushSearchViewController()
             }
         }
-        self.navigationController.isNavigationBarHidden = true
         self.navigationController.pushViewController(self.homeViewController, animated: true)
     }
     
     func pushSearchViewController() {
         let searchViewController = SearchViewController()
-        self.navigationController.isNavigationBarHidden = false
         self.navigationController.pushViewController(searchViewController, animated: true)
     }
 }
