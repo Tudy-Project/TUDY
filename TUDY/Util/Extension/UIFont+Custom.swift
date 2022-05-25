@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIFont {
-    
+
     static var title: UIFont { UIFont.systemFont(ofSize: 40, weight: .semibold) }
     static var sub20: UIFont { UIFont.systemFont(ofSize: 20, weight: .semibold) }
     static var sub14: UIFont { UIFont.systemFont(ofSize: 14, weight: .semibold) }
