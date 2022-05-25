@@ -8,17 +8,6 @@
 import UIKit
 import SnapKit
 
-private extension UIConfigurationStateCustomKey {
-    static let post = UIConfigurationStateCustomKey("post")
-}
-
-extension UIConfigurationState {
-    var postData: Post?{
-        get{ return self[.post]as? Post}
-        set{ self[.post] = newValue }
-    }
-}
-
 class PostListCell: UICollectionViewListCell {
     
     // MARK: - Properties
@@ -77,14 +66,6 @@ class PostListCell: UICollectionViewListCell {
         return ImageView
     }()
     
-    func update(with newPostData: Post) {
-        guard postData != newPostData else {
-            return
-        }
-        postData = newPostData
-        setNeedsUpdateConfiguration()
-    }
-    
     override var configurationState: UICellConfigurationState {
         var state = super.configurationState
         state.postData = self.postData
@@ -93,6 +74,15 @@ class PostListCell: UICollectionViewListCell {
 }
 
 extension PostListCell {
+    
+    func update(with newPostData: Post) {
+        guard postData != newPostData else {
+            return
+        }
+        postData = newPostData
+        setNeedsUpdateConfiguration()
+    }
+    
     func setupViewsIfNeeded() {
         //커스텀View에 대한 제약이 기존에 주어지면 다시 layout을 적용하지 않도록함
         //        guard postTypeConstraints == nil else {
@@ -151,6 +141,17 @@ extension PostListCell {
         //
         //        postListContentView.configuration = content
         //        postTypeLabel.text = state.postData?.postType ?? "1"
+    }
+}
+
+private extension UIConfigurationStateCustomKey {
+    static let post = UIConfigurationStateCustomKey("post")
+}
+
+extension UIConfigurationState {
+    var postData: Post?{
+        get{ return self[.post]as? Post}
+        set{ self[.post] = newValue }
     }
 }
 
