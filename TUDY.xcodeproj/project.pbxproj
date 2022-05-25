@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C0C33283E20A700C6199F /* UIFont+Custom.swift */; };
 		4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F12837260700B954B9 /* SearchViewController.swift */; };
 		4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F828376E1300B954B9 /* WorkThemeView.swift */; };
 		4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A2C0C33283E20A700C6199F /* UIFont+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Custom.swift"; sourceTree = "<group>"; };
 		4A6E64F12837260700B954B9 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		4A6E64F52837272A00B954B9 /* TUDY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TUDY.entitlements; sourceTree = "<group>"; };
 		4A6E64F828376E1300B954B9 /* WorkThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkThemeView.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				D893D317283B2EBC0057075F /* UIColor+Custom.swift */,
+				4A2C0C33283E20A700C6199F /* UIFont+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 				D8C7F232283B96FE00424AE5 /* ChatCoordinatorProtocol.swift in Sources */,
 				D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */,
 				FF13AFA228372C69006E678D /* PostListCell.swift in Sources */,
+				4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */,
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
