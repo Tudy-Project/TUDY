@@ -15,6 +15,11 @@ enum Section {
 class HomeViewController: UIViewController {
     
     // MARK: - Property
+    enum Event {
+        case showSearch
+    }
+    var didSendEventClosure: ((Event) -> Void)?
+    
     private var postData: [Post] = []
     
 //    private var refreshControl = UIRefreshControl()
@@ -81,7 +86,7 @@ class HomeViewController: UIViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
-        navigationController?.isNavigationBarHidden = true
+        // navigationController?.isNavigationBarHidden = true
       
         view.addSubview(customTopBar)
         customTopBar.snp.makeConstraints { make in
@@ -124,9 +129,10 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func searchButtonPressed(_: UIButton) {
-        let searchVC = SearchViewController()
-        self.navigationController?.isNavigationBarHidden = false
-        self.navigationController?.pushViewController(searchVC, animated: true)
+        didSendEventClosure?(.showSearch)
+//        let searchVC = SearchViewController()
+//        self.navigationController?.isNavigationBarHidden = false
+//        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 }
 
