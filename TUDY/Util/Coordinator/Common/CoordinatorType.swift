@@ -8,6 +8,8 @@
 import Foundation
 
 enum CoordinatorType {
-    case app, login, tab, mypage
-    case home, chat
+    case app, tab
+    case home, chat, login, signUp
+    case myPage
+    case privateChatList, GroupChatList
 }

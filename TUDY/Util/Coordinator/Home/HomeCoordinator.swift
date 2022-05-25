@@ -30,6 +30,10 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
         }
         self.navigationController.pushViewController(self.homeViewController, animated: true)
     }
+}
+
+// MARK: - HomeCoordinatorProtocol
+extension HomeCoordinator {
     
     func pushSearchViewController() {
         let searchViewController = SearchViewController()
@@ -37,6 +41,7 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
     }
 }
 
+//MARK: - CoordinatorFinishDelegate
 extension HomeCoordinator: CoordinatorFinishDelegate {
     
     func coordinatorDidFinish(childCoordinator: Coordinator) {
