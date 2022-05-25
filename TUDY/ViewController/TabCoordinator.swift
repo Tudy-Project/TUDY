@@ -42,7 +42,8 @@ class TabCoordinator: NSObject, TabCoordinatorProtocol {
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         
         let navigationController = UINavigationController()
-        navigationController.setNavigationBarHidden(true, animated: false)
+        navigationController.navigationBar.backgroundColor = .blue
+        navigationController.setNavigationBarHidden(false, animated: false)
         navigationController.tabBarItem = UITabBarItem.init(title: page.pageTitle(),
                                                             image: nil,
                                                             tag: page.pageOrderNumber())
