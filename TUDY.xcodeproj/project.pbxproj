@@ -17,6 +17,8 @@
 		4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BD283496F5004A08F8 /* Assets.xcassets */; };
 		4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */; };
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
+		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
+		D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */; };
 		D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */; };
 		D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */; };
 		D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */; };
@@ -44,6 +46,12 @@
 		D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */; };
 		D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */; };
 		D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F240283B99C100424AE5 /* ChatViewController.swift */; };
+		D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794B283F22160051CDF1 /* SetNameViewController.swift */; };
+		D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */; };
+		D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */; };
+		D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37951283F22490051CDF1 /* WelcomeViewController.swift */; };
+		D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37954283F24560051CDF1 /* UILabel+Custom.swift */; };
+		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
 		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
@@ -65,6 +73,8 @@
 		4AEEC0C2283496F5004A08F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.debug.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.debug.xcconfig"; sourceTree = "<group>"; };
 		931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUDY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
+		D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -92,6 +102,12 @@
 		D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F240283B99C100424AE5 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		D8E3794B283F22160051CDF1 /* SetNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetNameViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetNameViewController.swift; sourceTree = SOURCE_ROOT; };
+		D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetInterestedJobViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetInterestedJobViewController.swift; sourceTree = SOURCE_ROOT; };
+		D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetSubwayViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetSubwayViewController.swift; sourceTree = SOURCE_ROOT; };
+		D8E37951283F22490051CDF1 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WelcomeViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/WelcomeViewController.swift; sourceTree = SOURCE_ROOT; };
+		D8E37954283F24560051CDF1 /* UILabel+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Custom.swift"; sourceTree = "<group>"; };
+		D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Custom.swift"; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
 		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/Presentations/Home/View/PostListCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/Models/Post.swift; sourceTree = SOURCE_ROOT; };
@@ -153,6 +169,7 @@
 		4A6E6503283E02DC00B954B9 /* Signup */ = {
 			isa = PBXGroup;
 			children = (
+				D8E37953283F22940051CDF1 /* ViewController */,
 			);
 			path = Signup;
 			sourceTree = "<group>";
@@ -347,6 +364,7 @@
 		4AEEC0CB2834977B004A08F8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */,
 				D8C7F237283B986300424AE5 /* HomeCoordinatorProtocol.swift */,
 				D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */,
 			);
@@ -461,6 +479,9 @@
 			children = (
 				D893D317283B2EBC0057075F /* UIColor+Custom.swift */,
 				4A2C0C33283E20A700C6199F /* UIFont+Custom.swift */,
+				D8E37954283F24560051CDF1 /* UILabel+Custom.swift */,
+				D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */,
+				D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -497,6 +518,18 @@
 				D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */,
 			);
 			path = Chat;
+			sourceTree = "<group>";
+		};
+		D8E37953283F22940051CDF1 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D8E3794B283F22160051CDF1 /* SetNameViewController.swift */,
+				D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */,
+				D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */,
+				D8E37951283F22490051CDF1 /* WelcomeViewController.swift */,
+			);
+			name = ViewController;
+			path = TUDY/Presentations/Signup/ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -637,6 +670,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
+				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
@@ -646,27 +680,34 @@
 				D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */,
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
+				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
 				D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */,
 				D8C7F232283B96FE00424AE5 /* ChatCoordinatorProtocol.swift in Sources */,
 				D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */,
 				D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */,
+				D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */,
 				FF13AFA228372C69006E678D /* PostListCell.swift in Sources */,
 				4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */,
 				D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */,
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
+				D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
+				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
+				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
+				D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */,
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,
+				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
 				D85ED4D1283E68EF00D0A006 /* SignUpCoordinator.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
