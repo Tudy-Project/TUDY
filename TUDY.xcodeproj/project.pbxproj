@@ -25,6 +25,8 @@
 		D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */; };
 		D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */; };
 		D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */; };
+		D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */; };
+		D85ED4DE283EFFB500D0A006 /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */; };
 		D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */; };
 		D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D317283B2EBC0057075F /* UIColor+Custom.swift */; };
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
@@ -70,6 +72,8 @@
 		D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCoordinator.swift; sourceTree = "<group>"; };
 		D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatListCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatListCoordinator.swift; sourceTree = "<group>"; };
+		D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckProtocol.swift; sourceTree = "<group>"; };
 		D893D317283B2EBC0057075F /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
@@ -422,6 +426,15 @@
 			path = GroupChatList;
 			sourceTree = "<group>";
 		};
+		D85ED4DA283EFF9200D0A006 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */,
+				D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		D893D313283B2CA70057075F /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,6 +468,7 @@
 				D85ED4C5283E672A00D0A006 /* Common */,
 				D85ED4C4283E65DB00D0A006 /* Tap */,
 				4AEEC0CB2834977B004A08F8 /* Home */,
+				D85ED4DA283EFF9200D0A006 /* Search */,
 				D8C7F230283B969100424AE5 /* Chat */,
 				D85ED4C6283E681100D0A006 /* Login */,
 				D85ED4C7283E681900D0A006 /* SignUp */,
@@ -614,6 +628,7 @@
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
+				D85ED4DE283EFFB500D0A006 /* SearchCoordinator.swift in Sources */,
 				4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */,
 				D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */,
 				D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */,
@@ -631,6 +646,7 @@
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
+				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
