@@ -9,7 +9,7 @@ import UIKit
 
 extension UIColor {
     
-    static var backgroundColor: UIColor {
-        UIColor(named: "") ?? .systemGray6
+    static var mainColor: UIColor {
+        UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
     }
 }
