@@ -11,6 +11,8 @@ protocol TabCoordinatorProtocol: Coordinator {
     
     /// ViewController 선언
     var tabBarController: UITabBarController { get set }
+    
+    func showLogin()
 
     func currentPage() -> TabBarPage?
     func selectPage(_ page: TabBarPage)
