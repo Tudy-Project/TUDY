@@ -33,6 +33,13 @@ class TabCoordinator: NSObject, TabCoordinatorProtocol {
 // MARK: - TabCoordinatorProtocol
 extension TabCoordinator {
     
+    func showLogin() {
+        let loginCoordinator = LoginCoordinator(navigationController)
+        loginCoordinator.finishDelegate = self
+        loginCoordinator.start()
+        childCoordinators.append(loginCoordinator)
+    }
+    
     func currentPage() -> TabBarPage? { TabBarPage.init(index: tabBarController.selectedIndex) }
 
     func selectPage(_ page: TabBarPage) {
@@ -68,6 +75,7 @@ extension TabCoordinator {
         case .home:
             let homeCoordinator = HomeCoordinator(navigationController)
             homeCoordinator.finishDelegate = self
+            homeCoordinator.homeDelegate = self
             self.childCoordinators.append(homeCoordinator)
             homeCoordinator.start()
         case .chat:
@@ -78,6 +86,13 @@ extension TabCoordinator {
         }
         
         return navigationController
+    }
+}
+
+// MARK: - CoordinatorFinishDelegate
+extension TabCoordinator: HomeCoordinatorDelegate {
+    func prepareLoginCoordinator(_ coordinator: HomeCoordinator) {
+        self.showLogin()
     }
 }
 
