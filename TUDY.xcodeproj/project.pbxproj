@@ -17,6 +17,16 @@
 		4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BD283496F5004A08F8 /* Assets.xcassets */; };
 		4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */; };
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
+		D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */; };
+		D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */; };
+		D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */; };
+		D85ED4D1283E68EF00D0A006 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D0283E68EF00D0A006 /* SignUpCoordinator.swift */; };
+		D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */; };
+		D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */; };
+		D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */; };
+		D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */; };
+		D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */; };
+		D85ED4DE283EFFB500D0A006 /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */; };
 		D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */; };
 		D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D317283B2EBC0057075F /* UIColor+Custom.swift */; };
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
@@ -54,6 +64,16 @@
 		4AEEC0C2283496F5004A08F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.debug.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.debug.xcconfig"; sourceTree = "<group>"; };
 		931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUDY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		D85ED4D0283E68EF00D0A006 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
+		D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCoordinator.swift; sourceTree = "<group>"; };
+		D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatListCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatListCoordinator.swift; sourceTree = "<group>"; };
+		D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckProtocol.swift; sourceTree = "<group>"; };
 		D893D317283B2EBC0057075F /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
@@ -325,7 +345,8 @@
 		4AEEC0CB2834977B004A08F8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				D8C7F233283B97F700424AE5 /* Coordinator */,
+				D8C7F237283B986300424AE5 /* HomeCoordinatorProtocol.swift */,
+				D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -345,6 +366,73 @@
 				931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D85ED4C4283E65DB00D0A006 /* Tap */ = {
+			isa = PBXGroup;
+			children = (
+				D8C7F226283B628600424AE5 /* TabBarPage.swift */,
+				D8C7F22A283B6A3500424AE5 /* TabCoordinatorProtocol.swift */,
+				D8C7F228283B63BD00424AE5 /* TabCoordinator.swift */,
+			);
+			path = Tap;
+			sourceTree = "<group>";
+		};
+		D85ED4C5283E672A00D0A006 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				D8C7F22C283B725400424AE5 /* CoordinatorFinishDelegate.swift */,
+				D8C7F22E283B726400424AE5 /* CoordinatorType.swift */,
+				D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */,
+				D8C7F239283B98B900424AE5 /* AppCoordinatorProtocol.swift */,
+				D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		D85ED4C6283E681100D0A006 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */,
+				D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		D85ED4C7283E681900D0A006 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */,
+				D85ED4D0283E68EF00D0A006 /* SignUpCoordinator.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		D85ED4C8283E682900D0A006 /* PrivateChatList */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */,
+				D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */,
+			);
+			path = PrivateChatList;
+			sourceTree = "<group>";
+		};
+		D85ED4C9283E683300D0A006 /* GroupChatList */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */,
+				D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */,
+			);
+			path = GroupChatList;
+			sourceTree = "<group>";
+		};
+		D85ED4DA283EFF9200D0A006 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */,
+				D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		D893D313283B2CA70057075F /* Util */ = {
@@ -377,16 +465,16 @@
 		D8C7F21F283B580100424AE5 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				D8C7F230283B969100424AE5 /* Chat */,
-				D8C7F22A283B6A3500424AE5 /* TabCoordinatorProtocol.swift */,
-				D8C7F228283B63BD00424AE5 /* TabCoordinator.swift */,
-				D8C7F226283B628600424AE5 /* TabBarPage.swift */,
+				D85ED4C5283E672A00D0A006 /* Common */,
+				D85ED4C4283E65DB00D0A006 /* Tap */,
 				4AEEC0CB2834977B004A08F8 /* Home */,
+				D85ED4DA283EFF9200D0A006 /* Search */,
+				D8C7F230283B969100424AE5 /* Chat */,
+				D85ED4C6283E681100D0A006 /* Login */,
+				D85ED4C7283E681900D0A006 /* SignUp */,
+				D85ED4C9283E683300D0A006 /* GroupChatList */,
+				D85ED4C8283E682900D0A006 /* PrivateChatList */,
 				D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */,
-				D8C7F23B283B98DA00424AE5 /* Protocol */,
-				D8C7F22C283B725400424AE5 /* CoordinatorFinishDelegate.swift */,
-				D8C7F22E283B726400424AE5 /* CoordinatorType.swift */,
-				D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -394,52 +482,10 @@
 		D8C7F230283B969100424AE5 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				D8C7F234283B980200424AE5 /* Coordinator */,
-			);
-			path = Chat;
-			sourceTree = "<group>";
-		};
-		D8C7F233283B97F700424AE5 /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-				D8C7F236283B983C00424AE5 /* Protocol */,
-				D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */,
-			);
-			path = Coordinator;
-			sourceTree = "<group>";
-		};
-		D8C7F234283B980200424AE5 /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-				D8C7F235283B983300424AE5 /* Protocol */,
+				D8C7F231283B96FE00424AE5 /* ChatCoordinatorProtocol.swift */,
 				D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */,
 			);
-			path = Coordinator;
-			sourceTree = "<group>";
-		};
-		D8C7F235283B983300424AE5 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				D8C7F231283B96FE00424AE5 /* ChatCoordinatorProtocol.swift */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
-		D8C7F236283B983C00424AE5 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				D8C7F237283B986300424AE5 /* HomeCoordinatorProtocol.swift */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
-		D8C7F23B283B98DA00424AE5 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				D8C7F239283B98B900424AE5 /* AppCoordinatorProtocol.swift */,
-				D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */,
-			);
-			path = Protocol;
+			path = Chat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -580,9 +626,12 @@
 			files = (
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
+				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
+				D85ED4DE283EFFB500D0A006 /* SearchCoordinator.swift in Sources */,
 				4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */,
 				D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */,
+				D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */,
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
@@ -590,18 +639,25 @@
 				D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */,
 				D8C7F232283B96FE00424AE5 /* ChatCoordinatorProtocol.swift in Sources */,
 				D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */,
+				D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */,
 				FF13AFA228372C69006E678D /* PostListCell.swift in Sources */,
 				4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */,
+				D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */,
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
+				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
+				D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
+				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
+				D85ED4D1283E68EF00D0A006 /* SignUpCoordinator.swift in Sources */,
+				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
 				D8C7F227283B628600424AE5 /* TabBarPage.swift in Sources */,
 			);

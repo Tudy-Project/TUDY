@@ -9,6 +9,7 @@ import UIKit
 
 protocol TabCoordinatorProtocol: Coordinator {
     
+    /// ViewController 선언
     var tabBarController: UITabBarController { get set }
 
     func currentPage() -> TabBarPage?

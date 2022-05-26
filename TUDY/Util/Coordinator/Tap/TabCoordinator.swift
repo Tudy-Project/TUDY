@@ -28,6 +28,22 @@ class TabCoordinator: NSObject, TabCoordinatorProtocol {
         let controllers: [UINavigationController] = pages.map { getTabController($0) }
         prepareTabBarController(withTabControllers: controllers)
     }
+}
+
+// MARK: - TabCoordinatorProtocol
+extension TabCoordinator {
+    
+    func currentPage() -> TabBarPage? { TabBarPage.init(index: tabBarController.selectedIndex) }
+
+    func selectPage(_ page: TabBarPage) {
+        tabBarController.selectedIndex = page.pageOrderNumber()
+    }
+    
+    func setSelectedIndex(_ index: Int) {
+        guard let page = TabBarPage.init(index: index) else { return }
+        
+        tabBarController.selectedIndex = page.pageOrderNumber()
+    }
     
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
         
@@ -63,20 +79,9 @@ class TabCoordinator: NSObject, TabCoordinatorProtocol {
         
         return navigationController
     }
-    
-    func currentPage() -> TabBarPage? { TabBarPage.init(index: tabBarController.selectedIndex) }
-
-    func selectPage(_ page: TabBarPage) {
-        tabBarController.selectedIndex = page.pageOrderNumber()
-    }
-    
-    func setSelectedIndex(_ index: Int) {
-        guard let page = TabBarPage.init(index: index) else { return }
-        
-        tabBarController.selectedIndex = page.pageOrderNumber()
-    }
 }
 
+// MARK: - CoordinatorFinishDelegate
 extension TabCoordinator: CoordinatorFinishDelegate {
     
     func coordinatorDidFinish(childCoordinator: Coordinator) {
