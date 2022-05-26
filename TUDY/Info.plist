@@ -26,6 +26,10 @@
 		<string>kakaolink</string>
 		<string>kakaokompassauth</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AppleSDGothicNeoEB.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
