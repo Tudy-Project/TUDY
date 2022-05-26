@@ -12,6 +12,7 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
     var homeViewController: HomeViewController
     
     weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var homeDelegate: HomeCoordinatorDelegate?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .home
@@ -26,6 +27,8 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
             switch event {
             case .showSearch:
                 self?.pushSearchViewController()
+            case .showLogin:
+                self?.showLogin()
             }
         }
         self.navigationController.pushViewController(self.homeViewController, animated: true)
@@ -38,6 +41,17 @@ extension HomeCoordinator {
     func pushSearchViewController() {
         let searchViewController = SearchViewController()
         self.navigationController.pushViewController(searchViewController, animated: true)
+    }
+    
+    func showLogin() {
+        self.prepareLoginCoordinator(self)
+    }
+}
+
+// MARK: - HomeCoordinatorDelegate
+extension HomeCoordinator: HomeCoordinatorDelegate {
+    func prepareLoginCoordinator(_ coordinator: HomeCoordinator) {
+        self.homeDelegate?.prepareLoginCoordinator(self)
     }
 }
 

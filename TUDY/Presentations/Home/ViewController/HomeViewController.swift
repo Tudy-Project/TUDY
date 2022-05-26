@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
     // MARK: - Property
     enum Event {
         case showSearch
+        case showLogin
     }
     var didSendEventClosure: ((Event) -> Void)?
     
@@ -141,9 +142,10 @@ extension HomeViewController {
     }
     
     @objc private func didTapButton() {
-        let alert = UIAlertController(title: "프로젝트 만들기", message: "플로팅버튼탭", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismass", style: .cancel, handler: nil))
-        present(alert, animated: true)
+        didSendEventClosure?(.showLogin)
+//        let alert = UIAlertController(title: "프로젝트 만들기", message: "플로팅버튼탭", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Dismass", style: .cancel, handler: nil))
+//        present(alert, animated: true)
     }
     
     @objc private func searchButtonPressed(_: UIButton) {

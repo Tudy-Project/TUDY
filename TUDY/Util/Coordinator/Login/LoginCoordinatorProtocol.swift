@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+protocol LoginCoordinatorProtocol: Coordinator {
+    
+    var loginViewController: LoginViewController { get set }
+    func showLoginViewController()
+}
