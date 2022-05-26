@@ -27,6 +27,7 @@
 		D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */; };
 		D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */; };
 		D85ED4DE283EFFB500D0A006 /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */; };
+		D85ED4E1283F15C400D0A006 /* AppleSDGothicNeoEB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D85ED4E0283F15C400D0A006 /* AppleSDGothicNeoEB.ttf */; };
 		D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */; };
 		D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D317283B2EBC0057075F /* UIColor+Custom.swift */; };
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
@@ -74,6 +75,7 @@
 		D85ED4D8283E691E00D0A006 /* PrivateChatListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatListCoordinator.swift; sourceTree = "<group>"; };
 		D85ED4DB283EFFA800D0A006 /* SearchCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4DD283EFFB500D0A006 /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		D85ED4E0283F15C400D0A006 /* AppleSDGothicNeoEB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoEB.ttf; sourceTree = "<group>"; };
 		D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckProtocol.swift; sourceTree = "<group>"; };
 		D893D317283B2EBC0057075F /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
@@ -435,9 +437,18 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		D85ED4DF283F15B600D0A006 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				D85ED4E0283F15C400D0A006 /* AppleSDGothicNeoEB.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		D893D313283B2CA70057075F /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				D85ED4DF283F15B600D0A006 /* Font */,
 				D8C7F21F283B580100424AE5 /* Coordinator */,
 				D893D319283B2F3D0057075F /* Error */,
 				D893D314283B2CBE0057075F /* Extension */,
@@ -551,6 +562,7 @@
 			files = (
 				4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */,
 				FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */,
+				D85ED4E1283F15C400D0A006 /* AppleSDGothicNeoEB.ttf in Resources */,
 				4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
