@@ -18,14 +18,38 @@ import SnapKit
 class LoginViewController: UIViewController {
     
     // MARK: - Properties
+    enum Event {
+        case login
+    }
+    var didSendEventClosure: ((Event) -> Void)?
     
-    private var kakaoLoginButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("카카오톡으로 로그인", for: .normal)
+    private let titleLabel: UILabel = {
+        let label = UILabel().label(text: "", font: .title, color: .white)
+        let attributedString = NSMutableAttributedString(string: "우리,\n여기,\n바로,\n협업,")
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+        label.attributedText = attributedString
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private let logoLabel = UILabel().label(text: "TUDY.", font: .title, color: .white)
+    
+    private let kakaoLoginButton = UIButton().imageButton(imageName: "kakaoLoginButton")
+    private let appleLoginButton = UIButton().imageButton(imageName: "appleLoginButton")
+//    private let appleLoginButton = ASAuthorizationAppleIDButton(type: .continue, style: .white)
+    
+    private let browseWithoutLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        let attributedTitle = NSMutableAttributedString(string: "로그인없이 둘러보기",
+                              attributes: [NSAttributedString.Key.font : UIFont.caption11,
+                                           NSAttributedString.Key.foregroundColor: UIColor.white,
+                                           NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
+        button.setAttributedTitle(attributedTitle, for: .normal)
         return button
     }()
     
-    private let appleLoginButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
     private var currentNonce: String?
     
     // MARK: - Life Cycle
@@ -39,20 +63,42 @@ class LoginViewController: UIViewController {
     
     private func configureUI() {
         
-        view.backgroundColor = .darkGray
+        view.backgroundColor = .black
         
-        view.addSubview(kakaoLoginButton)
-        kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonTapped(_:)), for: .touchUpInside)
-        kakaoLoginButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.centerY.equalTo(view.snp.centerY)
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(120)
+            make.leading.equalTo(view.snp.leading).offset(53)
+        }
+        
+        view.addSubview(logoLabel)
+        logoLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.leading.equalTo(view.snp.leading).offset(55)
         }
         
         view.addSubview(appleLoginButton)
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonTapped(_:)), for: .touchUpInside)
         appleLoginButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.snp.bottom).offset(-84)
+            make.width.equalTo(300)
+            make.height.equalTo(44)
             make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(kakaoLoginButton.snp.bottom).offset(20)
+        }
+        
+        view.addSubview(kakaoLoginButton)
+        kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonTapped(_:)), for: .touchUpInside)
+        kakaoLoginButton.snp.makeConstraints { make in
+            make.bottom.equalTo(appleLoginButton.snp.top).offset(-15)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
+        view.addSubview(browseWithoutLoginButton)
+        // 로그인 coordinator 닫기 이벤트 추가
+        // browseWithoutLoginButton.addTarget
+        browseWithoutLoginButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.snp.bottom).offset(-40)
+            make.centerX.equalTo(view.snp.centerX)
         }
     }
 }
