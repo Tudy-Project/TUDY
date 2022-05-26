@@ -87,17 +87,6 @@ class HomeViewController: UIViewController {
     }
     
     private func configureUI() {
-//        view.backgroundColor = .systemBackground
-//        title = "TUDY"
-//        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-//        navigationController?.navigationBar.tintColor = .white
-//        navigationController?.navigationBar.backgroundColor = .black
-        
-        
-//        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-//              let systemImage = UIImage(systemName: "person",withConfiguration: largeConfig )
-//              button.setImage(systemImage, for: .normal)
-//              button.tintColor = UIColor.white
         
         let leftItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
         self.navigationItem.leftBarButtonItem = leftItem
@@ -195,10 +184,13 @@ extension HomeViewController {
         let cellRegistration = UICollectionView.CellRegistration<PostListCell, Post> {
             (cell, indexPath, post) in
             cell.layer.cornerRadius = 10
-            cell.layer.masksToBounds = true
-            cell.tintColor = .white
+            cell.layer.masksToBounds = false
+            cell.layer.shadowOpacity = 0.5
+            cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+            cell.layer.shadowRadius = 5.0
+            cell.tintColor = .black
             cell.update(with: post)
-            cell.contentView.backgroundColor = .systemGray4
+            cell.contentView.backgroundColor = .white
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
@@ -224,70 +216,6 @@ extension HomeViewController {
         
     }
 }
-
-//class CustomTopBar: UIView {
-//
-//    lazy var profileButton : UIButton = {
-//        let button = UIButton()
-//        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-//        let systemImage = UIImage(systemName: "person",withConfiguration: largeConfig )
-//        button.setImage(systemImage, for: .normal)
-//        button.tintColor = UIColor.white
-//        return button
-//    }()
-//
-//    lazy var logoLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "TUDY"
-//        label.textColor = .white
-//        label.font = UIFont.boldSystemFont(ofSize: 25)
-//        return label
-//    }()
-//
-//    lazy var searchButton : UIButton  = {
-//        let button = UIButton()
-//        let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-//        let systemImage = UIImage(systemName: "magnifyingglass",withConfiguration: largeConfig )
-//        button.setImage(systemImage, for: .normal)
-//        button.tintColor = UIColor.white
-//        return button
-//    }()
-//
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setupView()
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        super.init(coder: coder)
-//        setupView()
-//    }
-//}
-//
-//extension CustomTopBar {
-//    func setupView() {
-//        addSubview(profileButton)
-//        profileButton.snp.makeConstraints { make in
-//            make.width.equalTo(30)
-//            make.height.equalTo(24)
-//            make.leading.equalToSuperview().offset(16)
-//            make.centerY.equalToSuperview()
-//        }
-//
-//        addSubview(logoLabel)
-//        logoLabel.snp.makeConstraints { make in
-//            make.centerX.centerY.equalToSuperview()
-//        }
-//
-//        addSubview(searchButton)
-//        searchButton.snp.makeConstraints { make in
-//            make.width.height.equalTo(24)
-//            make.trailing.equalToSuperview().offset(-16)
-//            make.centerY.equalToSuperview()
-//        }
-//    }
-//}
-
 
 #if DEBUG
 import SwiftUI
