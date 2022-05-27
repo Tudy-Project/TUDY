@@ -6,15 +6,27 @@
 //
 
 import UIKit
+import SnapKit
 
 extension UIButton {
     
     func nextButton(text: String = "다음") -> UIButton {
-        let button = UIButton()
+        let button = UIButton(frame: frame)
         button.backgroundColor = .black
+        button.titleLabel?.font = UIFont.sub14
         button.setTitle(text, for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 3
         return button
+    }
+    
+    func nextButtonLayout(view: UIView) {
+        self.snp.makeConstraints { make in
+            make.leading.equalTo(view.snp.leading).offset(20)
+            make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(13)
+            make.height.equalTo(50)
+        }
     }
     
     func imageButton(imageName: String) -> UIButton {
