@@ -11,7 +11,7 @@ import SnapKit
 extension UIButton {
     
     func nextButton(text: String = "다음") -> UIButton {
-        let button = UIButton(frame: frame)
+        let button = UIButton()
         button.backgroundColor = .black
         button.titleLabel?.font = UIFont.sub14
         button.setTitle(text, for: .normal)
