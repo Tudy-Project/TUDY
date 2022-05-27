@@ -23,21 +23,21 @@ class HomeViewController: UIViewController {
     
     private var postData: [Post] = []
     
-//    private var refreshControl = UIRefreshControl()
+    //    private var refreshControl = UIRefreshControl()
     private var collectionView: UICollectionView! = nil
     
-    static let sectionHeaderElementKind = "section-header-element-kind"
+    private let sectionHeaderElementKind = "section-header-element-kind"
     
     //데이터 관리, cell들을 collectionView에 제공해주는 객체
-    var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
-        
-    lazy var customTopBar: CustomTopBar = {
-        let view = CustomTopBar()
-        view.backgroundColor = UIColor.systemGray4.withAlphaComponent(0.5)
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
+    
+    lazy var jobOfInterestBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
         return view
     }()
     
-    var jobOfInterestButton: UIButton = {
+    lazy var jobOfInterestButton: UIButton = {
         let button = UIButton()
         let arrowImage = UIImage(systemName: "arrowtriangle.down.fill")
         button.setTitle("관심 직무", for: .normal)
@@ -45,12 +45,13 @@ class HomeViewController: UIViewController {
         button.tintColor = .black
         button.setImage(arrowImage, for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
+        button.addTarget(self, action: #selector(didTapJobButton), for: .touchUpInside)
         return button
     }()
     
     lazy var floatingButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        button.backgroundColor = .systemGray4
+        let button = UIButton()
+        button.backgroundColor = .black
         
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
         
@@ -73,33 +74,29 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureCollectionView()
-        self.configureDataSource()
-        self.configureUI()
+        configureCollectionView()
+        configureDataSource()
+        configureUI()
     }
     
-    @objc func refresh(send: UIRefreshControl) {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.refreshControl.endRefreshing()
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        view.backgroundColor = .systemBackground
+        title = "TUDY"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.backgroundColor = .black
     }
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
-        // navigationController?.isNavigationBarHidden = true
-      
-        view.addSubview(customTopBar)
-        customTopBar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(55)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-        }
         
+        let leftItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        self.navigationItem.leftBarButtonItem = leftItem
+        
+        let rightItem = UIBarButtonItem(image:UIImage(named: "magnifier"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        self.navigationItem.rightBarButtonItem = rightItem
+    
         view.addSubview(floatingButton)
         floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        customTopBar.searchButton.addTarget(self, action: #selector(searchButtonPressed(_:)), for: .touchUpInside)
         
         floatingButton.snp.makeConstraints { make in
             make.width.equalTo(60)
@@ -108,19 +105,40 @@ class HomeViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
-        view.addSubview(jobOfInterestButton)
-        jobOfInterestButton.snp.makeConstraints { make in
-            make.top.equalTo(customTopBar.snp.bottom)
+        view.addSubview(jobOfInterestBar)
+        jobOfInterestBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.height.equalTo(55)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
         }
         
+        jobOfInterestBar.addSubview(jobOfInterestButton)
+        jobOfInterestButton.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(jobOfInterestBar.snp.bottom)
             make.bottom.equalToSuperview().multipliedBy(1)
             make.trailing.leading.equalToSuperview()
         }
+    }
+}
+
+// MARK: - action method
+extension HomeViewController {
+    @objc private func refresh(send: UIRefreshControl) {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    @objc private func didTapJobButton() {
+        let alert = UIAlertController(title: "관심 직무 선택", message: "관심직무탭", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismass", style: .cancel, handler: nil))
+        present(alert, animated: true)
     }
     
     @objc private func didTapButton() {
@@ -137,7 +155,6 @@ class HomeViewController: UIViewController {
 //        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 }
-
 extension HomeViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout {
@@ -146,12 +163,11 @@ extension HomeViewController {
             let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(CGFloat(150))))
             item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(180)), subitems: [item])
-            print(item)
             let section = NSCollectionLayoutSection(group: group)
-
+            
             //headerView 설정
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: HomeViewController.sectionHeaderElementKind, alignment: .top)
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: self.sectionHeaderElementKind, alignment: .top)
             section.boundarySupplementaryItems = [sectionHeader]
             return section
         }
@@ -162,7 +178,7 @@ extension HomeViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         view.addSubview(collectionView)
         collectionView.addSubview(refreshControl)
-//        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        //        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
     }
     
     func configureDataSource() {
@@ -170,12 +186,15 @@ extension HomeViewController {
         let cellRegistration = UICollectionView.CellRegistration<PostListCell, Post> {
             (cell, indexPath, post) in
             cell.layer.cornerRadius = 10
-            cell.layer.masksToBounds = true
-            cell.tintColor = .white
+            cell.layer.masksToBounds = false
+            cell.layer.shadowOpacity = 0.5
+            cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+            cell.layer.shadowRadius = 5.0
+            cell.tintColor = .black
             cell.update(with: post)
-            cell.contentView.backgroundColor = .systemGray4
+            cell.contentView.backgroundColor = .white
         }
-
+        
         dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
             (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
@@ -183,7 +202,7 @@ extension HomeViewController {
         
         
         //collectionview headerView custom
-        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: HomeViewController.sectionHeaderElementKind) {supplementaryView,elementKind,indexPath in
+        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: self.sectionHeaderElementKind) {supplementaryView,elementKind,indexPath in
             supplementaryView.backgroundColor = .white
         }
         dataSource.supplementaryViewProvider = { (view, kind, index) in
@@ -198,68 +217,7 @@ extension HomeViewController {
         dataSource.apply(snapshot)
         
     }
-    
-    class CustomTopBar: UIView {
-        
-        lazy var profileButton : UIButton = {
-            let button = UIButton()
-            let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-            let systemImage = UIImage(systemName: "person",withConfiguration: largeConfig )
-            button.setImage(systemImage, for: .normal)
-            button.tintColor = UIColor.black
-            return button
-        }()
-        
-        lazy var logoLabel: UILabel = {
-            let label = UILabel()
-            label.text = "TUDY"
-            label.font = UIFont.boldSystemFont(ofSize: 25)
-            return label
-        }()
-        
-        lazy var searchButton : UIButton  = {
-            let button = UIButton()
-            let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-            let systemImage = UIImage(systemName: "magnifyingglass",withConfiguration: largeConfig )
-            button.setImage(systemImage, for: .normal)
-            button.tintColor = UIColor.black
-            return button
-        }()
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setupView()
-        }
-        
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            setupView()
-        }
-        
-        func setupView() {
-            addSubview(profileButton)
-            profileButton.snp.makeConstraints { make in
-                make.width.equalTo(30)
-                make.height.equalTo(24)
-                make.leading.equalToSuperview().offset(16)
-                make.centerY.equalToSuperview()
-            }
-            
-            addSubview(logoLabel)
-            logoLabel.snp.makeConstraints { make in
-                make.centerX.centerY.equalToSuperview()
-            }
-          
-            addSubview(searchButton)
-            searchButton.snp.makeConstraints { make in
-                make.width.height.equalTo(24)
-                make.trailing.equalToSuperview().offset(-16)
-                make.centerY.equalToSuperview()
-            }
-        }
-    }
 }
-
 
 #if DEBUG
 import SwiftUI
