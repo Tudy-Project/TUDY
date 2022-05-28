@@ -15,10 +15,14 @@ extension UITextField {
         textFiled.font = .caption12
         textFiled.attributedPlaceholder = NSAttributedString(string: placeholder, attributes:
                                                         [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
+        return textFiled
+    }
+    
+    func underLine() {
         let border = CALayer()
         border.frame = CGRect(x: 0, y: self.frame.size.height + 8, width: self.frame.width, height: 2)
         border.borderColor = UIColor.black.cgColor
-        textFiled.layer.addSublayer(border)
-        return textFiled
+        border.borderWidth = 1
+        self.layer.addSublayer(border)
     }
 }

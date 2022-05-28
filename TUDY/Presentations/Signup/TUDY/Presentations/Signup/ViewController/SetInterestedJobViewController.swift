@@ -10,11 +10,18 @@ import UIKit
 class SetInterestedJobViewController: UIViewController {
     
     // MARK: - Properties
+    enum Event {
+        case next
+    }
+    var didSendEventClosure: ((Event) -> Void)?
+    
     private let logoLabel = UILabel().label(text: "TUDY", font: .title)
     private let guideLabel = UILabel().label(text: "관심 직무를 선택해주세요.", font: .sub20)
     private let detailGuideLabel = UILabel().label(text: "관심 직무는 언제든지 마이 페이지에서 수정이 가능해요.", font: .caption11)
     // 직무선택 collectionView
     private let nextButton = UIButton().nextButton()
+    private let nextToolbarButton = UIButton().nextButton(text: "다음")
+    private let nextToolbar = UIToolbar().toolbar()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -27,6 +34,10 @@ extension SetInterestedJobViewController {
     
     // MARK: - Methods
     private func configureUI() {
+        navigationItem.backButtonTitle = ""
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        view.backgroundColor = .white
+        
         view.addSubview(logoLabel)
         logoLabel.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).offset(94)
@@ -46,11 +57,11 @@ extension SetInterestedJobViewController {
         }
         
         view.addSubview(nextButton)
-        nextButton.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading)
-            make.trailing.equalTo(view.snp.trailing)
-            make.bottom.equalTo(view.snp.bottom)
-            make.height.equalTo(50)
-        }
+        nextButton.addTarget(self, action: #selector(goNext), for: .touchUpInside)
+        nextButton.nextButtonLayout(view: view)
+    }
+    
+    @objc func goNext() {
+        didSendEventClosure?(.next)
     }
 }

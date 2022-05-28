@@ -101,8 +101,11 @@ extension TabCoordinator: CoordinatorFinishDelegate {
     
     func coordinatorDidFinish(childCoordinator: Coordinator) {
         self.childCoordinators = childCoordinators.filter { $0.type != childCoordinator.type }
-        if childCoordinator.type == .home {
-            navigationController.viewControllers.removeAll()
+        
+        switch childCoordinator.type {
+        case .login:
+            navigationController.popViewController(animated: true)
+        default: break
         }
     }
 }
