@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
     // MARK: - Property
     enum Event {
         case showSearch
+        case showProjectWrite
         case showLogin
     }
     var didSendEventClosure: ((Event) -> Void)?
@@ -80,23 +81,30 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        view.backgroundColor = .systemBackground
-        title = "TUDY"
+        navigationItem.title = "TUDY"
+//        navigationController?.navigationBar.topItem?.title = "TUDY"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = .white
+        view.backgroundColor = .white
         navigationController?.navigationBar.backgroundColor = .black
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont(name: "AppleSDGothicNeoEB00", size: 26)!
+        ]
+        
+        navigationController?.navigationBar.tintColor = .white
+        
+        tabBarController?.tabBar.isHidden = false
     }
     
     private func configureUI() {
-        
         let leftItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
         self.navigationItem.leftBarButtonItem = leftItem
         
-        let rightItem = UIBarButtonItem(image:UIImage(named: "magnifier"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        let rightItem = UIBarButtonItem(image:UIImage(named: "magnify"), style: .plain, target: self, action: #selector(searchButtonPressed))
         self.navigationItem.rightBarButtonItem = rightItem
     
         view.addSubview(floatingButton)
-        floatingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        floatingButton.addTarget(self, action: #selector(didTapFloatingButton), for: .touchUpInside)
         
         floatingButton.snp.makeConstraints { make in
             make.width.equalTo(60)
@@ -141,11 +149,12 @@ extension HomeViewController {
         present(alert, animated: true)
     }
     
-    @objc private func didTapButton() {
-        didSendEventClosure?(.showLogin)
-//        let alert = UIAlertController(title: "프로젝트 만들기", message: "플로팅버튼탭", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Dismass", style: .cancel, handler: nil))
-//        present(alert, animated: true)
+    @objc private func didTapFloatingButton() {
+        //로그인 유뮤 판별 후 보여주기
+        //if Login?
+        didSendEventClosure?(.showProjectWrite)
+        //else Login
+//        didSendEventClosure?(.showLogin)
     }
     
     @objc private func searchButtonPressed(_: UIButton) {
@@ -155,6 +164,7 @@ extension HomeViewController {
 //        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 }
+
 extension HomeViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout {
@@ -217,6 +227,14 @@ extension HomeViewController {
         dataSource.apply(snapshot)
         
     }
+}
+
+extension UIApplication {
+
+    var statusBarView: UIView? {
+        return value(forKey: "statusBar") as? UIView
+    }
+
 }
 
 #if DEBUG
