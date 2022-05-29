@@ -19,11 +19,16 @@ final class LoginCoordinator: LoginCoordinatorProtocol {
     init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
         navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.navigationBar.tintColor = .black
         self.loginViewController = LoginViewController()
     }
     
     func start() {
         showLoginViewController()
+    }
+    
+    deinit {
+        print("Login Coordinator deinit")
     }
 }
 
@@ -32,9 +37,50 @@ extension LoginCoordinator {
     
     func showLoginViewController() {
         loginViewController.didSendEventClosure = { [weak self] event in
-            self?.finish()
+            switch event {
+            case .close:
+                self?.finish()
+            case .showSignUp:
+                self?.showSetNameViewController()
+            }
         }
         navigationController.pushViewController(loginViewController, animated: true)
+    }
+    
+    func showSetNameViewController() {
+        let setNameViewController = SetNameViewController()
+        setNameViewController.didSendEventClosure = { [weak self] event in
+            self?.showSetInterestedJobViewController()
+        }
+        navigationController.pushViewController(setNameViewController, animated: true)
+    }
+    
+    func show() {
+        
+    }
+    
+    func showSetInterestedJobViewController() {
+        let setInterestedJobViewController = SetInterestedJobViewController()
+        setInterestedJobViewController.didSendEventClosure = { [weak self] event in
+            self?.showSetSubwayViewController()
+        }
+        navigationController.setNavigationBarHidden(false, animated: false)
+        navigationController.pushViewController(setInterestedJobViewController, animated: true)
+    }
+    
+    func showSetSubwayViewController() {
+        let setSubwayViewController = SetSubwayViewController()
+        setSubwayViewController.didSendEventClosure = { [weak self] event in
+            self?.showWelcomeViewController()
+        }
+        navigationController.pushViewController(setSubwayViewController, animated: true)
+    }
+    
+    func showWelcomeViewController() {
+        let welcomeViewController = WelcomeViewController()
+        // 메인으로
+        
+        navigationController.pushViewController(welcomeViewController, animated: true)
     }
 }
 

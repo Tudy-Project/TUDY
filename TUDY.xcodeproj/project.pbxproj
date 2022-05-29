@@ -19,10 +19,9 @@
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */; };
+		D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */; };
 		D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */; };
 		D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */; };
-		D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */; };
-		D85ED4D1283E68EF00D0A006 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D0283E68EF00D0A006 /* SignUpCoordinator.swift */; };
 		D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */; };
 		D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */; };
 		D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */; };
@@ -79,10 +78,9 @@
 		931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUDY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorDelegate.swift; sourceTree = "<group>"; };
+		D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIToolbar+Custom.swift"; sourceTree = "<group>"; };
 		D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
-		D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinatorProtocol.swift; sourceTree = "<group>"; };
-		D85ED4D0283E68EF00D0A006 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
 		D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4D4283E690900D0A006 /* GroupChatListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCoordinator.swift; sourceTree = "<group>"; };
 		D85ED4D6283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateChatListCoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -429,15 +427,6 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		D85ED4C7283E681900D0A006 /* SignUp */ = {
-			isa = PBXGroup;
-			children = (
-				D85ED4CE283E68E700D0A006 /* SignUpCoordinatorProtocol.swift */,
-				D85ED4D0283E68EF00D0A006 /* SignUpCoordinator.swift */,
-			);
-			path = SignUp;
-			sourceTree = "<group>";
-		};
 		D85ED4C8283E682900D0A006 /* PrivateChatList */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,6 +482,7 @@
 				D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */,
 				D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */,
 				FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */,
+				D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -514,7 +504,6 @@
 				D85ED4DA283EFF9200D0A006 /* Search */,
 				D8C7F230283B969100424AE5 /* Chat */,
 				D85ED4C6283E681100D0A006 /* Login */,
-				D85ED4C7283E681900D0A006 /* SignUp */,
 				D85ED4C9283E683300D0A006 /* GroupChatList */,
 				D85ED4C8283E682900D0A006 /* PrivateChatList */,
 				D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */,
@@ -722,7 +711,6 @@
 				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
-				D85ED4CF283E68E700D0A006 /* SignUpCoordinatorProtocol.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
@@ -730,10 +718,10 @@
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
+				D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */,
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,
 				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
-				D85ED4D1283E68EF00D0A006 /* SignUpCoordinator.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
 				D8C7F227283B628600424AE5 /* TabBarPage.swift in Sources */,

@@ -164,7 +164,6 @@ extension HomeViewController {
 //        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 }
-
 extension HomeViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout {

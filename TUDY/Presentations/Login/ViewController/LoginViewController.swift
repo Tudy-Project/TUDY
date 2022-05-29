@@ -19,7 +19,8 @@ class LoginViewController: UIViewController {
     
     // MARK: - Properties
     enum Event {
-        case login
+        case close
+        case showSignUp
     }
     var didSendEventClosure: ((Event) -> Void)?
     
@@ -57,10 +58,13 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        //kakaoLogout()
     }
+}
+
+extension LoginViewController {
     
-    // MARK: - Helper Functions
-    
+    // MARK: - Methods
     private func configureUI() {
         
         view.backgroundColor = .black
@@ -94,12 +98,15 @@ class LoginViewController: UIViewController {
         }
         
         view.addSubview(browseWithoutLoginButton)
-        // 로그인 coordinator 닫기 이벤트 추가
-        // browseWithoutLoginButton.addTarget
+        browseWithoutLoginButton.addTarget(self, action: #selector(closeLogin), for: .touchUpInside)
         browseWithoutLoginButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.snp.bottom).offset(-40)
             make.centerX.equalTo(view.snp.centerX)
         }
+    }
+    
+    @objc private func closeLogin() {
+        didSendEventClosure?(.close)
     }
 }
 
@@ -176,13 +183,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                     print ("Error Apple sign in: %@", error)
                     return
                 }
-                // User is signed in to Firebase with Apple.
-                // ...
-                ///Main 화면으로 보내기
-                //                let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-                //                let mainViewController = storyboard.instantiateViewController(identifier: "MainViewController")
-                //                mainViewController.modalPresentationStyle = .fullScreen
-                //                self.navigationController?.show(mainViewController, sender: nil)
+                // 첫번째 로그인
+                if let _ = authResult?.user.displayName {
+                    self.didSendEventClosure?(.showSignUp)
+                } else {
+                    self.didSendEventClosure?(.close)
+                }
             }
         }
     }
@@ -216,6 +222,7 @@ extension LoginViewController {
                 } else {
                     // 토큰 유효성 체크 성공 (필요 시 토큰 갱신됨)
                     // 밖에서 저렇게 자동로그인 체크하면 여기까지 올 일이 있을까..
+                    self.didSendEventClosure?(.showSignUp)
                 }
             }
         } else {
@@ -276,8 +283,11 @@ extension LoginViewController {
                         print("DEBUG: 파이어베이스 사용자 생성 실패 \(error.localizedDescription)")
                         Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!,
                                            password: "\(String(describing: user?.id))")
+                        self.didSendEventClosure?(.close)
                     } else {
                         print("DEBUG: 파이어베이스 사용자 생성")
+                        self.didSendEventClosure?(.showSignUp)
+                        
                     }
                 }
             }
