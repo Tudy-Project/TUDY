@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
     var didSendEventClosure: ((Event) -> Void)?
     
     private let titleLabel: UILabel = {
-        let label = UILabel().label(text: "", font: .title, color: .white)
+        let label = UILabel().label(text: "", font: .title, color: UIColor.White)
         let attributedString = NSMutableAttributedString(string: "우리,\n여기,\n바로,\n협업,")
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4
@@ -67,7 +67,7 @@ extension LoginViewController {
     // MARK: - Methods
     private func configureUI() {
         
-        view.backgroundColor = .black
+        view.backgroundColor = .DarkGray1
         
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

@@ -65,6 +65,7 @@ extension LoginCoordinator {
             self?.showSetSubwayViewController()
         }
         navigationController.setNavigationBarHidden(false, animated: false)
+        navigationController.navigationBar.tintColor = .White
         navigationController.pushViewController(setInterestedJobViewController, animated: true)
     }
     

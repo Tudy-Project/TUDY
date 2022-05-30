@@ -13,8 +13,11 @@ extension UILabel {
         let label = UILabel()
         label.text = text
         label.font = font
+        label.numberOfLines = 0
         if let color = color {
             label.textColor = color
+        } else {
+            label.textColor = .White
         }
         return label
     }

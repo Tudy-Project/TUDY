@@ -12,8 +12,16 @@ extension UIToolbar {
     func toolbar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        toolbar.barTintColor = .black
+        toolbar.barTintColor = .DarkGray2
         toolbar.isTranslucent = false
         return toolbar
+    }
+    
+    func changeColorDarkGray2() {
+        self.barTintColor = .DarkGray2
+    }
+    
+    func changeColorDarkGray4() {
+        self.barTintColor = .DarkGray4
     }
 }

@@ -12,7 +12,8 @@ extension UITextField {
     func textField(withPlaceholder placeholder: String) -> UITextField {
         let textFiled = UITextField()
         textFiled.borderStyle = .none
-        textFiled.font = .caption12
+        textFiled.font = .body14
+        textFiled.textColor = .White
         textFiled.attributedPlaceholder = NSAttributedString(string: placeholder, attributes:
                                                         [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
         return textFiled
@@ -20,8 +21,8 @@ extension UITextField {
     
     func underLine() {
         let border = CALayer()
-        border.frame = CGRect(x: 0, y: self.frame.size.height + 8, width: self.frame.width, height: 2)
-        border.borderColor = UIColor.black.cgColor
+        border.frame = CGRect(x: -3, y: self.frame.size.height + 13, width: self.frame.width + 3, height: 2)
+        border.borderColor = UIColor.White.cgColor
         border.borderWidth = 1
         self.layer.addSublayer(border)
     }
