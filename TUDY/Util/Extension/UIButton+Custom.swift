@@ -12,21 +12,31 @@ extension UIButton {
     
     func nextButton(text: String = "다음") -> UIButton {
         let button = UIButton()
-        button.backgroundColor = .black
-        button.titleLabel?.font = UIFont.sub14
+        button.titleLabel?.font = UIFont.sub16
         button.setTitle(text, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 3
+        button.changeIsEnabledFalse()
         return button
     }
     
     func nextButtonLayout(view: UIView) {
         self.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(13)
-            make.height.equalTo(50)
+            make.leading.equalTo(view.snp.leading).offset(30)
+            make.trailing.equalTo(view.snp.trailing).offset(-30)
+            make.bottom.equalTo(view.snp.bottom).offset(-40)
+            make.height.equalTo(48)
         }
+    }
+    
+    func changeIsEnabledTrue() {
+        self.isEnabled = true
+        self.backgroundColor = .DarkGray4
+    }
+    
+    func changeIsEnabledFalse() {
+        self.isEnabled = false
+        self.backgroundColor = .DarkGray2
     }
     
     func imageButton(imageName: String) -> UIButton {
