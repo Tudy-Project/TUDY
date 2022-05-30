@@ -39,12 +39,10 @@ class HomeViewController: UIViewController {
     }()
     
     lazy var jobOfInterestButton: UIButton = {
-        let button = UIButton()
-        let arrowImage = UIImage(systemName: "arrowtriangle.down.fill")
+        let button = UIButton().imageButton(imageName: "arrowtriangle.down.fill")
         button.setTitle("관심 직무", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.tintColor = .black
-        button.setImage(arrowImage, for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         button.addTarget(self, action: #selector(didTapJobButton), for: .touchUpInside)
         return button
@@ -78,6 +76,7 @@ class HomeViewController: UIViewController {
         configureCollectionView()
         configureDataSource()
         configureUI()
+        collectionView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,6 +183,7 @@ extension HomeViewController {
     
     // 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
     func configureCollectionView() {
+       
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         view.addSubview(collectionView)
         collectionView.addSubview(refreshControl)
@@ -225,6 +225,15 @@ extension HomeViewController {
         snapshot.appendItems(Post.dummyPostList)
         dataSource.apply(snapshot)
         
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+           self.navigationController?.pushViewController(ProjectDetailViewController(), animated: true)
+           let indexPath = indexPath.row
+           print("home collectionItem indexpath \(indexPath)")
     }
 }
 

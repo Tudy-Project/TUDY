@@ -33,12 +33,7 @@ class PostListCell: UICollectionViewListCell {
         return Label
     }()
   
-    lazy var heartButton: UIButton = {
-        let Button = UIButton()
-        let heartImage = UIImage(systemName: "heart")
-        Button.setImage(heartImage, for: .normal)
-        return Button
-    }()
+    private let heartButton = UIButton().imageButton(imageName: "heart")
     
     lazy var heartCount: UILabel = {
         let Label = UILabel()
