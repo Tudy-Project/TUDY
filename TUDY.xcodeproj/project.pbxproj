@@ -53,6 +53,10 @@
 		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
 		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
+		FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */; };
+		FFAF4A0628425BEA00269EB3 /* UIView+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */; };
+		FFAF4A09284266A100269EB3 /* ProjectWriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */; };
+		FFAF4A0B2842743600269EB3 /* JobTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -109,6 +113,10 @@
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
 		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/Presentations/Home/View/PostListCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/Models/Post.swift; sourceTree = SOURCE_ROOT; };
+		FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWriteViewController.swift; sourceTree = SOURCE_ROOT; };
+		FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Custom.swift"; sourceTree = "<group>"; };
+		FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectWriteTableViewCell.swift; path = ProjectWrite/View/ProjectWriteTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JobTableViewCell.swift; path = ProjectWrite/View/JobTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/Presentations/Home/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -255,6 +263,8 @@
 		4A6E6510283E04AA00B954B9 /* ProjectWrite */ = {
 			isa = PBXGroup;
 			children = (
+				FFAF4A072842668700269EB3 /* View */,
+				FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */,
 			);
 			path = ProjectWrite;
 			sourceTree = "<group>";
@@ -471,6 +481,7 @@
 				D8E37954283F24560051CDF1 /* UILabel+Custom.swift */,
 				D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */,
 				D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */,
+				FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */,
 				D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */,
 			);
 			path = Extension;
@@ -519,6 +530,15 @@
 			);
 			name = ViewController;
 			path = TUDY/Presentations/Signup/ViewController;
+			sourceTree = "<group>";
+		};
+		FFAF4A072842668700269EB3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */,
+				FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -660,6 +680,7 @@
 			files = (
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
 				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
+				FFAF4A09284266A100269EB3 /* ProjectWriteTableViewCell.swift in Sources */,
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
@@ -672,11 +693,14 @@
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
+				FFAF4A0B2842743600269EB3 /* JobTableViewCell.swift in Sources */,
+				FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */,
 				D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */,
 				D8C7F232283B96FE00424AE5 /* ChatCoordinatorProtocol.swift in Sources */,
 				D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */,
 				D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */,
 				D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */,
+				FFAF4A0628425BEA00269EB3 /* UIView+Custom.swift in Sources */,
 				FF13AFA228372C69006E678D /* PostListCell.swift in Sources */,
 				4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */,
 				D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */,

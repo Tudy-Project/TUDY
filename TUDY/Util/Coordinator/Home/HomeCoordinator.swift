@@ -27,6 +27,8 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
             switch event {
             case .showSearch:
                 self?.pushSearchViewController()
+            case .showProjectWrite:
+                self?.pushProjectWriteViewController()
             case .showLogin:
                 self?.showLogin()
             }
@@ -41,6 +43,14 @@ extension HomeCoordinator {
     func pushSearchViewController() {
         let searchViewController = SearchViewController()
         self.navigationController.pushViewController(searchViewController, animated: true)
+    }
+    
+    func pushProjectWriteViewController() {
+        let projectWriteViewController =
+        ProjectWriteViewController()
+        self.navigationController
+            .pushViewController(projectWriteViewController, animated: true)
+//        navigationController.navigationBar.backItem?.backButtonTitle = ""
     }
     
     func showLogin() {
