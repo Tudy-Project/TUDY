@@ -75,6 +75,18 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("=================BEFORE===================")
+        var user = User(userId: 123, signUpDate: 456, nickname: "호진", profileImage: "123", interestedJob: ["123","123"], subways: "123", likeProjectId: "123", personalChat: ["123","123"], groupChat: ["123","123"])
+        let A = CommonFirebaseDatabaseNetworkServiceClass()
+        
+        A.save(user) { error in
+            if let error = error {
+                print("error : \(error)")
+                print("ERROR!!!!!!")
+            }
+        }
+        print("=================AFTER===================")
+        
         configureCollectionView()
         configureDataSource()
         configureUI()
