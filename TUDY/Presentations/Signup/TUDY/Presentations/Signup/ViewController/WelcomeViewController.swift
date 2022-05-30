@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class WelcomeViewController: UIViewController {
     
     // MARK: - Properties
@@ -29,7 +31,7 @@ extension WelcomeViewController {
     
     // MARK: - Methods
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .DarkGray1
         
         view.addSubview(welcomeLabel)
         welcomeLabel.snp.makeConstraints { make in
@@ -42,7 +44,7 @@ extension WelcomeViewController {
         startButton.nextButtonLayout(view: view)
     }
     
-    @objc func start() {
+    @objc private func start() {
         didSendEventClosure?(.start)
     }
 }
