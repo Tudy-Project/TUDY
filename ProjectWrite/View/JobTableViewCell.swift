@@ -12,7 +12,6 @@ class JobTableViewCell: UITableViewCell {
     static let identifier = "JobTableViewCell"
     
     // MARK: - Properties
-       
         let tableLabel : UILabel = {
            let label = UILabel()
             label.text = "개발"
@@ -21,7 +20,6 @@ class JobTableViewCell: UITableViewCell {
        }()
     
     // MARK: - configureUI
-        
         func configureUI() {
             addSubview(tableLabel)
             

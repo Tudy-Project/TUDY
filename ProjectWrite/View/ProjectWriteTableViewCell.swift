@@ -9,10 +9,9 @@ import UIKit
 
 class ProjectWriteTableViewCell: UITableViewCell {
     
+    // MARK: - Properties
     static let identifier = "TableViewCell"
     
-    // MARK: - Properties
-       
         let tableLabel : UILabel = {
            let label = UILabel()
            label.font = .systemFont(ofSize: 15, weight: .regular)
@@ -25,7 +24,6 @@ class ProjectWriteTableViewCell: UITableViewCell {
         }()
     
     // MARK: - configureUI
-        
         func configureUI() {
             addSubview(tableLabel)
             addSubview(chevronDown)

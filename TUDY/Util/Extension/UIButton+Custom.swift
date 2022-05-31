@@ -41,8 +41,12 @@ extension UIButton {
     
     func imageButton(imageName: String) -> UIButton {
         let button = UIButton()
-        let image = UIImage(named: imageName)
-        button.setImage(image, for: .normal)
+        if  let image = UIImage(systemName: imageName) {
+            button.setImage(image, for: .normal)
+        } else {
+            let image = UIImage(named: imageName)
+                button.setImage(image, for: .normal)
+        }
         return button
     }
 }
