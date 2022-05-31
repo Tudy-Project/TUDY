@@ -15,7 +15,6 @@ final class CommonFirebaseDatabaseNetworkServiceClass {
 
     func save(_ user: User, completion: ((Error?) -> Void)? = nil) {
         
-        print("==============WHAT==============")
         let collectionPath = "/USER"
         let collectionListener = Firestore.firestore().collection(collectionPath)
             
