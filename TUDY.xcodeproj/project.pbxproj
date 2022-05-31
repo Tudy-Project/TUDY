@@ -17,6 +17,8 @@
 		4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BD283496F5004A08F8 /* Assets.xcassets */; };
 		4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */; };
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
+		D81091E528459A1600B4544C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81091E428459A1600B4544C /* NetworkError.swift */; };
+		D81091EF2845B47B00B4544C /* String+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81091EE2845B47B00B4544C /* String+Custom.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */; };
 		D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */; };
@@ -37,6 +39,7 @@
 		D87CBB5428439F4B003397A5 /* DetailJobButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87CBB5328439F4B003397A5 /* DetailJobButton.swift */; };
 		D87CBB562843C42E003397A5 /* Subway.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87CBB552843C42E003397A5 /* Subway.swift */; };
 		D87CBB582843CE28003397A5 /* SubwayListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87CBB572843CE28003397A5 /* SubwayListCell.swift */; };
+		D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87CBB59284477D4003397A5 /* SubwayDataManager.swift */; };
 		D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D317283B2EBC0057075F /* UIColor+Custom.swift */; };
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
 		D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */; };
@@ -52,6 +55,7 @@
 		D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */; };
 		D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */; };
 		D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F240283B99C100424AE5 /* ChatViewController.swift */; };
+		D8CA051528450E62006E59DC /* SubwayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA051428450E62006E59DC /* SubwayData.swift */; };
 		D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794B283F22160051CDF1 /* SetNameViewController.swift */; };
 		D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */; };
 		D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */; };
@@ -84,6 +88,8 @@
 		4AEEC0C2283496F5004A08F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.debug.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.debug.xcconfig"; sourceTree = "<group>"; };
 		931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TUDY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D81091E428459A1600B4544C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		D81091EE2845B47B00B4544C /* String+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIToolbar+Custom.swift"; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 		D87CBB5328439F4B003397A5 /* DetailJobButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailJobButton.swift; sourceTree = "<group>"; };
 		D87CBB552843C42E003397A5 /* Subway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subway.swift; sourceTree = "<group>"; };
 		D87CBB572843CE28003397A5 /* SubwayListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayListCell.swift; sourceTree = "<group>"; };
+		D87CBB59284477D4003397A5 /* SubwayDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayDataManager.swift; sourceTree = "<group>"; };
 		D893D317283B2EBC0057075F /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
 		D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -119,6 +126,7 @@
 		D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F240283B99C100424AE5 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		D8CA051428450E62006E59DC /* SubwayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayData.swift; sourceTree = "<group>"; };
 		D8E3794B283F22160051CDF1 /* SetNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetNameViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetNameViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetInterestedJobViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetInterestedJobViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetSubwayViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetSubwayViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -167,6 +175,10 @@
 			isa = PBXGroup;
 			children = (
 				FF13AFA3283739BC006E678D /* Post.swift */,
+				D87CBB59284477D4003397A5 /* SubwayDataManager.swift */,
+				D8CA051428450E62006E59DC /* SubwayData.swift */,
+				D87CBB552843C42E003397A5 /* Subway.swift */,
+				D87CBB4F28439EF2003397A5 /* Job.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -483,12 +495,10 @@
 		D87CBB4828432068003397A5 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D87CBB4F28439EF2003397A5 /* Job.swift */,
 				D87CBB5128439F42003397A5 /* JobButton.swift */,
 				D87CBB4928432075003397A5 /* JobCell.swift */,
 				D87CBB5328439F4B003397A5 /* DetailJobButton.swift */,
 				D87CBB4B2843207F003397A5 /* DetailJobCell.swift */,
-				D87CBB552843C42E003397A5 /* Subway.swift */,
 				D87CBB572843CE28003397A5 /* SubwayListCell.swift */,
 			);
 			path = View;
@@ -515,6 +525,7 @@
 				D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */,
 				FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */,
 				D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */,
+				D81091EE2845B47B00B4544C /* String+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -523,6 +534,7 @@
 			isa = PBXGroup;
 			children = (
 				D893D31A283B2F550057075F /* SignUpError.swift */,
+				D81091E428459A1600B4544C /* NetworkError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -713,6 +725,7 @@
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
 				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
 				D87CBB582843CE28003397A5 /* SubwayListCell.swift in Sources */,
+				D81091E528459A1600B4544C /* NetworkError.swift in Sources */,
 				FFAF4A09284266A100269EB3 /* ProjectWriteTableViewCell.swift in Sources */,
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
@@ -742,7 +755,9 @@
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
 				D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */,
+				D8CA051528450E62006E59DC /* SubwayData.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
+				D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */,
 				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
 				FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */,
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
@@ -763,6 +778,7 @@
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
+				D81091EF2845B47B00B4544C /* String+Custom.swift in Sources */,
 				D87CBB4C2843207F003397A5 /* DetailJobCell.swift in Sources */,
 				D8C7F227283B628600424AE5 /* TabBarPage.swift in Sources */,
 			);
