@@ -64,6 +64,7 @@
 		FFAF4A0628425BEA00269EB3 /* UIView+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */; };
 		FFAF4A09284266A100269EB3 /* ProjectWriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */; };
 		FFAF4A0B2842743600269EB3 /* JobTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */; };
+		FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -131,6 +132,7 @@
 		FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Custom.swift"; sourceTree = "<group>"; };
 		FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectWriteTableViewCell.swift; path = ProjectWrite/View/ProjectWriteTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JobTableViewCell.swift; path = ProjectWrite/View/JobTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectDetailViewController.swift; path = ProjectWrite/View/ProjectDetailViewController.swift; sourceTree = SOURCE_ROOT; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/Presentations/Home/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -271,6 +273,7 @@
 		4A6E650F283E049E00B954B9 /* ProjectDetail */ = {
 			isa = PBXGroup;
 			children = (
+				FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */,
 			);
 			path = ProjectDetail;
 			sourceTree = "<group>";
@@ -741,6 +744,7 @@
 				D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
 				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
+				FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */,
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,

@@ -63,14 +63,6 @@ class ProjectWriteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-//        tableViewData = [
-//            cellData(opened: false, title: "관련 직무 카테고리", sectionData: ["Cell1"]),
-//            cellData(opened: false, title: "회의 조건 (선택)", sectionData: ["Cell1"]),
-//        ]
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//        tableView.register(ProjectWriteTableViewCell.self, forCellReuseIdentifier: "TableViewCell")
-//        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenWidth*0.5, height: screenHeight))
     }
     
     private func configureUI() {
