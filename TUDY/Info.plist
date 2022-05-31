@@ -26,6 +26,11 @@
 		<string>kakaolink</string>
 		<string>kakaokompassauth</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AppleSDGothicNeoEB.ttf</string>
