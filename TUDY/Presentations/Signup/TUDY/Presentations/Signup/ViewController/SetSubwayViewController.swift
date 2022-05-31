@@ -26,7 +26,7 @@ class SetSubwayViewController: UIViewController {
         return label
     }()
     
-    private let subwayTextField = UITextField().textField(withPlaceholder: "지하철 명을 입력해주세요.")
+    private let subwayTextField = UITextField().textField(withPlaceholder: "지하철명을 초성 혹은 단어로 검색하세요.")
     private let signUpButton = UIButton().nextButton(text: "가입하기")
     private let signUpToolbarButton = UIButton().nextButton(text: "가입하기")
     private let signUpToolbar = UIToolbar().toolbar()
@@ -89,6 +89,7 @@ extension SetSubwayViewController {
         subwayTextField.underLine()
         
         view.addSubview(collectionView)
+        collectionView.backgroundColor = .DarkGray1
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(subwayTextField.snp.bottom).offset(18)
             make.leading.equalTo(view.snp.leading).offset(24)
