@@ -66,9 +66,8 @@
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
 		FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */; };
 		FFAF4A0628425BEA00269EB3 /* UIView+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */; };
-		FFAF4A09284266A100269EB3 /* ProjectWriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */; };
-		FFAF4A0B2842743600269EB3 /* JobTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */; };
 		FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */; };
+		FFC658452848FA50008889C2 /* RelatedJobCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -138,9 +137,8 @@
 		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/Models/Post.swift; sourceTree = SOURCE_ROOT; };
 		FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWriteViewController.swift; sourceTree = SOURCE_ROOT; };
 		FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Custom.swift"; sourceTree = "<group>"; };
-		FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectWriteTableViewCell.swift; path = ProjectWrite/View/ProjectWriteTableViewCell.swift; sourceTree = SOURCE_ROOT; };
-		FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JobTableViewCell.swift; path = ProjectWrite/View/JobTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectDetailViewController.swift; path = ProjectWrite/View/ProjectDetailViewController.swift; sourceTree = SOURCE_ROOT; };
+		FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RelatedJobCategoriesView.swift; path = ProjectWrite/View/RelatedJobCategoriesView.swift; sourceTree = SOURCE_ROOT; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/Presentations/Home/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -579,8 +577,7 @@
 		FFAF4A072842668700269EB3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				FFAF4A08284266A100269EB3 /* ProjectWriteTableViewCell.swift */,
-				FFAF4A0A2842743600269EB3 /* JobTableViewCell.swift */,
+				FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -726,7 +723,6 @@
 				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
 				D87CBB582843CE28003397A5 /* SubwayListCell.swift in Sources */,
 				D81091E528459A1600B4544C /* NetworkError.swift in Sources */,
-				FFAF4A09284266A100269EB3 /* ProjectWriteTableViewCell.swift in Sources */,
 				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
@@ -740,7 +736,6 @@
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
-				FFAF4A0B2842743600269EB3 /* JobTableViewCell.swift in Sources */,
 				FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */,
 				D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */,
 				D87CBB5228439F42003397A5 /* JobButton.swift in Sources */,
@@ -762,6 +757,7 @@
 				FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */,
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
+				FFC658452848FA50008889C2 /* RelatedJobCategoriesView.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
