@@ -65,7 +65,6 @@ extension TabCoordinator {
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         
         let navigationController = UINavigationController()
-        navigationController.navigationBar.backgroundColor = .blue
         navigationController.setNavigationBarHidden(false, animated: false)
         navigationController.tabBarItem = UITabBarItem.init(title: page.pageTitle(),
                                                             image: nil,

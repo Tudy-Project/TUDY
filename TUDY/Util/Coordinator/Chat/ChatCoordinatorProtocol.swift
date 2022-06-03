@@ -9,4 +9,5 @@ import Foundation
 
 protocol ChatCoordinatorProtocol: Coordinator {
     
+    var chatListViewController: ChatListViewController { get set }
 }
