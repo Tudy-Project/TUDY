@@ -62,6 +62,7 @@
 		D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37951283F22490051CDF1 /* WelcomeViewController.swift */; };
 		D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37954283F24560051CDF1 /* UILabel+Custom.swift */; };
 		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
+		FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE932849F833003BB46D /* PhotoCell.swift */; };
 		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
 		FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */; };
@@ -133,6 +134,7 @@
 		D8E37954283F24560051CDF1 /* UILabel+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Custom.swift"; sourceTree = "<group>"; };
 		D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Custom.swift"; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
+		FF07DE932849F833003BB46D /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCell.swift; path = ProjectWrite/View/PhotoCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/Presentations/Home/View/PostListCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/Models/Post.swift; sourceTree = SOURCE_ROOT; };
 		FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWriteViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -578,6 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */,
+				FF07DE932849F833003BB46D /* PhotoCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -734,6 +737,7 @@
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
+				FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
 				FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */,

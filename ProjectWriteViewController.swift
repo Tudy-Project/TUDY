@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import PhotosUI
 
 struct cellData {
     var opened = Bool()
@@ -19,8 +20,20 @@ class ProjectWriteViewController: UIViewController {
     // MARK: - Properties
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let categoriesView = RelatedJobCategoriesView.init(frame: .zero, title: "관련 직무 카테고리 📌")
-    private let projectConditionsView = RelatedJobCategoriesView.init(frame: .zero, title: "프로젝트 조건 💡")
+    private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
+    private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
+    private var imageArray = [UIImage]()
+    private var itemProviders: [NSItemProvider] = []
+    
+    private let photoCollectionView: UICollectionView = {
+        let flowlayout = UICollectionViewFlowLayout()
+        flowlayout.minimumLineSpacing = 10
+        flowlayout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
+        collectionView.backgroundColor = .DarkGray1
+        collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
+        return collectionView
+    }()
     
     let titleTextFieldPlaceHolder = "제목을 입력해 주세요. (최대 30자)"
     private lazy var titleTextField: UITextField = {
@@ -50,9 +63,10 @@ class ProjectWriteViewController: UIViewController {
         return textView
     }()
     
-    private let photoButton: UIButton = {
-        let button = UIButton(type: .custom)
+    private lazy var photoButton: UIButton = {
+        let button = UIButton()
         button.setImage(UIImage(named: "photo"), for: .normal)
+        button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
         return button
     }()
     
@@ -150,6 +164,15 @@ class ProjectWriteViewController: UIViewController {
             make.trailing.equalTo(view).offset(-15)
         }
         
+        contentView.addSubview(photoCollectionView)
+        photoCollectionView.dataSource = self
+        photoCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(contentsTextView.snp.bottom).offset(30)
+            make.height.equalTo(80)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+        }
+        
     }
     
     private func setNavigationBar() {
@@ -171,7 +194,6 @@ class ProjectWriteViewController: UIViewController {
     
     private func addKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
@@ -181,6 +203,16 @@ extension ProjectWriteViewController {
     @objc private func didTapRegisterButton() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @objc private func didTapPhotoButton() {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 3
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker,animated: true, completion: nil)
+    }
+    
     //키보드 보일 때
     @objc private func keyboardWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
@@ -248,6 +280,50 @@ extension ProjectWriteViewController: UITextViewDelegate {
             textView.text = contentsTextViewPlaceHolder
             textView.textColor = .DarkGray4
         }
+    }
+}
+
+// MARK: -  PHPickerViewController 대리 관리자
+extension ProjectWriteViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        //PHPicker 닫기
+        picker.dismiss(animated: true, completion: nil)
+        
+        //선택한 사진 배열에 저장
+        itemProviders = results.map(\.itemProvider)
+        for item in itemProviders {
+            if item.canLoadObject(ofClass: UIImage.self) {
+                item.loadObject(ofClass: UIImage.self) { image, error in
+                    DispatchQueue.main.async { [self] in
+                        guard let image = image as? UIImage else { return }
+                        imageArray.append(image)
+                        self.photoCollectionView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - 사진 컬렉션뷰 관련
+extension ProjectWriteViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
+            fatalError()
+        }
+        
+        cell.imageView.image = imageArray[indexPath.row]
+        return cell
+    }
+}
+
+extension ProjectWriteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: photoCollectionView.frame.width, height: photoCollectionView.frame.height)
     }
 }
 
