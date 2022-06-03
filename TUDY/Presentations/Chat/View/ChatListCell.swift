@@ -7,12 +7,6 @@
 
 import UIKit
 
-//var chatNotification: Bool = true
-//var bookMark: Bool = false
-//var imageURL: String = ""
-//var name: String = ""
-//var latestMessage: String = ""
-
 class ChatListCell: UITableViewCell {
     
     // MARK: - Properties
