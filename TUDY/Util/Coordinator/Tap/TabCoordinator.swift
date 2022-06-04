@@ -57,6 +57,7 @@ extension TabCoordinator {
         
         /// UITabBarController를 위한 delegate 설정
         tabBarController.delegate = self
+        tabBarController.tabBar.tintColor = .White
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.home.pageOrderNumber()
         
@@ -68,8 +69,10 @@ extension TabCoordinator {
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(false, animated: false)
         navigationController.tabBarItem = UITabBarItem.init(title: page.pageTitle(),
-                                                            image: nil,
-                                                            tag: page.pageOrderNumber())
+                                                            image: page.unselecedIcon(),
+                                                            selectedImage: page.selecedIcon())
+        tabBarController.tabBar.tintColor = .White
+        tabBarController.tabBar.unselectedItemTintColor = .White
         
         switch page {
         case .home:
