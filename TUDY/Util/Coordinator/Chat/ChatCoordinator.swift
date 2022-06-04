@@ -9,7 +9,7 @@ import UIKit
 
 final class ChatCoordinator: ChatCoordinatorProtocol {
     
-    var chatViewController: ChatViewController
+    var chatListViewController: ChatListViewController
     
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
@@ -18,11 +18,11 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.chatViewController = ChatViewController()
+        self.chatListViewController = ChatListViewController()
     }
     
     func start() {
-        self.navigationController.pushViewController(self.chatViewController, animated: true)
+        self.navigationController.pushViewController(self.chatListViewController, animated: true)
     }
 }
 
