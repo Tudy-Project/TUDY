@@ -42,6 +42,7 @@ extension WelcomeViewController {
         view.addSubview(startButton)
         startButton.addTarget(self, action: #selector(start), for: .touchUpInside)
         startButton.nextButtonLayout(view: view)
+        startButton.changeIsEnabledTrue()
     }
     
     @objc private func start() {
