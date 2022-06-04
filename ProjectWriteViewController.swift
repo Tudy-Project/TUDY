@@ -16,7 +16,6 @@ class ProjectWriteViewController: UIViewController {
     private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
     private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
     private var imageArray = [UIImage]()
-    lazy var y = self.photoButton.frame.origin.y
     private var itemProviders: [NSItemProvider] = []
     private let photoCollectionView: UICollectionView = {
         let flowlayout = UICollectionViewFlowLayout()
@@ -28,17 +27,15 @@ class ProjectWriteViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var accessoryView: UIView = {
-        // y값 수정해야함...
-        let view = UIView(frame: CGRect(x: 0.0, y: 700, width: UIScreen.main.bounds.width, height: 50.0))
-        view.backgroundColor = .clear
+    private lazy var contentsViewPhotoToolbar: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .DarkGray1
         return view
     }()
     
     let titleTextFieldPlaceHolder = "제목을 입력해 주세요. (최대 30자)"
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
-        //        textField.inputAccessoryView = accessoryView
         textField.font = UIFont.body16
         textField.textColor = .white
         textField.attributedPlaceholder = NSAttributedString(string: titleTextFieldPlaceHolder, attributes:   [NSAttributedString.Key.foregroundColor: UIColor.DarkGray4])
@@ -53,9 +50,8 @@ class ProjectWriteViewController: UIViewController {
     let contentsTextViewPlaceHolder = "내용을 입력해 주세요. (최대 1,200자)"
     private lazy var contentsTextView: UITextView = {
         let textView = UITextView()
-        //        textView.inputAccessoryView = accessoryView
-        textView.backgroundColor = .DarkGray1
         textView.isScrollEnabled = false
+        textView.backgroundColor = .DarkGray1
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = .zero
         textView.text = contentsTextViewPlaceHolder
@@ -67,23 +63,23 @@ class ProjectWriteViewController: UIViewController {
     
     private let projectWriteToolbar = UIToolbar().toolbar()
     
-    private lazy var photoButton: UIButton = {
+    private lazy var toolbarPhotoButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
         return button
     }()
     
-    private lazy var photoButton2: UIButton = {
+    private lazy var contentsViewPhotoButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
         return button
     }()
     
-    private let photoLabel = UILabel().label(text: "대표 사진 1장", font: .caption12, color: .LightGray5)
+    private let toolbarPhotoLabel = UILabel().label(text: "(사진 최대 1장)", font: .caption12, color: .LightGray5)
     
-    private let photoLabel2 = UILabel().label(text: "대표 사진 1장", font: .caption12, color: .LightGray5)
+    private let contentsViewPhotoLabel = UILabel().label(text: "(사진 최대 1장)", font: .caption12, color: .LightGray5)
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -160,30 +156,33 @@ class ProjectWriteViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-30)
         }
         
-        contentView.addSubview(photoButton)
-        contentView.addSubview(photoLabel)
-        let photoButtonItem = UIBarButtonItem(customView: photoButton)
-        let photoLabelItem = UIBarButtonItem(customView: photoLabel)
+        contentView.addSubview(toolbarPhotoButton)
+        contentView.addSubview(toolbarPhotoLabel)
+        let photoButtonItem = UIBarButtonItem(customView: toolbarPhotoButton)
+        let photoLabelItem = UIBarButtonItem(customView: toolbarPhotoLabel)
         
-        projectWriteToolbar.frame = CGRect(x: 0, y: view.frame.size.height - 50, width: view.frame.size.width, height: 50)
         projectWriteToolbar.barTintColor = .DarkGray1
         projectWriteToolbar.items = [photoButtonItem, photoLabelItem]
-        
         projectWriteToolbar.updateConstraintsIfNeeded()
-        
+
         titleTextField.inputAccessoryView = projectWriteToolbar
         contentsTextView.inputAccessoryView = projectWriteToolbar
         
-        contentView.addSubview(accessoryView)
-        accessoryView.addSubview(photoButton2)
-        accessoryView.addSubview(photoLabel2)
+        contentView.addSubview(contentsViewPhotoToolbar)
+        contentsViewPhotoToolbar.snp.makeConstraints { make in
+            make.bottom.equalTo(contentView.safeAreaLayoutGuide).offset(-24)
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
+        }
         
-        photoButton2.snp.makeConstraints { make in
+        contentsViewPhotoToolbar.addSubview(contentsViewPhotoButton)
+        contentsViewPhotoButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-16)
             make.leading.equalToSuperview().offset(16)
         }
         
-        photoLabel2.snp.makeConstraints { make in
+        contentsViewPhotoToolbar.addSubview(contentsViewPhotoLabel)
+        contentsViewPhotoLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-19)
         }
@@ -191,13 +190,14 @@ class ProjectWriteViewController: UIViewController {
         contentView.addSubview(photoCollectionView)
         photoCollectionView.dataSource = self
         photoCollectionView.delegate = self
+        //생각해볼 에러... 포토컬렉션뷰를 툴바에 맞추면 생각할게 많아진다...
         photoCollectionView.snp.makeConstraints { make in
             make.top.equalTo(contentsTextView.snp.bottom).offset(30)
             make.height.equalTo(80)
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
         }
-        
+
     }
     
     private func setNavigationBar() {
@@ -241,48 +241,52 @@ extension ProjectWriteViewController {
     
     //키보드 보일 때
     @objc private func keyboardWillShow(_ notification: Notification) {
+        //키보드프레임값 가져오기
         guard let userInfo = notification.userInfo,
-              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+              var keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
-        photoButton2.removeFromSuperview()
-        photoLabel2.removeFromSuperview()
+        keyboardFrame = view.convert(keyboardFrame, from: nil)
         
-        let contentInset = UIEdgeInsets(
-            top: 0.0,
-            left: 0.0,
-            bottom: keyboardFrame.size.height,
-            right: 0.0)
+        //컨텐츠텍스트뷰의 컨텐츠인셋 선언
+        var contentInset = contentsTextView.contentInset
+        //컨텐츠텍스트뷰의 컨텐츠인셋의 bottom값에 키보드프레임의 높이를 할당
+        contentInset.bottom = keyboardFrame.size.height
+        
+        //스크롤뷰의 컨텐츠인셋에 컨텐츠텍스트뷰의 컨텐츠인셋 할당
         scrollView.contentInset = contentInset
         scrollView.scrollIndicatorInsets = contentInset
         
-        //346
-        print(keyboardFrame.size.height)
-        //746
-        print(self.photoButton.frame.origin.y)
-        print(#function)
-        //        self.photoButton.frame.origin.y = y-keyboardFrame.size.height
-        //        self.photoLabel.frame.origin.y = y-keyboardFrame.size.height
+        //컨텐츠뷰에 있던 포토버튼,포토라벨 삭제
+        contentsViewPhotoToolbar.removeFromSuperview()
+        contentsViewPhotoButton.removeFromSuperview()
+        contentsViewPhotoLabel.removeFromSuperview()
+        
     }
     //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
-        accessoryView.addSubview(photoLabel2)
-        accessoryView.addSubview(photoButton2)
         
-        photoButton2.snp.makeConstraints { make in
+        contentsTextView.contentInset = UIEdgeInsets.zero
+        contentsTextView.scrollIndicatorInsets = contentsTextView.contentInset
+        scrollView.contentInset = contentsTextView.contentInset
+        
+        //컨텐츠뷰의 포토버튼, 포토라벨 재생성
+        contentView.addSubview(contentsViewPhotoToolbar)
+        contentsViewPhotoToolbar.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-24)
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
+        }
+        contentsViewPhotoToolbar.addSubview(contentsViewPhotoButton)
+        contentsViewPhotoButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-16)
             make.leading.equalToSuperview().offset(16)
         }
-        
-        photoLabel2.snp.makeConstraints { make in
+        contentsViewPhotoToolbar.addSubview(contentsViewPhotoLabel)
+        contentsViewPhotoLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-19)
         }
-        
-        
-        let contentInset = UIEdgeInsets.zero
-        scrollView.contentInset = contentInset
-        scrollView.scrollIndicatorInsets = contentInset
     }
 }
 
@@ -310,6 +314,22 @@ extension ProjectWriteViewController: UITextViewDelegate {
     func setPlaceHolder() {
         contentsTextView.text = contentsTextViewPlaceHolder
         contentsTextView.textColor =  UIColor.systemGray4
+    }
+    
+    //텍스트뷰 높이 자동 조절
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: view.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        
+        textView.constraints.forEach { (constraint) in
+            if estimatedSize.height <= 180 {
+                
+            } else {
+                if constraint.firstAttribute == .height {
+                    constraint.constant = estimatedSize.height
+                }
+            }
+        }
     }
     
     //편집이 시작될 때(포커스 얻는 경우)
