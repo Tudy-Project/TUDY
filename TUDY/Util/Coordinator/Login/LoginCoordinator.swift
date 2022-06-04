@@ -11,7 +11,8 @@ final class LoginCoordinator: LoginCoordinatorProtocol {
     
     var loginViewController: LoginViewController
     
-    var finishDelegate: CoordinatorFinishDelegate?
+    weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var loginCoordinatorDelegate: LoginCoordinatorDelegate?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .login
@@ -55,10 +56,6 @@ extension LoginCoordinator {
         navigationController.pushViewController(setNameViewController, animated: true)
     }
     
-    func show() {
-        
-    }
-    
     func showSetInterestedJobViewController() {
         let setInterestedJobViewController = SetInterestedJobViewController()
         setInterestedJobViewController.didSendEventClosure = { [weak self] event in
@@ -79,7 +76,9 @@ extension LoginCoordinator {
     
     func showWelcomeViewController() {
         let welcomeViewController = WelcomeViewController()
-        // 메인으로
+        welcomeViewController.didSendEventClosure = { [weak self] event in
+            self?.loginCoordinatorDelegate?.showHomeCoordinator()
+        }
         
         navigationController.pushViewController(welcomeViewController, animated: true)
     }
