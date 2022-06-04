@@ -10,7 +10,7 @@ import UIKit
 extension UIView {
     func grayBlock() -> UIView {
         let view = UIView()
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = .DarkGray5
         return view
     }
 }

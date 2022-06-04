@@ -22,14 +22,10 @@ class RelatedJobCategoriesView: UIView {
         let image = UIImageView(image: UIImage(named: "downChevron"))
         return image
     }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+        
+    init(title: String) {
+        super.init(frame: .zero)
         self.commonInit()
-    }
-    
-    convenience init(frame: CGRect, title: String) {
-        self.init(frame: frame)
         self.title.text = title
     }
     

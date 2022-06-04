@@ -44,6 +44,7 @@
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
 		D89615E42849E55300C86130 /* ChatList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E32849E55300C86130 /* ChatList.swift */; };
 		D89615E72849E79500C86130 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E62849E79500C86130 /* ChatListCell.swift */; };
+		D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */; };
 		D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */; };
 		D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */; };
 		D8C7F227283B628600424AE5 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F226283B628600424AE5 /* TabBarPage.swift */; };
@@ -65,6 +66,7 @@
 		D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37951283F22490051CDF1 /* WelcomeViewController.swift */; };
 		D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37954283F24560051CDF1 /* UILabel+Custom.swift */; };
 		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
+		FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE932849F833003BB46D /* PhotoCell.swift */; };
 		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
 		FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */; };
@@ -117,6 +119,7 @@
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
 		D89615E32849E55300C86130 /* ChatList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatList.swift; sourceTree = "<group>"; };
 		D89615E62849E79500C86130 /* ChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
+		D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F226283B628600424AE5 /* TabBarPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPage.swift; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 		D8E37954283F24560051CDF1 /* UILabel+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Custom.swift"; sourceTree = "<group>"; };
 		D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Custom.swift"; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
+		FF07DE932849F833003BB46D /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCell.swift; path = ProjectWrite/View/PhotoCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/Presentations/Home/View/PostListCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/Models/Post.swift; sourceTree = SOURCE_ROOT; };
 		FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWriteViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -434,6 +438,7 @@
 		D85ED4C6283E681100D0A006 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */,
 				D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */,
 				D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */,
 			);
@@ -571,6 +576,7 @@
 			isa = PBXGroup;
 			children = (
 				FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */,
+				FF07DE932849F833003BB46D /* PhotoCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -727,6 +733,7 @@
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
+				FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
 				FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */,
@@ -762,6 +769,7 @@
 				D87CBB4A28432075003397A5 /* JobCell.swift in Sources */,
 				D87CBB5428439F4B003397A5 /* DetailJobButton.swift in Sources */,
 				D8E13EB12848ED3C00D8C9BF /* ChatState.swift in Sources */,
+				D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
 				D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */,
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,

@@ -36,6 +36,7 @@ extension TabCoordinator {
     func showLogin() {
         let loginCoordinator = LoginCoordinator(navigationController)
         loginCoordinator.finishDelegate = self
+        loginCoordinator.loginCoordinatorDelegate = self
         loginCoordinator.start()
         childCoordinators.append(loginCoordinator)
     }
@@ -88,10 +89,18 @@ extension TabCoordinator {
     }
 }
 
-// MARK: - CoordinatorFinishDelegate
+// MARK: - HomeCoordinatorDelegate
 extension TabCoordinator: HomeCoordinatorDelegate {
     func prepareLoginCoordinator(_ coordinator: HomeCoordinator) {
         self.showLogin()
+    }
+}
+
+// MARK: - LoginCoordinatorDelegate
+extension TabCoordinator: LoginCoordinatorDelegate {
+    func showHomeCoordinator() {
+        self.childCoordinators.removeAll()
+        self.start()
     }
 }
 
