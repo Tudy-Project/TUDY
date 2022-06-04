@@ -10,7 +10,6 @@ import UIKit
 class DetailJobCell: UICollectionViewCell {
     
     // MARK: - Properties
-    static let reuseIdentifier = "JobCellReuseIdentifier"
     let button: DetailJobButton = {
         let button = DetailJobButton()
         button.isTap = false

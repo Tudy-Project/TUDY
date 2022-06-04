@@ -42,6 +42,8 @@
 		D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87CBB59284477D4003397A5 /* SubwayDataManager.swift */; };
 		D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D317283B2EBC0057075F /* UIColor+Custom.swift */; };
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
+		D89615E42849E55300C86130 /* ChatList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E32849E55300C86130 /* ChatList.swift */; };
+		D89615E72849E79500C86130 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E62849E79500C86130 /* ChatListCell.swift */; };
 		D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */; };
 		D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */; };
 		D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */; };
@@ -55,8 +57,9 @@
 		D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F239283B98B900424AE5 /* AppCoordinatorProtocol.swift */; };
 		D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */; };
 		D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */; };
-		D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F240283B99C100424AE5 /* ChatViewController.swift */; };
+		D8C7F241283B99C100424AE5 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F240283B99C100424AE5 /* ChatListViewController.swift */; };
 		D8CA051528450E62006E59DC /* SubwayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA051428450E62006E59DC /* SubwayData.swift */; };
+		D8E13EB12848ED3C00D8C9BF /* ChatState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E13EB02848ED3C00D8C9BF /* ChatState.swift */; };
 		D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794B283F22160051CDF1 /* SetNameViewController.swift */; };
 		D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */; };
 		D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */; };
@@ -114,6 +117,8 @@
 		D87CBB59284477D4003397A5 /* SubwayDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayDataManager.swift; sourceTree = "<group>"; };
 		D893D317283B2EBC0057075F /* UIColor+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Custom.swift"; sourceTree = "<group>"; };
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
+		D89615E32849E55300C86130 /* ChatList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatList.swift; sourceTree = "<group>"; };
+		D89615E62849E79500C86130 /* ChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
 		D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -127,8 +132,9 @@
 		D8C7F239283B98B900424AE5 /* AppCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D8C7F23C283B992200424AE5 /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
-		D8C7F240283B99C100424AE5 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		D8C7F240283B99C100424AE5 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
 		D8CA051428450E62006E59DC /* SubwayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayData.swift; sourceTree = "<group>"; };
+		D8E13EB02848ED3C00D8C9BF /* ChatState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatState.swift; sourceTree = "<group>"; };
 		D8E3794B283F22160051CDF1 /* SetNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetNameViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetNameViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetInterestedJobViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetInterestedJobViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E3794F283F22340051CDF1 /* SetSubwayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetSubwayViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetSubwayViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -181,6 +187,8 @@
 				D8CA051428450E62006E59DC /* SubwayData.swift */,
 				D87CBB552843C42E003397A5 /* Subway.swift */,
 				D87CBB4F28439EF2003397A5 /* Job.swift */,
+				D8E13EB02848ED3C00D8C9BF /* ChatState.swift */,
+				D89615E32849E55300C86130 /* ChatList.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -223,10 +231,8 @@
 		4A6E6505283E02EF00B954B9 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				D89615E52849E78A00C86130 /* View */,
 				4A6E6514283E051D00B954B9 /* ViewController */,
-				4A6E650C283E036300B954B9 /* PersonalChat */,
-				4A6E650A283E035400B954B9 /* GroupChat */,
-				4A6E6508283E033800B954B9 /* ChatList */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -247,27 +253,6 @@
 				4A6E650F283E049E00B954B9 /* ProjectDetail */,
 			);
 			path = Project;
-			sourceTree = "<group>";
-		};
-		4A6E6508283E033800B954B9 /* ChatList */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ChatList;
-			sourceTree = "<group>";
-		};
-		4A6E650A283E035400B954B9 /* GroupChat */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GroupChat;
-			sourceTree = "<group>";
-		};
-		4A6E650C283E036300B954B9 /* PersonalChat */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = PersonalChat;
 			sourceTree = "<group>";
 		};
 		4A6E650D283E038900B954B9 /* MyPost */ = {
@@ -329,7 +314,7 @@
 		4A6E6514283E051D00B954B9 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				D8C7F240283B99C100424AE5 /* ChatViewController.swift */,
+				D8C7F240283B99C100424AE5 /* ChatListViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -542,6 +527,14 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		D89615E52849E78A00C86130 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D89615E62849E79500C86130 /* ChatListCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		D8C7F21F283B580100424AE5 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -747,7 +740,7 @@
 				D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */,
 				D87CBB5228439F42003397A5 /* JobButton.swift in Sources */,
 				D8C7F232283B96FE00424AE5 /* ChatCoordinatorProtocol.swift in Sources */,
-				D8C7F241283B99C100424AE5 /* ChatViewController.swift in Sources */,
+				D8C7F241283B99C100424AE5 /* ChatListViewController.swift in Sources */,
 				D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */,
 				D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */,
 				FFAF4A0628425BEA00269EB3 /* UIView+Custom.swift in Sources */,
@@ -757,6 +750,7 @@
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
 				D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */,
+				D89615E72849E79500C86130 /* ChatListCell.swift in Sources */,
 				D8CA051528450E62006E59DC /* SubwayData.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
 				D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */,
@@ -774,6 +768,7 @@
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
 				D87CBB4A28432075003397A5 /* JobCell.swift in Sources */,
 				D87CBB5428439F4B003397A5 /* DetailJobButton.swift in Sources */,
+				D8E13EB12848ED3C00D8C9BF /* ChatState.swift in Sources */,
 				D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
 				D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */,
@@ -783,6 +778,7 @@
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
 				D81091EF2845B47B00B4544C /* String+Custom.swift in Sources */,
+				D89615E42849E55300C86130 /* ChatList.swift in Sources */,
 				D87CBB4C2843207F003397A5 /* DetailJobCell.swift in Sources */,
 				D8C7F227283B628600424AE5 /* TabBarPage.swift in Sources */,
 			);
