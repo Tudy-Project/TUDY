@@ -181,7 +181,7 @@ extension ChatListViewController {
         var snapshot = ChatListSnapshot()
         snapshot.appendSections([0])
         snapshot.appendItems(chatList.filter { $0.chatState == selected })
-        chatListDataSource.apply(snapshot)
+        chatListDataSource.apply(snapshot, animatingDifferences: false)
     }
 }
 
