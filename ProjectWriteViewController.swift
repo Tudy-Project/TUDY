@@ -1,4 +1,3 @@
-//
 //  ProjectWriteViewController.swift
 //  TUDY
 //
@@ -9,12 +8,6 @@ import UIKit
 import SnapKit
 import PhotosUI
 
-struct cellData {
-    var opened = Bool()
-    var title = String()
-    var sectionData = [String]()
-}
-
 class ProjectWriteViewController: UIViewController {
     
     // MARK: - Properties
@@ -23,8 +16,8 @@ class ProjectWriteViewController: UIViewController {
     private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
     private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
     private var imageArray = [UIImage]()
+    lazy var y = self.photoButton.frame.origin.y
     private var itemProviders: [NSItemProvider] = []
-    
     private let photoCollectionView: UICollectionView = {
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.minimumLineSpacing = 10
@@ -35,9 +28,17 @@ class ProjectWriteViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var accessoryView: UIView = {
+        // y값 수정해야함...
+        let view = UIView(frame: CGRect(x: 0.0, y: 700, width: UIScreen.main.bounds.width, height: 50.0))
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     let titleTextFieldPlaceHolder = "제목을 입력해 주세요. (최대 30자)"
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
+        //        textField.inputAccessoryView = accessoryView
         textField.font = UIFont.body16
         textField.textColor = .white
         textField.attributedPlaceholder = NSAttributedString(string: titleTextFieldPlaceHolder, attributes:   [NSAttributedString.Key.foregroundColor: UIColor.DarkGray4])
@@ -52,6 +53,7 @@ class ProjectWriteViewController: UIViewController {
     let contentsTextViewPlaceHolder = "내용을 입력해 주세요. (최대 1,200자)"
     private lazy var contentsTextView: UITextView = {
         let textView = UITextView()
+        //        textView.inputAccessoryView = accessoryView
         textView.backgroundColor = .DarkGray1
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
@@ -63,7 +65,16 @@ class ProjectWriteViewController: UIViewController {
         return textView
     }()
     
+    private let projectWriteToolbar = UIToolbar().toolbar()
+    
     private lazy var photoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "photo"), for: .normal)
+        button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var photoButton2: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
@@ -72,16 +83,13 @@ class ProjectWriteViewController: UIViewController {
     
     private let photoLabel = UILabel().label(text: "대표 사진 1장", font: .caption12, color: .LightGray5)
     
+    private let photoLabel2 = UILabel().label(text: "대표 사진 1장", font: .caption12, color: .LightGray5)
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
-    
-    //Edit 영역 아닌 곳 클릭시 키보드 내리기
-    //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-    //        self.view.endEditing(true)
-    //    }
     
     private func configureUI() {
         setNavigationBar()
@@ -153,19 +161,36 @@ class ProjectWriteViewController: UIViewController {
         }
         
         contentView.addSubview(photoButton)
-        photoButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
-            make.leading.equalTo(view).offset(20)
+        contentView.addSubview(photoLabel)
+        let photoButtonItem = UIBarButtonItem(customView: photoButton)
+        let photoLabelItem = UIBarButtonItem(customView: photoLabel)
+        
+        projectWriteToolbar.frame = CGRect(x: 0, y: view.frame.size.height - 50, width: view.frame.size.width, height: 50)
+        projectWriteToolbar.barTintColor = .DarkGray1
+        projectWriteToolbar.items = [photoButtonItem, photoLabelItem]
+        
+        projectWriteToolbar.updateConstraintsIfNeeded()
+        
+        titleTextField.inputAccessoryView = projectWriteToolbar
+        contentsTextView.inputAccessoryView = projectWriteToolbar
+        
+        contentView.addSubview(accessoryView)
+        accessoryView.addSubview(photoButton2)
+        accessoryView.addSubview(photoLabel2)
+        
+        photoButton2.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-16)
+            make.leading.equalToSuperview().offset(16)
         }
         
-        contentView.addSubview(photoLabel)
-        photoLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-27)
-            make.trailing.equalTo(view).offset(-15)
+        photoLabel2.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-19)
         }
         
         contentView.addSubview(photoCollectionView)
         photoCollectionView.dataSource = self
+        photoCollectionView.delegate = self
         photoCollectionView.snp.makeConstraints { make in
             make.top.equalTo(contentsTextView.snp.bottom).offset(30)
             make.height.equalTo(80)
@@ -200,13 +225,14 @@ class ProjectWriteViewController: UIViewController {
 
 // MARK: - Action method
 extension ProjectWriteViewController {
+    
     @objc private func didTapRegisterButton() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc private func didTapPhotoButton() {
         var config = PHPickerConfiguration()
-        config.selectionLimit = 3
+        config.selectionLimit = 1
         config.filter = .images
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = self
@@ -219,6 +245,9 @@ extension ProjectWriteViewController {
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
+        photoButton2.removeFromSuperview()
+        photoLabel2.removeFromSuperview()
+        
         let contentInset = UIEdgeInsets(
             top: 0.0,
             left: 0.0,
@@ -227,11 +256,30 @@ extension ProjectWriteViewController {
         scrollView.contentInset = contentInset
         scrollView.scrollIndicatorInsets = contentInset
         
-        self.photoButton.frame.origin.y -= keyboardFrame.size.height
-        self.photoLabel.frame.origin.y -= keyboardFrame.size.height
+        //346
+        print(keyboardFrame.size.height)
+        //746
+        print(self.photoButton.frame.origin.y)
+        print(#function)
+        //        self.photoButton.frame.origin.y = y-keyboardFrame.size.height
+        //        self.photoLabel.frame.origin.y = y-keyboardFrame.size.height
     }
     //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
+        accessoryView.addSubview(photoLabel2)
+        accessoryView.addSubview(photoButton2)
+        
+        photoButton2.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-16)
+            make.leading.equalToSuperview().offset(16)
+        }
+        
+        photoLabel2.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-19)
+        }
+        
+        
         let contentInset = UIEdgeInsets.zero
         scrollView.contentInset = contentInset
         scrollView.scrollIndicatorInsets = contentInset
@@ -323,7 +371,7 @@ extension ProjectWriteViewController: UICollectionViewDataSource {
 
 extension ProjectWriteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: photoCollectionView.frame.width, height: photoCollectionView.frame.height)
+        return CGSize(width: 80, height: 80)
     }
 }
 
