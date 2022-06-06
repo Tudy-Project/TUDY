@@ -11,6 +11,11 @@ import CryptoKit
 class ChatListViewController: UIViewController {
     
     // MARK: - Properties
+    enum Event {
+        case showPersonalChat
+        case showGroupChat
+    }
+    var didSendEventClosure: ((Event, [String]) -> Void)?
     
     typealias TopTapDataSource = UICollectionViewDiffableDataSource<Int, ChatState>
     typealias TopTapSnapshot = NSDiffableDataSourceSnapshot<Int, ChatState>
@@ -27,6 +32,8 @@ class ChatListViewController: UIViewController {
     private var topTapDataSource: TopTapDataSource!
     private var chatListTableView: UITableView!
     private var chatListDataSource: ChatListDataSource!
+    
+    private var chatPartners: [String] = []
     
     private var chatList: [ChatList] = [
         ChatList(chatState: .personalChat,
@@ -219,5 +226,8 @@ extension ChatListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        didSendEventClosure?(.showPersonalChat, chatPartners)
+        didSendEventClosure?(.showGroupChat, chatPartners)
     }
 }

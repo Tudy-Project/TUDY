@@ -10,4 +10,7 @@ import Foundation
 protocol ChatCoordinatorProtocol: Coordinator {
     
     var chatListViewController: ChatListViewController { get set }
+    
+    func showPersonalChat(_ chatPartners: [String])
+    func showGroupChat(_ chatPartners: [String])
 }
