@@ -66,6 +66,8 @@
 		D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37951283F22490051CDF1 /* WelcomeViewController.swift */; };
 		D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37954283F24560051CDF1 /* UILabel+Custom.swift */; };
 		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
+		D8F73EEA284DC5BD00851F22 /* PersonalChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F73EE9284DC5BD00851F22 /* PersonalChatViewController.swift */; };
+		D8F73EEC284DC5CD00851F22 /* GroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F73EEB284DC5CD00851F22 /* GroupChatViewController.swift */; };
 		FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE932849F833003BB46D /* PhotoCell.swift */; };
 		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
@@ -141,6 +143,8 @@
 		D8E37951283F22490051CDF1 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WelcomeViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/WelcomeViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E37954283F24560051CDF1 /* UILabel+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Custom.swift"; sourceTree = "<group>"; };
 		D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Custom.swift"; sourceTree = "<group>"; };
+		D8F73EE9284DC5BD00851F22 /* PersonalChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalChatViewController.swift; sourceTree = "<group>"; };
+		D8F73EEB284DC5CD00851F22 /* GroupChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatViewController.swift; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
 		FF07DE932849F833003BB46D /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCell.swift; path = ProjectWrite/View/PhotoCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/Presentations/Home/View/PostListCell.swift; sourceTree = SOURCE_ROOT; };
@@ -315,6 +319,8 @@
 			isa = PBXGroup;
 			children = (
 				D8C7F240283B99C100424AE5 /* ChatListViewController.swift */,
+				D8F73EE9284DC5BD00851F22 /* PersonalChatViewController.swift */,
+				D8F73EEB284DC5CD00851F22 /* GroupChatViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -763,6 +769,7 @@
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
 				D87CBB562843C42E003397A5 /* Subway.swift in Sources */,
+				D8F73EEC284DC5CD00851F22 /* GroupChatViewController.swift in Sources */,
 				D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */,
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
@@ -776,6 +783,7 @@
 				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
+				D8F73EEA284DC5BD00851F22 /* PersonalChatViewController.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
 				D81091EF2845B47B00B4544C /* String+Custom.swift in Sources */,
 				D89615E42849E55300C86130 /* ChatList.swift in Sources */,
