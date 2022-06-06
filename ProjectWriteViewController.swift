@@ -22,7 +22,7 @@ class ProjectWriteViewController: UIViewController {
         flowlayout.minimumLineSpacing = 10
         flowlayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
-        collectionView.backgroundColor = .DarkGray1
+        collectionView.backgroundColor = .yellow
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         return collectionView
     }()
@@ -260,8 +260,9 @@ extension ProjectWriteViewController {
         
         keyboardFrame = view.convert(keyboardFrame, from: nil)
         var contentInset = contentsTextView.contentInset
-        contentInset.bottom = keyboardFrame.size.height
+        contentInset.bottom = keyboardFrame.size.height - photoCollectionView.frame.height + 5
         scrollView.contentInset = contentInset
+        scrollView.verticalScrollIndicatorInsets = contentInset
        print( scrollView.verticalScrollIndicatorInsets)
     }
     //키보드 숨겨질 때
