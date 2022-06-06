@@ -46,12 +46,14 @@ class ProjectWriteViewController: UIViewController {
     private let grayDivider1 = UIView().grayBlock()
     private let grayDivider2 = UIView().grayBlock()
     private let grayDivider3 = UIView().grayBlock()
+    private let grayDivider4 = UIView().grayBlock()
     
     let contentsTextViewPlaceHolder = "내용을 입력해 주세요. (최대 1,200자)"
     private lazy var contentsTextView: UITextView = {
         let textView = UITextView()
         textView.isScrollEnabled = false
-        textView.backgroundColor = .DarkGray1
+        //        textView.backgroundColor = .DarkGray1
+        textView.backgroundColor = .blue
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = .zero
         textView.text = contentsTextViewPlaceHolder
@@ -91,12 +93,20 @@ class ProjectWriteViewController: UIViewController {
         setNavigationBar()
         addKeyboardNotification()
         
-        view .addSubview(scrollView)
+        view.addSubview(scrollView)
+        view.addSubview(contentsViewPhotoToolbar)
+        addTopBorder(with: .DarkGray5 , andWidth: 1, viewName: contentsViewPhotoToolbar)
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(contentsViewPhotoToolbar.snp.top)
+            make.leading.equalTo(view.safeAreaLayoutGuide)
+            make.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentsViewPhotoToolbar.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
         }
         
         scrollView.addSubview(contentView)
@@ -164,16 +174,9 @@ class ProjectWriteViewController: UIViewController {
         projectWriteToolbar.barTintColor = .DarkGray1
         projectWriteToolbar.items = [photoButtonItem, photoLabelItem]
         projectWriteToolbar.updateConstraintsIfNeeded()
-
+        
         titleTextField.inputAccessoryView = projectWriteToolbar
         contentsTextView.inputAccessoryView = projectWriteToolbar
-        
-        contentView.addSubview(contentsViewPhotoToolbar)
-        contentsViewPhotoToolbar.snp.makeConstraints { make in
-            make.bottom.equalTo(contentView.safeAreaLayoutGuide).offset(-24)
-            make.height.equalTo(50)
-            make.width.equalToSuperview()
-        }
         
         contentsViewPhotoToolbar.addSubview(contentsViewPhotoButton)
         contentsViewPhotoButton.snp.makeConstraints { make in
@@ -197,7 +200,7 @@ class ProjectWriteViewController: UIViewController {
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
         }
-
+        
     }
     
     private func setNavigationBar() {
@@ -220,6 +223,14 @@ class ProjectWriteViewController: UIViewController {
     private func addKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func addTopBorder(with color: UIColor?, andWidth borderWidth: CGFloat, viewName view: UIView) {
+        let border = UIView()
+        border.backgroundColor = color
+        border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
+        border.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: borderWidth)
+        view.addSubview(border)
     }
 }
 
@@ -246,47 +257,16 @@ extension ProjectWriteViewController {
               var keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
+        
         keyboardFrame = view.convert(keyboardFrame, from: nil)
-        
-        //컨텐츠텍스트뷰의 컨텐츠인셋 선언
         var contentInset = contentsTextView.contentInset
-        //컨텐츠텍스트뷰의 컨텐츠인셋의 bottom값에 키보드프레임의 높이를 할당
         contentInset.bottom = keyboardFrame.size.height
-        
-        //스크롤뷰의 컨텐츠인셋에 컨텐츠텍스트뷰의 컨텐츠인셋 할당
         scrollView.contentInset = contentInset
-        scrollView.scrollIndicatorInsets = contentInset
-        
-        //컨텐츠뷰에 있던 포토버튼,포토라벨 삭제
-        contentsViewPhotoToolbar.removeFromSuperview()
-        contentsViewPhotoButton.removeFromSuperview()
-        contentsViewPhotoLabel.removeFromSuperview()
-        
+       print( scrollView.verticalScrollIndicatorInsets)
     }
     //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
         
-        contentsTextView.contentInset = UIEdgeInsets.zero
-        contentsTextView.scrollIndicatorInsets = contentsTextView.contentInset
-        scrollView.contentInset = contentsTextView.contentInset
-        
-        //컨텐츠뷰의 포토버튼, 포토라벨 재생성
-        contentView.addSubview(contentsViewPhotoToolbar)
-        contentsViewPhotoToolbar.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-24)
-            make.height.equalTo(50)
-            make.width.equalToSuperview()
-        }
-        contentsViewPhotoToolbar.addSubview(contentsViewPhotoButton)
-        contentsViewPhotoButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-16)
-            make.leading.equalToSuperview().offset(16)
-        }
-        contentsViewPhotoToolbar.addSubview(contentsViewPhotoLabel)
-        contentsViewPhotoLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-19)
-        }
     }
 }
 
