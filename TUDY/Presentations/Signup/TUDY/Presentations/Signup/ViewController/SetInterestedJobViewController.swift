@@ -96,6 +96,12 @@ extension SetInterestedJobViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    private func setUser() {
+        guard let interestedJob = selectedJob?.rawValue else { fatalError() }
+        UserForRegister.shared.interestedJob = interestedJob
+        UserForRegister.shared.interestedDetailJobs = selectedDetailJobs
+    }
+    
     // MARK: CollectionView
     
     func collectionViewLayout(height: CGFloat) -> UICollectionViewLayout {
@@ -226,6 +232,7 @@ extension SetInterestedJobViewController {
     
     // MARK: - Action Methods
     @objc private func goNext() {
+        setUser()
         didSendEventClosure?(.next)
     }
     

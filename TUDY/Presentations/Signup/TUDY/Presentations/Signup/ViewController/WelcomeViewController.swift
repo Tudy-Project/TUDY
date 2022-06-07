@@ -46,6 +46,11 @@ extension WelcomeViewController {
     }
     
     @objc private func start() {
+        CommonFirebaseDatabaseNetworkService.save(UserForRegister.shared) { error in
+            if let error = error {
+                print("유저 정보 DB 저장 실패 : \(error.localizedDescription)")
+            }
+        }
         didSendEventClosure?(.start)
     }
 }
