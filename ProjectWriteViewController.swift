@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import PhotosUI
 
 struct cellData {
     var opened = Bool()
@@ -16,48 +17,60 @@ struct cellData {
 
 class ProjectWriteViewController: UIViewController {
     
-    // MARK: - Cell Data
-    var tableViewData = [cellData]()
-    
     // MARK: - Properties
-    private let scrollView: UIScrollView = {
-        let view = UIScrollView()
-        return view
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
+    private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
+    private var imageArray = [UIImage]()
+    private var itemProviders: [NSItemProvider] = []
+    
+    private let photoCollectionView: UICollectionView = {
+        let flowlayout = UICollectionViewFlowLayout()
+        flowlayout.minimumLineSpacing = 10
+        flowlayout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
+        collectionView.backgroundColor = .DarkGray1
+        collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
+        return collectionView
     }()
     
-    private let containerView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
+    let titleTextFieldPlaceHolder = "제목을 입력해 주세요. (최대 30자)"
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "제목을 입력해 주세요. (최대 30자)"
         textField.font = UIFont.body16
+        textField.textColor = .white
+        textField.attributedPlaceholder = NSAttributedString(string: titleTextFieldPlaceHolder, attributes:   [NSAttributedString.Key.foregroundColor: UIColor.DarkGray4])
         textField.delegate = self
         return textField
     }()
     
-    private let grayBlock = UIView().grayBlock()
-    private let grayBlockBottom = UIView().grayBlock()
-    
-    private let grayDivider = UIView().grayBlock()
+    private let grayDivider1 = UIView().grayBlock()
+    private let grayDivider2 = UIView().grayBlock()
+    private let grayDivider3 = UIView().grayBlock()
     
     let contentsTextViewPlaceHolder = "내용을 입력해 주세요. (최대 1,200자)"
     private lazy var contentsTextView: UITextView = {
         let textView = UITextView()
-        textView.backgroundColor = .green
+        textView.backgroundColor = .DarkGray1
         textView.isScrollEnabled = false
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainerInset = .zero
         textView.text = contentsTextViewPlaceHolder
         textView.font = UIFont.body16
-        textView.textColor = .systemGray4
+        textView.textColor = .DarkGray4
         textView.delegate = self
         return textView
     }()
     
-    private var tableView = UITableView()
-    let screenHeight = UIScreen.main.bounds.height
-    let screenWidth = UIScreen.main.bounds.width
+    private lazy var photoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "photo"), for: .normal)
+        button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private let photoLabel = UILabel().label(text: "대표 사진 1장", font: .caption12, color: .LightGray5)
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -65,132 +78,163 @@ class ProjectWriteViewController: UIViewController {
         configureUI()
     }
     
+    //Edit 영역 아닌 곳 클릭시 키보드 내리기
+    //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+    //        self.view.endEditing(true)
+    //    }
+    
     private func configureUI() {
-        view.backgroundColor = .white
-        navigationController?.navigationBar.backgroundColor = .white
+        setNavigationBar()
+        addKeyboardNotification()
+        
+        view .addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+        }
+        
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.width.height.equalToSuperview()
+        }
+        
+        contentView.addSubview(categoriesView)
+        categoriesView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(58)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        contentView.addSubview(grayDivider1)
+        grayDivider1.snp.makeConstraints { make in
+            make.top.equalTo(categoriesView.snp.bottom)
+            make.height.equalTo(1)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        contentView.addSubview(projectConditionsView)
+        projectConditionsView.snp.makeConstraints { make in
+            make.top.equalTo(grayDivider1.snp.bottom)
+            make.height.equalTo(58)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        contentView.addSubview(grayDivider2)
+        grayDivider2.snp.makeConstraints { make in
+            make.top.equalTo(projectConditionsView.snp.bottom)
+            make.height.equalTo(1)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        contentView.addSubview(titleTextField)
+        titleTextField.snp.makeConstraints { make in
+            make.top.equalTo(grayDivider2).offset(20)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+        }
+        
+        contentView.addSubview(grayDivider3)
+        grayDivider3.snp.makeConstraints { make in
+            make.top.equalTo(titleTextField.snp.bottom).offset(20)
+            make.height.equalTo(1)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        contentView.addSubview(contentsTextView)
+        contentsTextView.snp.makeConstraints { make in
+            make.top.equalTo(grayDivider3.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+        }
+        
+        contentView.addSubview(photoButton)
+        photoButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+            make.leading.equalTo(view).offset(20)
+        }
+        
+        contentView.addSubview(photoLabel)
+        photoLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-27)
+            make.trailing.equalTo(view).offset(-15)
+        }
+        
+        contentView.addSubview(photoCollectionView)
+        photoCollectionView.dataSource = self
+        photoCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(contentsTextView.snp.bottom).offset(30)
+            make.height.equalTo(80)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+        }
+        
+    }
+    
+    private func setNavigationBar() {
+        view.backgroundColor = .DarkGray1
+        navigationController?.navigationBar.backgroundColor = .DarkGray2
         title = "게시글 작성"
         navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.black,
+            .foregroundColor: UIColor.white,
             .font: UIFont.sub20
         ]
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .PointBlue
         navigationController?.navigationBar.topItem?.title = ""
         tabBarController?.tabBar.isHidden = true
         
         let rightItem =
         UIBarButtonItem(title:"등록", style: .plain, target: self, action: #selector(didTapRegisterButton))
         self.navigationItem.rightBarButtonItem = rightItem
-        
-        view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
-        containerView.addSubview(grayBlock)
-        containerView.addSubview(titleTextField)
-        containerView.addSubview(grayDivider)
-        containerView.addSubview(contentsTextView)
-        containerView.addSubview(grayBlockBottom)
-        containerView.addSubview(tableView)
-    
-        let safeArea = view.safeAreaLayoutGuide
-        
-        scrollView.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top)
-            make.bottom.equalTo(safeArea.snp.bottom)
-            make.leading.equalTo(safeArea.snp.leading)
-            make.trailing.equalTo(safeArea.snp.trailing)
-        }
-        
-        containerView.snp.makeConstraints { make in
-            make.top.equalTo(scrollView)
-            make.bottom.equalTo(scrollView)
-            make.leading.equalTo(scrollView)
-            make.trailing.equalTo(scrollView)
-            //width 설정으로 세로방향 스크롤, 컨테이너 폭을 스크롤뷰와 맞춤
-            make.width.equalTo(scrollView)
-        }
-        //height설정 안하면 텍스트필드가 작동이 안되었음
-        //컨테이너뷰와 스크롤뷰의 높이는 같지만 우선순위는 required가 아니도록 설정
-        let heightAnchor = containerView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
-        heightAnchor.priority = .defaultHigh
-        heightAnchor.isActive = true
-        
-        grayBlock.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.height.equalTo(10)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-        }
-        
-        titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(grayBlock.snp.bottom).offset(16)
-            make.leading.equalTo(grayBlock.snp.leading).offset(16)
-            make.trailing.equalTo(grayBlock.snp.trailing).offset(-16)
-        }
-        
-        grayDivider.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(16)
-            make.height.equalTo(2)
-            make.leading.equalTo(titleTextField)
-            make.trailing.equalTo(titleTextField)
-        }
-        
-        contentsTextView.snp.makeConstraints { make in
-            make.top.equalTo(grayDivider.snp.bottom).offset(16)
-            make.leading.equalTo(titleTextField)
-            make.trailing.equalTo(titleTextField)
-        }
-        
-        grayBlockBottom.snp.makeConstraints { make in
-            make.top.equalTo(contentsTextView.snp.bottom).offset(16)
-            make.height.equalTo(10)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-        }
-        
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(grayBlockBottom.snp.bottom)
-            make.leading.bottom.trailing.equalToSuperview()
-               }
-        
-        tableViewData = [
-            cellData(opened: false, title: "관련 직무 카테고리", sectionData: ["Cell1"]),
-            cellData(opened: false, title: "회의 조건 (선택)", sectionData: ["Cell1"]),
-        ]
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(ProjectWriteTableViewCell.self, forCellReuseIdentifier: "TableViewCell")
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenWidth*0.5, height: screenHeight))
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    private func addKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
 }
 
-// MARK: - action method
+// MARK: - Action method
 extension ProjectWriteViewController {
     @objc private func didTapRegisterButton() {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc private func keyboardWillShow(_ notification: Notification) {
-        guard let userInfo = notification.userInfo as NSDictionary?,
-              var keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        keyboardFrame = view.convert(keyboardFrame, from: nil)
-        var contentInset = contentsTextView.contentInset
-        //contentsTextView의 컨텐츠인셋바텀을 키보드 높이 만큼 지정.
-        contentInset.bottom = keyboardFrame.size.height
-        scrollView.contentInset = contentInset
-        scrollView.scrollIndicatorInsets = contentInset
+    @objc private func didTapPhotoButton() {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 3
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker,animated: true, completion: nil)
     }
     
+    //키보드 보일 때
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+            return
+        }
+        let contentInset = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: keyboardFrame.size.height,
+            right: 0.0)
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
+        
+        self.photoButton.frame.origin.y -= keyboardFrame.size.height
+        self.photoLabel.frame.origin.y -= keyboardFrame.size.height
+    }
+    //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
-        //키보드가 내려갈 때 컨텐츠인셋을 원상태로 돌려준다.
-        contentsTextView.contentInset = UIEdgeInsets.zero
-        contentsTextView.scrollIndicatorInsets = contentsTextView.contentInset
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
     }
 }
 
@@ -205,6 +249,11 @@ extension ProjectWriteViewController: UITextFieldDelegate {
         print(currentString, newString, newString.length, maxLength)
         return newString.length <= 30
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+        textField.resignFirstResponder()
+        return true
+    }
 }
 
 // MARK: - TextView 대리 관리자
@@ -217,89 +266,67 @@ extension ProjectWriteViewController: UITextViewDelegate {
     
     //편집이 시작될 때(포커스 얻는 경우)
     func textViewDidBeginEditing(_ textView: UITextView) {
-        contentsTextView.text = nil
-        contentsTextView.textColor = .black
+        if textView.text == contentsTextViewPlaceHolder {
+            textView.text = nil
+            textView.textColor = .white
+        }
     }
     
     //편집이 종료될 때(포커스 잃는 경우)
     func textViewDidEndEditing(_ textView: UITextView) {
         //문자열의 앞뒤 공백과 줄바꿈을 제거
         //공백 또는 줄바꿈을 입력할 경우에도 placeholder 적용
-        if contentsTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            contentsTextView.text = contentsTextViewPlaceHolder
-            contentsTextView.textColor = .systemGray4
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = contentsTextViewPlaceHolder
+            textView.textColor = .DarkGray4
         }
     }
 }
 
-// MARK: - UITableViewDelegate
-extension ProjectWriteViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100.0
+// MARK: -  PHPickerViewController 대리 관리자
+extension ProjectWriteViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        //PHPicker 닫기
+        picker.dismiss(animated: true, completion: nil)
+        
+        //선택한 사진 배열에 저장
+        itemProviders = results.map(\.itemProvider)
+        for item in itemProviders {
+            if item.canLoadObject(ofClass: UIImage.self) {
+                item.loadObject(ofClass: UIImage.self) { image, error in
+                    DispatchQueue.main.async { [self] in
+                        guard let image = image as? UIImage else { return }
+                        imageArray.append(image)
+                        self.photoCollectionView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - 사진 컬렉션뷰 관련
+extension ProjectWriteViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
     }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
+            fatalError()
+        }
+        
+        cell.imageView.image = imageArray[indexPath.row]
+        return cell
+    }
 }
 
-// MARK: - UITableViewDataSource
-extension ProjectWriteViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return tableViewData.count
- }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-          if tableViewData[section].opened == true {
-              // tableView Section이 열려있으면 Section Cell 하나에 sectionData 개수만큼 추가해줘야 함
-              return tableViewData[section].sectionData.count + 1
-          } else {
-              // tableView Section이 닫혀있을 경우에는 Section Cell 하나만 보여주면 됨
-              return 1
-          }
-      }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-           // section 부분 코드
-           if indexPath.row == 0 {
-               guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath)
-                       as? ProjectWriteTableViewCell else { return UITableViewCell() }
-               cell.configureUI()
-               cell.tableLabel.text = tableViewData[indexPath.section].title
-               return cell
-               
-           // sectionData 부분 코드
-           } else {
-               guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath)
-                       as? ProjectWriteTableViewCell else { return UITableViewCell() }
-               cell.configureUI()
-               cell.tableLabel.text = tableViewData[indexPath.section].sectionData[indexPath.row - 1]
-               return cell
-           }
-           
-       }
-       
-       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           
-           // 셀 선택 시 회색에서 다시 변하게 해주는 것
-           tableView.deselectRow(at: indexPath, animated: true)
-           
-           // section 부분 선택하면 열리게 설정
-           if indexPath.row == 0 {
-               // section이 열려있다면 다시 닫힐 수 있게 해주는 코드
-               tableViewData[indexPath.section].opened = !tableViewData[indexPath.section].opened
-               
-               // 모든 데이터를 새로고침하는 것이 아닌 해당하는 섹션 부분만 새로고침
-               tableView.reloadSections([indexPath.section], with: .none)
-           
-           // sectionData 부분을 선택하면 아무 작동하지 않게 설정
-           } else {
-               print("이건 sectionData 선택한 거야")
-           }
-           
-           print([indexPath.section], [indexPath.row])
-
-           
-       }
+extension ProjectWriteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: photoCollectionView.frame.width, height: photoCollectionView.frame.height)
+    }
 }
-    
+
 #if DEBUG
 import SwiftUI
 

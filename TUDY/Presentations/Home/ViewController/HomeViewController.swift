@@ -161,11 +161,11 @@ extension HomeViewController {
     }
     
     @objc private func didTapFloatingButton() {
-        //로그인 유뮤 판별 후 보여주기
-        //if Login?
-        didSendEventClosure?(.showProjectWrite)
-        //else Login
-//        didSendEventClosure?(.showLogin)
+        if isLogin() {
+            didSendEventClosure?(.showProjectWrite)
+        } else {
+            didSendEventClosure?(.showLogin)
+        }
     }
     
     @objc private func searchButtonPressed(_: UIButton) {
@@ -248,6 +248,9 @@ extension HomeViewController: UICollectionViewDelegate {
            print("home collectionItem indexpath \(indexPath)")
     }
 }
+
+// MARK: - Login Check Protocol
+extension HomeViewController: LoginCheck {}
 
 extension UIApplication {
 

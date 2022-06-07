@@ -11,7 +11,6 @@ import SnapKit
 class JobCell: UICollectionViewCell {
     
     // MARK: - Properties
-    static let reuseIdentifier = "JobCellReuseIdentifier"
     let button: JobButton = {
         let button = JobButton()
         button.backgroundColor = .DarkGray1

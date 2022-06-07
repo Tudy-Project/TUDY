@@ -27,9 +27,9 @@ enum TabBarPage: CaseIterable {
     func pageTitle() -> String {
         switch self {
         case .home:
-            return "홈"
+            return ""
         case .chat:
-            return "채팅"
+            return ""
         }
     }
     
@@ -42,7 +42,24 @@ enum TabBarPage: CaseIterable {
         }
     }
     
-    // func pageIcon() -> UIImage {}
-    // func pageSelectedColor() -> UIColor {}
-    // func pageDeselectedColor() -> UIColor {}
+    func selecedIcon() -> UIImage {
+        switch self {
+        case .home:
+            guard let image = UIImage(named: "home-selected") else { return UIImage() }
+            return image
+        case .chat:
+            guard let image = UIImage(named: "chat-selected") else { return UIImage() }
+            return image
+        }
+    }
+    func unselecedIcon() -> UIImage {
+        switch self {
+        case .home:
+            guard let image = UIImage(named: "home-unselected") else { return UIImage() }
+            return image
+        case .chat:
+            guard let image = UIImage(named: "chat-unselected") else { return UIImage() }
+            return image
+        }
+    }
 }

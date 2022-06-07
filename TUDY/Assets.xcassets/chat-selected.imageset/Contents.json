@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "magnifier.png",
+      "filename" : "chat-selected.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "magnifier@2x.png",
+      "filename" : "chat-selected@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "magnifier@3x.png",
+      "filename" : "chat-selected@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

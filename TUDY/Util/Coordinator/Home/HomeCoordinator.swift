@@ -35,6 +35,10 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
         }
         self.navigationController.pushViewController(self.homeViewController, animated: true)
     }
+    
+    deinit {
+        print("Home Coordinaotr deinit")
+    }
 }
 
 // MARK: - HomeCoordinatorProtocol

@@ -36,6 +36,7 @@ extension TabCoordinator {
     func showLogin() {
         let loginCoordinator = LoginCoordinator(navigationController)
         loginCoordinator.finishDelegate = self
+        loginCoordinator.loginCoordinatorDelegate = self
         loginCoordinator.start()
         childCoordinators.append(loginCoordinator)
     }
@@ -56,6 +57,7 @@ extension TabCoordinator {
         
         /// UITabBarController를 위한 delegate 설정
         tabBarController.delegate = self
+        tabBarController.tabBar.tintColor = .White
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.home.pageOrderNumber()
         
@@ -65,11 +67,12 @@ extension TabCoordinator {
     private func getTabController(_ page: TabBarPage) -> UINavigationController {
         
         let navigationController = UINavigationController()
-        navigationController.navigationBar.backgroundColor = .blue
         navigationController.setNavigationBarHidden(false, animated: false)
         navigationController.tabBarItem = UITabBarItem.init(title: page.pageTitle(),
-                                                            image: nil,
-                                                            tag: page.pageOrderNumber())
+                                                            image: page.unselecedIcon(),
+                                                            selectedImage: page.selecedIcon())
+        tabBarController.tabBar.tintColor = .White
+        tabBarController.tabBar.unselectedItemTintColor = .White
         
         switch page {
         case .home:
@@ -89,10 +92,18 @@ extension TabCoordinator {
     }
 }
 
-// MARK: - CoordinatorFinishDelegate
+// MARK: - HomeCoordinatorDelegate
 extension TabCoordinator: HomeCoordinatorDelegate {
     func prepareLoginCoordinator(_ coordinator: HomeCoordinator) {
         self.showLogin()
+    }
+}
+
+// MARK: - LoginCoordinatorDelegate
+extension TabCoordinator: LoginCoordinatorDelegate {
+    func showHomeCoordinator() {
+        self.childCoordinators.removeAll()
+        self.start()
     }
 }
 

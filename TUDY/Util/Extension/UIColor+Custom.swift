@@ -26,4 +26,5 @@ extension UIColor {
     static var White: UIColor { UIColor(named: "White") ?? UIColor.white }
     
     static var PointRed: UIColor { UIColor(named: "PointRed") ?? UIColor.red }
+    static var PointBlue: UIColor { UIColor(named: "PointBlue") ?? UIColor.blue }
 }
