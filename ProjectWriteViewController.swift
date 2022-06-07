@@ -11,10 +11,10 @@ import PhotosUI
 class ProjectWriteViewController: UIViewController {
     
     // MARK: - Properties
-    private let scrollView = UIScrollView()
+ let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
-    private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
+    private let categoriesView = OptionSelectionBar.init(title: "관련 직무 카테고리 📌")
+    private let projectConditionsView = OptionSelectionBar.init(title: "프로젝트 조건 💡")
     private var imageArray = [UIImage]()
     private var itemProviders: [NSItemProvider] = []
     private let photoCollectionView: UICollectionView = {
@@ -115,6 +115,8 @@ class ProjectWriteViewController: UIViewController {
         }
         
         contentView.addSubview(categoriesView)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
+        categoriesView.addGestureRecognizer(tap)
         categoriesView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.height.equalTo(58)
@@ -200,7 +202,6 @@ class ProjectWriteViewController: UIViewController {
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
         }
-        
     }
     
     private func setNavigationBar() {
@@ -236,6 +237,11 @@ class ProjectWriteViewController: UIViewController {
 
 // MARK: - Action method
 extension ProjectWriteViewController {
+    @objc func buttonTapped() {
+        let bottomSheetVC = BottomSheetViewController(contentViewController: UIViewController())
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
     
     @objc private func didTapRegisterButton() {
         self.navigationController?.popViewController(animated: true)
