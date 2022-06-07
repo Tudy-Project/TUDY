@@ -7,9 +7,9 @@ target 'TUDY' do
 
   # Pods for TUDY
   pod 'SnapKit', '~> 5.6.0'
-  pod 'SwiftLint'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
   pod 'GoogleSignIn'
   pod 'KakaoSDKCommon'  # 필수 요소를 담은 공통 모듈
   pod 'KakaoSDKAuth'  # 사용자 인증

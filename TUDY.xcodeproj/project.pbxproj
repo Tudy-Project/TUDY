@@ -11,6 +11,9 @@
 		4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F12837260700B954B9 /* SearchViewController.swift */; };
 		4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F828376E1300B954B9 /* WorkThemeView.swift */; };
 		4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */; };
+		4AB16F0C2844F3F500EB36A6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F0B2844F3F500EB36A6 /* User.swift */; };
+		4AB16F0E2844F40000EB36A6 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F0D2844F40000EB36A6 /* Project.swift */; };
+		4AB16F112844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F102844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift */; };
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
@@ -83,6 +86,9 @@
 		4A6E64F52837272A00B954B9 /* TUDY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TUDY.entitlements; sourceTree = "<group>"; };
 		4A6E64F828376E1300B954B9 /* WorkThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkThemeView.swift; sourceTree = "<group>"; };
 		4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		4AB16F0B2844F3F500EB36A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4AB16F0D2844F40000EB36A6 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		4AB16F102844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFirebaseDatabaseNetworkService.swift; sourceTree = "<group>"; };
 		4AEEC0B1283496F4004A08F8 /* TUDY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUDY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -183,6 +189,8 @@
 			isa = PBXGroup;
 			children = (
 				FF13AFA3283739BC006E678D /* Post.swift */,
+				4AB16F0B2844F3F500EB36A6 /* User.swift */,
+				4AB16F0D2844F40000EB36A6 /* Project.swift */,
 				D87CBB59284477D4003397A5 /* SubwayDataManager.swift */,
 				D8CA051428450E62006E59DC /* SubwayData.swift */,
 				D87CBB552843C42E003397A5 /* Subway.swift */,
@@ -338,8 +346,17 @@
 		4A6E6517283E058600B954B9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				4AB16F0F2844F41D00EB36A6 /* Protocol */,
+				4AB16F102844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		4AB16F0F2844F41D00EB36A6 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		4AEEC0A8283496F3004A08F8 = {
@@ -760,17 +777,20 @@
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				FFC658452848FA50008889C2 /* RelatedJobCategoriesView.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
+				4AB16F112844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift in Sources */,
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
 				D87CBB562843C42E003397A5 /* Subway.swift in Sources */,
 				D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */,
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
+				4AB16F0C2844F3F500EB36A6 /* User.swift in Sources */,
 				D87CBB4A28432075003397A5 /* JobCell.swift in Sources */,
 				D87CBB5428439F4B003397A5 /* DetailJobButton.swift in Sources */,
 				D8E13EB12848ED3C00D8C9BF /* ChatState.swift in Sources */,
 				D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
+				4AB16F0E2844F40000EB36A6 /* Project.swift in Sources */,
 				D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */,
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,
 				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
