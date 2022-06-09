@@ -14,7 +14,7 @@ enum Section {
 
 class HomeViewController: UIViewController {
     
-    // MARK: - Property
+    // MARK: - Properties
     enum Event {
         case showSearch
         case showProjectWrite
@@ -22,6 +22,7 @@ class HomeViewController: UIViewController {
     }
     var didSendEventClosure: ((Event) -> Void)?
     
+    private let logo = UILabel().label(text: "TUDY", font: .logo26)
     private var postData: [Post] = []
     
     //    private var refreshControl = UIRefreshControl()
@@ -50,7 +51,7 @@ class HomeViewController: UIViewController {
     
     lazy var floatingButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .DarkGray5
         
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
         
@@ -92,11 +93,11 @@ class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = "TUDY"
+//        navigationItem.title = "TUDY"
 //        navigationController?.navigationBar.topItem?.title = "TUDY"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        view.backgroundColor = .white
-        navigationController?.navigationBar.backgroundColor = .black
+        view.backgroundColor = .DarkGray1
+        navigationController?.navigationBar.backgroundColor = .DarkGray1
         navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.white,
             .font: UIFont(name: "AppleSDGothicNeoEB00", size: 26)!
@@ -108,10 +109,10 @@ class HomeViewController: UIViewController {
     }
     
     private func configureUI() {
-        let leftItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        let leftItem = UIBarButtonItem(customView: logo)
         self.navigationItem.leftBarButtonItem = leftItem
         
-        let rightItem = UIBarButtonItem(image:UIImage(named: "magnify"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        let rightItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
         self.navigationItem.rightBarButtonItem = rightItem
     
         view.addSubview(floatingButton)
@@ -198,6 +199,7 @@ extension HomeViewController {
        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         view.addSubview(collectionView)
+        collectionView.backgroundColor = .DarkGray1
         collectionView.addSubview(refreshControl)
         //        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
     }
