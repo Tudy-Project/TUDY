@@ -73,6 +73,18 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("=================BEFORE===================")
+        var user = User(userId: 123, signUpDate: 456, nickname: "호진", profileImage: "123", interestedJob: ["123","123"], subways: "123", likeProjectId: "123", personalChat: ["123","123"], groupChat: ["123","123"])
+        let A = CommonFirebaseDatabaseNetworkServiceClass()
+        
+        A.save(user) { error in
+            if let error = error {
+                print("error : \(error)")
+                print("ERROR!!!!!!")
+            }
+        }
+        print("=================AFTER===================")
+        
         configureCollectionView()
         configureDataSource()
         configureUI()
@@ -149,11 +161,11 @@ extension HomeViewController {
     }
     
     @objc private func didTapFloatingButton() {
-        //로그인 유뮤 판별 후 보여주기
-        //if Login?
-        didSendEventClosure?(.showProjectWrite)
-        //else Login
-//        didSendEventClosure?(.showLogin)
+        if isLogin() {
+            didSendEventClosure?(.showProjectWrite)
+        } else {
+            didSendEventClosure?(.showLogin)
+        }
     }
     
     @objc private func searchButtonPressed(_: UIButton) {
@@ -236,6 +248,9 @@ extension HomeViewController: UICollectionViewDelegate {
            print("home collectionItem indexpath \(indexPath)")
     }
 }
+
+// MARK: - Login Check Protocol
+extension HomeViewController: LoginCheck {}
 
 extension UIApplication {
 
