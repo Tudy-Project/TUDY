@@ -46,7 +46,7 @@ class SearchViewController: UIViewController {
         let label = UILabel()
         label.text = "검색 내역이 없습니다."
         label.font = UIFont.caption11
-        label.textColor = UIColor.DarkGray1
+        label.textColor = UIColor.DarkGray6
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
@@ -260,14 +260,7 @@ extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
         ResultList.insert(text, at: 0)
         searchbar.text = ""
         resultCell.reloadData()
-    }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder() // TextField 비활성화
-        return true
+        searchBar.searchTextField.resignFirstResponder()
     }
 }
 
