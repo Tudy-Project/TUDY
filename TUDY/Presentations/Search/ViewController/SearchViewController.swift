@@ -12,9 +12,12 @@ import SwiftUI
 class SearchViewController: UIViewController {
 
     // MARK: - Properties
-    let cellId: String = "Cell"
-    var list = ["이커머스", "ios개발", "취준", "안녕하세요!!!!", "이것은 몇 글자일까?!?!?!"]
-
+    let ResultCellId: String = "cellId"
+    let WorkCellId: String = "cellId"
+    var ResultList = ["이커머스", "ios개발", "취준", "안녕하세요!!!!", "이것은 몇 글자일까?!?!?!"]
+    var workList = ["백엔드", "프론트엔드", "iOS", "Android", "그래픽디자인", "UX/UI","3D/모션그래픽","브랜딩"]
+    
+    
     lazy var searchbar: UISearchBar = {
        let searchbar = UISearchBar()
         searchbar.backgroundColor = UIColor.DarkGray1
@@ -43,7 +46,7 @@ class SearchViewController: UIViewController {
         let label = UILabel()
         label.text = "검색 내역이 없습니다."
         label.font = UIFont.caption11
-        label.textColor = UIColor.DarkGray3
+        label.textColor = UIColor.DarkGray1
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
@@ -71,9 +74,15 @@ class SearchViewController: UIViewController {
     lazy var workLabel: UILabel = {
         let label = UILabel()
         label.text = "원하는 직무도\n함께 검색 해보세요!"
+        label.numberOfLines = 2
         label.font = UIFont.caption11
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
+        let attrString = NSMutableAttributedString(string: label.text!)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
+        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+        label.attributedText = attrString
         return label
     }()
     
@@ -84,9 +93,25 @@ class SearchViewController: UIViewController {
         flowLayout.scrollDirection = .horizontal
         flowLayout.sectionInset = .init(top: 5, left: 16, bottom: 5, right: 16)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        cv.register(ResultCell.self, forCellWithReuseIdentifier: cellId)
+        cv.register(ResultCell.self, forCellWithReuseIdentifier: ResultCellId)
         cv.backgroundColor = UIColor.DarkGray1
         cv.showsHorizontalScrollIndicator = false
+        return cv
+    }()
+    
+    lazy var workCell: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.sectionInset = UIEdgeInsets.zero
+        flowLayout.minimumInteritemSpacing = 10
+        flowLayout.minimumLineSpacing = 10
+        let halfWidth = UIScreen.main.bounds.width / 3
+        flowLayout.itemSize = CGSize(width: halfWidth * 0.9 , height: halfWidth * 0.9)
+        flowLayout.footerReferenceSize = CGSize(width: halfWidth * 3, height: 70)
+        flowLayout.sectionFootersPinToVisibleBounds = true
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        cv.register(WorkCell.self, forCellWithReuseIdentifier: WorkCellId)
+        cv.backgroundColor = UIColor.DarkGray1
+        cv.isScrollEnabled = false
         return cv
     }()
 
@@ -96,6 +121,8 @@ class SearchViewController: UIViewController {
         configureNav()
         configureUI()
         setDelegate()
+        resultCell.tag = 1
+        workCell.tag = 2
     }
     
     // MARK: - Methods
@@ -106,6 +133,8 @@ class SearchViewController: UIViewController {
         view.addSubview(bodyview)
         bodyview.addSubview(bodytitlestackView)
         bodyview.addSubview(resultCell)
+        bodyview.addSubview(workLabel)
+        bodyview.addSubview(workCell)
         
         bodyview.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
@@ -114,7 +143,7 @@ class SearchViewController: UIViewController {
         
         bodytitlestackView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.92)
+            make.width.equalToSuperview().multipliedBy(0.88)
             make.height.equalToSuperview().multipliedBy(0.08)
             make.centerX.equalToSuperview()
         }
@@ -123,7 +152,19 @@ class SearchViewController: UIViewController {
             make.width.equalToSuperview().multipliedBy(0.94)
             make.height.equalToSuperview().multipliedBy(0.1)
             make.centerX.equalToSuperview()
-
+        }
+        
+        workLabel.snp.makeConstraints { make in
+            make.top.equalTo(bodytitlestackView.snp.bottom).offset(50)
+            make.leading.equalTo(bodytitlestackView.snp.leading)
+            make.height.equalToSuperview().multipliedBy(0.2)
+        }
+        
+        workCell.snp.makeConstraints { make in
+            make.top.equalTo(workLabel.snp.bottom).offset(10)
+            make.leading.equalTo(workLabel.snp.leading)
+            make.width.equalTo(bodytitlestackView.snp.width)
+            make.height.equalToSuperview().multipliedBy(0.6)
         }
     }
 
@@ -131,7 +172,7 @@ class SearchViewController: UIViewController {
         bodyview.addSubview(noSearchLabel)
         noSearchLabel.snp.makeConstraints { make in
             make.top.equalTo(bodytitlestackView.snp.bottom).offset(10)
-            make.leading.equalTo(titleLabel.snp.leading).offset(10)
+            make.leading.equalTo(titleLabel.snp.leading)
             make.centerX.equalToSuperview()
         }
     }
@@ -146,10 +187,13 @@ class SearchViewController: UIViewController {
         resultCell.delegate = self
         resultCell.dataSource = self
         searchbar.delegate = self
+        workCell.delegate = self
+        workCell.dataSource = self
+        searchbar.searchTextField.delegate = self
     }
     
     @objc func deleteAllSearch(_: UIButton) {
-        list.removeAll()
+        ResultList.removeAll()
         resultCell.reloadData()
         resultCell.removeFromSuperview()
         configurenoSearchLabel()
@@ -160,34 +204,70 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
      func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-         return list.count
+         var idx: Int = 0
+
+         if (collectionView.tag == 1) {
+             idx = ResultList.count
+         }
+         else {
+             idx = workList.count
+         }
+         return idx
      }
      
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ResultCell
-         cell.configureLabel(name: list[indexPath.item])
-         cell.contentView.layer.cornerRadius = cell.contentView.frame.height / 2
-         cell.contentView.backgroundColor = UIColor.DarkGray5
-         return cell
+         
+         if collectionView.tag == 1 {
+             guard let result = resultCell.dequeueReusableCell(withReuseIdentifier: ResultCellId, for: indexPath) as? ResultCell else {
+                 return UICollectionViewCell()
+             }
+             result.configureLabel(name: ResultList[indexPath.item])
+             result.contentView.layer.cornerRadius = result.contentView.frame.height / 2
+             result.contentView.backgroundColor = UIColor.DarkGray5
+             return result
+         }
+         else {
+             guard let work = workCell.dequeueReusableCell(withReuseIdentifier: WorkCellId, for: indexPath) as? WorkCell else {
+                 return UICollectionViewCell()
+             }
+             work.contentView.layer.cornerRadius = 10
+             work.workIcon.image = UIImage(named: "mac_icon")
+             work.workTitle.text = workList[indexPath.row]
+             work.contentView.backgroundColor = UIColor.DarkGray5
+             return work
+         }
      }
      
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-         return ResultCell.fittingSize(availableHeight: 40, name: list[indexPath.item])
+         if (collectionView.tag == 1) {
+             return ResultCell.fittingSize(availableHeight: 40, name: ResultList[indexPath.item])
+         } else {
+             let halfWidth = bodytitlestackView.bounds.width / 3
+             return CGSize(width: halfWidth * 0.9 , height: halfWidth * 0.9)
+         }
      }
 }
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchbar.text else {
             return
         }
-        if (list.isEmpty) {
+        if (ResultList.isEmpty) {
             noSearchLabel.removeFromSuperview()
             configureUI()
         }
-        list.append(text)
+        ResultList.insert(text, at: 0)
         searchbar.text = ""
         resultCell.reloadData()
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // TextField 비활성화
+        return true
     }
 }
 

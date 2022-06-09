@@ -13,6 +13,7 @@ class ResultCell: UICollectionViewCell {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
+        label.textAlignment = .center
         label.backgroundColor = UIColor.DarkGray5
         label.font = UIFont.systemFont(ofSize: 12)
         return label
@@ -42,8 +43,6 @@ extension ResultCell {
     
     private func configureUI() {
         backgroundColor = UIColor.DarkGray1
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .white
         
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) in
