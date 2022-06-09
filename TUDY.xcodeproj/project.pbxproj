@@ -84,6 +84,7 @@
 		FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC658442848FA50008889C2 /* OptionSelectionBar.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
+		FFDD70A52851EC19003EA5F2 /* HomePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFDD70A42851EC19003EA5F2 /* HomePostViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,6 +170,7 @@
 		FFC658442848FA50008889C2 /* OptionSelectionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OptionSelectionBar.swift; path = ProjectWrite/View/OptionSelectionBar.swift; sourceTree = SOURCE_ROOT; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/Presentations/Home/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
+		FFDD70A42851EC19003EA5F2 /* HomePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				FFD4624B2834BB13002A2022 /* HomeViewController.swift */,
+				FFDD70A42851EC19003EA5F2 /* HomePostViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -772,6 +775,7 @@
 				4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */,
 				D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */,
 				D87CBB5028439EF2003397A5 /* Job.swift in Sources */,
+				FFDD70A52851EC19003EA5F2 /* HomePostViewController.swift in Sources */,
 				D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */,
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,

@@ -58,6 +58,7 @@ extension TabCoordinator {
         /// UITabBarController를 위한 delegate 설정
         tabBarController.delegate = self
         tabBarController.tabBar.tintColor = .White
+        tabBarController.tabBar.backgroundColor = .DarkGray2
         tabBarController.setViewControllers(tabControllers, animated: true)
         tabBarController.selectedIndex = TabBarPage.home.pageOrderNumber()
         
