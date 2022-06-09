@@ -8,36 +8,56 @@
 import Foundation
 
 struct User: Codable {
-    var userId: Int
-    var signUpDate: Int
+    var userID: String
+    var signUpDate: String
     var nickname: String
-    var profileImage: String
-    var interestedJob: [String] // job 구조체
-    var subways: String // 지하철 구조체
-    var likeProjectId: String?
-    var personalChat: [String]?
-    var groupChat: [String]?
+    var profileImageURL: String
+    var interestedJob: String
+    var interestedDetailJobs: [String]
+    var subwayStation: String
+    var subwayLines: [String]
+    var likeProjectIDs: [String]
+    var personalChatIDs: [String]
+    var groupChatIDs: [String]
     
     init (
-        userId: Int = 0,
-        signUpDate: Int = 0,
+        userID: String = "",
+        signUpDate: String = "",
         nickname: String = "",
-        profileImage: String = "",
-        interestedJob: [String] = [],
-        subways: String = "",
-        likeProjectId: String = "",
-        personalChat: [String] = [],
-        groupChat: [String] = []
+        profileImageURL: String = "",
+        interestedJob: String = "",
+        interestedDetailJobs: [String] = [],
+        subwayStation: String = "",
+        subwayLines: [String] = [],
+        likeProjectIDs: [String] = [],
+        personalChatIDs: [String] = [],
+        groupChatIDs: [String] = []
     ) {
-        self.userId = userId
+        self.userID = userID
         self.signUpDate = signUpDate
         self.nickname = nickname
-        self.profileImage = profileImage
+        self.profileImageURL = profileImageURL
         self.interestedJob = interestedJob
-        self.subways = subways
-        self.likeProjectId = likeProjectId
-        self.personalChat = personalChat
-        self.groupChat = groupChat
+        self.interestedDetailJobs = interestedDetailJobs
+        self.subwayStation = subwayStation
+        self.subwayLines = subwayLines
+        self.likeProjectIDs = likeProjectIDs
+        self.personalChatIDs = personalChatIDs
+        self.groupChatIDs = groupChatIDs
+    }
+    
+    init(dict: [String : Any]) {
+        self.userID = dict["userID"] as? String ?? ""
+        self.signUpDate = dict["signUpDate"] as? String ?? ""
+        self.nickname = dict["nickname"] as? String ?? ""
+        self.profileImageURL = dict["profileImageURL"] as? String ?? ""
+        self.interestedJob = dict["interestedJob"] as? String ?? ""
+        self.interestedDetailJobs = dict["interestedDetailJobs"] as? [String] ?? []
+        self.subwayStation = dict["subwayStation"] as? String ?? ""
+        self.subwayLines = dict["subwayLines"] as? [String] ?? []
+        self.likeProjectIDs = dict["likeProjectIDs"] as? [String] ?? []
+        self.personalChatIDs = dict["personalChatIDs"] as? [String] ?? []
+        self.groupChatIDs = dict["groupChatIDs"] as? [String] ?? []
     }
 }
 
@@ -49,4 +69,9 @@ extension Encodable {
               let dictinoary = try? JSONSerialization.jsonObject(with: object, options: []) as? [String: Any] else { return nil }
         return dictinoary
     }
+}
+
+struct UserForRegister {
+    static var shared: User = User()
+    private init() {}
 }
