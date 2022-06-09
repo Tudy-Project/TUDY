@@ -13,8 +13,9 @@ class ProjectWriteViewController: UIViewController {
     // MARK: - Properties
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
-    private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
+    private let categoriesView = OptionSelectionBar.init(title: "관련 직무 카테고리 📌")
+    private let projectConditionsView = OptionSelectionBar.init(title: "프로젝트 조건 💡")
+    private var optionState: String = "categoriesBar"
     private var imageArray = [UIImage]()
     private var itemProviders: [NSItemProvider] = []
     private let photoCollectionView: UICollectionView = {
@@ -115,6 +116,8 @@ class ProjectWriteViewController: UIViewController {
         }
         
         contentView.addSubview(categoriesView)
+        let categoriesViewTap = UITapGestureRecognizer(target: self, action: #selector(didTapCategoriesBarButton))
+        categoriesView.addGestureRecognizer(categoriesViewTap)
         categoriesView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.height.equalTo(58)
@@ -130,6 +133,8 @@ class ProjectWriteViewController: UIViewController {
         }
         
         contentView.addSubview(projectConditionsView)
+        let projectConditionsViewTap = UITapGestureRecognizer(target: self, action: #selector(didTapProjectConditionsBarButton))
+        projectConditionsView.addGestureRecognizer(projectConditionsViewTap)
         projectConditionsView.snp.makeConstraints { make in
             make.top.equalTo(grayDivider1.snp.bottom)
             make.height.equalTo(58)
@@ -200,7 +205,6 @@ class ProjectWriteViewController: UIViewController {
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
         }
-        
     }
     
     private func setNavigationBar() {
@@ -234,8 +238,21 @@ class ProjectWriteViewController: UIViewController {
     }
 }
 
-// MARK: - Action method
+// MARK: - Action methods
 extension ProjectWriteViewController {
+    @objc func didTapCategoriesBarButton() {
+        let bottomSheetVC = BottomSheetViewController(contentViewController: CategoriesViewController())
+        bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.346
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapProjectConditionsBarButton() {
+        let bottomSheetVC = BottomSheetViewController(contentViewController: ProjectConditionsViewController())
+        bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.275
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
     
     @objc private func didTapRegisterButton() {
         self.navigationController?.popViewController(animated: true)
@@ -263,7 +280,7 @@ extension ProjectWriteViewController {
         contentInset.bottom = keyboardFrame.size.height - photoCollectionView.frame.height + 5
         scrollView.contentInset = contentInset
         scrollView.verticalScrollIndicatorInsets = contentInset
-       print( scrollView.verticalScrollIndicatorInsets)
+        print( scrollView.verticalScrollIndicatorInsets)
     }
     //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
