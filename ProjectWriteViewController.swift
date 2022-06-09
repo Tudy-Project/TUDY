@@ -1,4 +1,3 @@
-//
 //  ProjectWriteViewController.swift
 //  TUDY
 //
@@ -9,30 +8,30 @@ import UIKit
 import SnapKit
 import PhotosUI
 
-struct cellData {
-    var opened = Bool()
-    var title = String()
-    var sectionData = [String]()
-}
-
 class ProjectWriteViewController: UIViewController {
     
     // MARK: - Properties
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let categoriesView = RelatedJobCategoriesView.init(title: "관련 직무 카테고리 📌")
-    private let projectConditionsView = RelatedJobCategoriesView.init(title: "프로젝트 조건 💡")
+    private let categoriesView = OptionSelectionBar.init(title: "관련 직무 카테고리 📌")
+    private let projectConditionsView = OptionSelectionBar.init(title: "프로젝트 조건 💡")
+    private var optionState: String = "categoriesBar"
     private var imageArray = [UIImage]()
     private var itemProviders: [NSItemProvider] = []
-    
     private let photoCollectionView: UICollectionView = {
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.minimumLineSpacing = 10
         flowlayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
-        collectionView.backgroundColor = .DarkGray1
+        collectionView.backgroundColor = .yellow
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         return collectionView
+    }()
+    
+    private lazy var contentsViewPhotoToolbar: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .DarkGray1
+        return view
     }()
     
     let titleTextFieldPlaceHolder = "제목을 입력해 주세요. (최대 30자)"
@@ -48,12 +47,14 @@ class ProjectWriteViewController: UIViewController {
     private let grayDivider1 = UIView().grayBlock()
     private let grayDivider2 = UIView().grayBlock()
     private let grayDivider3 = UIView().grayBlock()
+    private let grayDivider4 = UIView().grayBlock()
     
     let contentsTextViewPlaceHolder = "내용을 입력해 주세요. (최대 1,200자)"
     private lazy var contentsTextView: UITextView = {
         let textView = UITextView()
-        textView.backgroundColor = .DarkGray1
         textView.isScrollEnabled = false
+        //        textView.backgroundColor = .DarkGray1
+        textView.backgroundColor = .blue
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = .zero
         textView.text = contentsTextViewPlaceHolder
@@ -63,14 +64,25 @@ class ProjectWriteViewController: UIViewController {
         return textView
     }()
     
-    private lazy var photoButton: UIButton = {
+    private let projectWriteToolbar = UIToolbar().toolbar()
+    
+    private lazy var toolbarPhotoButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
         return button
     }()
     
-    private let photoLabel = UILabel().label(text: "대표 사진 1장", font: .caption12, color: .LightGray5)
+    private lazy var contentsViewPhotoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "photo"), for: .normal)
+        button.addTarget(self, action: #selector(didTapPhotoButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private let toolbarPhotoLabel = UILabel().label(text: "(사진 최대 1장)", font: .caption12, color: .LightGray5)
+    
+    private let contentsViewPhotoLabel = UILabel().label(text: "(사진 최대 1장)", font: .caption12, color: .LightGray5)
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -78,21 +90,24 @@ class ProjectWriteViewController: UIViewController {
         configureUI()
     }
     
-    //Edit 영역 아닌 곳 클릭시 키보드 내리기
-    //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-    //        self.view.endEditing(true)
-    //    }
-    
     private func configureUI() {
         setNavigationBar()
         addKeyboardNotification()
         
-        view .addSubview(scrollView)
+        view.addSubview(scrollView)
+        view.addSubview(contentsViewPhotoToolbar)
+        addTopBorder(with: .DarkGray5 , andWidth: 1, viewName: contentsViewPhotoToolbar)
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(contentsViewPhotoToolbar.snp.top)
+            make.leading.equalTo(view.safeAreaLayoutGuide)
+            make.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentsViewPhotoToolbar.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
         }
         
         scrollView.addSubview(contentView)
@@ -101,6 +116,8 @@ class ProjectWriteViewController: UIViewController {
         }
         
         contentView.addSubview(categoriesView)
+        let categoriesViewTap = UITapGestureRecognizer(target: self, action: #selector(didTapCategoriesBarButton))
+        categoriesView.addGestureRecognizer(categoriesViewTap)
         categoriesView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.height.equalTo(58)
@@ -116,6 +133,8 @@ class ProjectWriteViewController: UIViewController {
         }
         
         contentView.addSubview(projectConditionsView)
+        let projectConditionsViewTap = UITapGestureRecognizer(target: self, action: #selector(didTapProjectConditionsBarButton))
+        projectConditionsView.addGestureRecognizer(projectConditionsViewTap)
         projectConditionsView.snp.makeConstraints { make in
             make.top.equalTo(grayDivider1.snp.bottom)
             make.height.equalTo(58)
@@ -152,27 +171,40 @@ class ProjectWriteViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-30)
         }
         
-        contentView.addSubview(photoButton)
-        photoButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
-            make.leading.equalTo(view).offset(20)
+        contentView.addSubview(toolbarPhotoButton)
+        contentView.addSubview(toolbarPhotoLabel)
+        let photoButtonItem = UIBarButtonItem(customView: toolbarPhotoButton)
+        let photoLabelItem = UIBarButtonItem(customView: toolbarPhotoLabel)
+        
+        projectWriteToolbar.barTintColor = .DarkGray1
+        projectWriteToolbar.items = [photoButtonItem, photoLabelItem]
+        projectWriteToolbar.updateConstraintsIfNeeded()
+        
+        titleTextField.inputAccessoryView = projectWriteToolbar
+        contentsTextView.inputAccessoryView = projectWriteToolbar
+        
+        contentsViewPhotoToolbar.addSubview(contentsViewPhotoButton)
+        contentsViewPhotoButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-16)
+            make.leading.equalToSuperview().offset(16)
         }
         
-        contentView.addSubview(photoLabel)
-        photoLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-27)
-            make.trailing.equalTo(view).offset(-15)
+        contentsViewPhotoToolbar.addSubview(contentsViewPhotoLabel)
+        contentsViewPhotoLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-19)
         }
         
         contentView.addSubview(photoCollectionView)
         photoCollectionView.dataSource = self
+        photoCollectionView.delegate = self
+        //생각해볼 에러... 포토컬렉션뷰를 툴바에 맞추면 생각할게 많아진다...
         photoCollectionView.snp.makeConstraints { make in
             make.top.equalTo(contentsTextView.snp.bottom).offset(30)
             make.height.equalTo(80)
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
         }
-        
     }
     
     private func setNavigationBar() {
@@ -196,17 +228,39 @@ class ProjectWriteViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    private func addTopBorder(with color: UIColor?, andWidth borderWidth: CGFloat, viewName view: UIView) {
+        let border = UIView()
+        border.backgroundColor = color
+        border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
+        border.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: borderWidth)
+        view.addSubview(border)
+    }
 }
 
-// MARK: - Action method
+// MARK: - Action methods
 extension ProjectWriteViewController {
+    @objc func didTapCategoriesBarButton() {
+        let bottomSheetVC = BottomSheetViewController(contentViewController: CategoriesViewController())
+        bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.346
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
+    
+    @objc func didTapProjectConditionsBarButton() {
+        let bottomSheetVC = BottomSheetViewController(contentViewController: ProjectConditionsViewController())
+        bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.275
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
+    }
+    
     @objc private func didTapRegisterButton() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc private func didTapPhotoButton() {
         var config = PHPickerConfiguration()
-        config.selectionLimit = 3
+        config.selectionLimit = 1
         config.filter = .images
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = self
@@ -215,26 +269,22 @@ extension ProjectWriteViewController {
     
     //키보드 보일 때
     @objc private func keyboardWillShow(_ notification: Notification) {
+        //키보드프레임값 가져오기
         guard let userInfo = notification.userInfo,
-              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+              var keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
-        let contentInset = UIEdgeInsets(
-            top: 0.0,
-            left: 0.0,
-            bottom: keyboardFrame.size.height,
-            right: 0.0)
-        scrollView.contentInset = contentInset
-        scrollView.scrollIndicatorInsets = contentInset
         
-        self.photoButton.frame.origin.y -= keyboardFrame.size.height
-        self.photoLabel.frame.origin.y -= keyboardFrame.size.height
+        keyboardFrame = view.convert(keyboardFrame, from: nil)
+        var contentInset = contentsTextView.contentInset
+        contentInset.bottom = keyboardFrame.size.height - photoCollectionView.frame.height + 5
+        scrollView.contentInset = contentInset
+        scrollView.verticalScrollIndicatorInsets = contentInset
+        print( scrollView.verticalScrollIndicatorInsets)
     }
     //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
-        let contentInset = UIEdgeInsets.zero
-        scrollView.contentInset = contentInset
-        scrollView.scrollIndicatorInsets = contentInset
+        
     }
 }
 
@@ -262,6 +312,22 @@ extension ProjectWriteViewController: UITextViewDelegate {
     func setPlaceHolder() {
         contentsTextView.text = contentsTextViewPlaceHolder
         contentsTextView.textColor =  UIColor.systemGray4
+    }
+    
+    //텍스트뷰 높이 자동 조절
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: view.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        
+        textView.constraints.forEach { (constraint) in
+            if estimatedSize.height <= 180 {
+                
+            } else {
+                if constraint.firstAttribute == .height {
+                    constraint.constant = estimatedSize.height
+                }
+            }
+        }
     }
     
     //편집이 시작될 때(포커스 얻는 경우)
@@ -323,7 +389,7 @@ extension ProjectWriteViewController: UICollectionViewDataSource {
 
 extension ProjectWriteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: photoCollectionView.frame.width, height: photoCollectionView.frame.height)
+        return CGSize(width: 80, height: 80)
     }
 }
 

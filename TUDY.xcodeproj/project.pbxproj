@@ -71,12 +71,18 @@
 		D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37954283F24560051CDF1 /* UILabel+Custom.swift */; };
 		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
 		FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE932849F833003BB46D /* PhotoCell.swift */; };
+		FF07DE96284E011B003BB46D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE95284E011B003BB46D /* BottomSheetViewController.swift */; };
 		FF13AFA228372C69006E678D /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA128372C69006E678D /* PostListCell.swift */; };
 		FF13AFA4283739BC006E678D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF13AFA3283739BC006E678D /* Post.swift */; };
+		FF85A4F02850822200DB124E /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF85A4EF2850822200DB124E /* CategoriesViewController.swift */; };
+		FF85A4F22850823500DB124E /* ProjectConditionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF85A4F12850823500DB124E /* ProjectConditionsViewController.swift */; };
 		FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */; };
 		FFAF4A0628425BEA00269EB3 /* UIView+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */; };
 		FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */; };
-		FFC658452848FA50008889C2 /* RelatedJobCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */; };
+		FFBECD1F2850888E0092B524 /* DoubleSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBECD1E2850888E0092B524 /* DoubleSlider.swift */; };
+		FFBECD232850D8550092B524 /* DevelopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBECD222850D8550092B524 /* DevelopCell.swift */; };
+		FFBECD252850D8CB0092B524 /* DevelopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBECD242850D8CB0092B524 /* DevelopButton.swift */; };
+		FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC658442848FA50008889C2 /* OptionSelectionBar.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -151,12 +157,18 @@
 		D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Custom.swift"; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
 		FF07DE932849F833003BB46D /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCell.swift; path = ProjectWrite/View/PhotoCell.swift; sourceTree = SOURCE_ROOT; };
+		FF07DE95284E011B003BB46D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BottomSheetViewController.swift; path = TUDY/Presentations/View/BottomSheetViewController.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA128372C69006E678D /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostListCell.swift; path = TUDY/Presentations/Home/View/PostListCell.swift; sourceTree = SOURCE_ROOT; };
 		FF13AFA3283739BC006E678D /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = TUDY/Models/Post.swift; sourceTree = SOURCE_ROOT; };
+		FF85A4EF2850822200DB124E /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoriesViewController.swift; path = ProjectWrite/CategoriesViewController.swift; sourceTree = SOURCE_ROOT; };
+		FF85A4F12850823500DB124E /* ProjectConditionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectConditionsViewController.swift; path = ProjectWrite/ProjectConditionsViewController.swift; sourceTree = SOURCE_ROOT; };
 		FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWriteViewController.swift; sourceTree = SOURCE_ROOT; };
 		FFAF4A0528425BEA00269EB3 /* UIView+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Custom.swift"; sourceTree = "<group>"; };
 		FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProjectDetailViewController.swift; path = ProjectWrite/View/ProjectDetailViewController.swift; sourceTree = SOURCE_ROOT; };
-		FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RelatedJobCategoriesView.swift; path = ProjectWrite/View/RelatedJobCategoriesView.swift; sourceTree = SOURCE_ROOT; };
+		FFBECD1E2850888E0092B524 /* DoubleSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DoubleSlider.swift; path = ProjectWrite/View/DoubleSlider.swift; sourceTree = SOURCE_ROOT; };
+		FFBECD222850D8550092B524 /* DevelopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DevelopCell.swift; path = ProjectWrite/View/DevelopCell.swift; sourceTree = SOURCE_ROOT; };
+		FFBECD242850D8CB0092B524 /* DevelopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DevelopButton.swift; path = ProjectWrite/View/DevelopButton.swift; sourceTree = SOURCE_ROOT; };
+		FFC658442848FA50008889C2 /* OptionSelectionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OptionSelectionBar.swift; path = ProjectWrite/View/OptionSelectionBar.swift; sourceTree = SOURCE_ROOT; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/Presentations/Home/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -176,6 +188,7 @@
 		4A6E64FE283E028F00B954B9 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
+				FF07DE97284F7BF8003BB46D /* View */,
 				4A6E6507283E02FB00B954B9 /* Project */,
 				4A6E6506283E02F500B954B9 /* Search */,
 				4A6E6505283E02EF00B954B9 /* Chat */,
@@ -292,6 +305,8 @@
 			children = (
 				FFAF4A072842668700269EB3 /* View */,
 				FFA3616428406DAE00560F69 /* ProjectWriteViewController.swift */,
+				FF85A4EF2850822200DB124E /* CategoriesViewController.swift */,
+				FF85A4F12850823500DB124E /* ProjectConditionsViewController.swift */,
 			);
 			path = ProjectWrite;
 			sourceTree = "<group>";
@@ -592,11 +607,22 @@
 			path = TUDY/Presentations/Signup/ViewController;
 			sourceTree = "<group>";
 		};
+		FF07DE97284F7BF8003BB46D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FF07DE95284E011B003BB46D /* BottomSheetViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		FFAF4A072842668700269EB3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				FFC658442848FA50008889C2 /* RelatedJobCategoriesView.swift */,
+				FFC658442848FA50008889C2 /* OptionSelectionBar.swift */,
 				FF07DE932849F833003BB46D /* PhotoCell.swift */,
+				FFBECD1E2850888E0092B524 /* DoubleSlider.swift */,
+				FFBECD222850D8550092B524 /* DevelopCell.swift */,
+				FFBECD242850D8CB0092B524 /* DevelopButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -759,6 +785,8 @@
 				D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */,
 				D87CBB5228439F42003397A5 /* JobButton.swift in Sources */,
 				D8C7F232283B96FE00424AE5 /* ChatCoordinatorProtocol.swift in Sources */,
+				FF85A4F02850822200DB124E /* CategoriesViewController.swift in Sources */,
+				FFBECD1F2850888E0092B524 /* DoubleSlider.swift in Sources */,
 				D8C7F241283B99C100424AE5 /* ChatListViewController.swift in Sources */,
 				D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */,
 				D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */,
@@ -776,9 +804,13 @@
 				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
 				FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */,
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
+				FFBECD252850D8CB0092B524 /* DevelopButton.swift in Sources */,
+				FF07DE96284E011B003BB46D /* BottomSheetViewController.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
-				FFC658452848FA50008889C2 /* RelatedJobCategoriesView.swift in Sources */,
+				FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */,
+				FFBECD232850D8550092B524 /* DevelopCell.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
+				FF85A4F22850823500DB124E /* ProjectConditionsViewController.swift in Sources */,
 				4AB16F112844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift in Sources */,
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				4AB9498F2850399E00594C83 /* ResultCell.swift in Sources */,
