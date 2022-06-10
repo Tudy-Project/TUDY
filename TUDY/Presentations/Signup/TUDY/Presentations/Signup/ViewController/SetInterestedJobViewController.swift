@@ -202,7 +202,7 @@ extension SetInterestedJobViewController {
     
     private func updateJobSnapshot() {
         var snapshot = jobDataSource.snapshot()
-        snapshot.reconfigureItems(jobs)
+        snapshot.reloadItems(jobs)
         jobDataSource.apply(snapshot)
     }
     
@@ -223,9 +223,9 @@ extension SetInterestedJobViewController {
         var snapshot = detailJobDataSource.snapshot()
         switch selectedJob {
         case .programmer:
-            snapshot.reconfigureItems(programmerJobs)
+            snapshot.reloadItems(programmerJobs)
         case .designer:
-            snapshot.reconfigureItems(designerJobs)
+            snapshot.reloadItems(designerJobs)
         }
         detailJobDataSource.apply(snapshot)
     }
