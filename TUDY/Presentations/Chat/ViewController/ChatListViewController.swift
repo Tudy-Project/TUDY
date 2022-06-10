@@ -17,39 +17,64 @@ class ChatListViewController: UIViewController {
     typealias ChatListDataSource = UITableViewDiffableDataSource<Int, ChatList>
     typealias ChatListSnapshot = NSDiffableDataSourceSnapshot<Int, ChatList>
     
-    private let indicatorView: UIView = {
+    private let openGroupChatButton = UIButton().button(text: "+ 스터디챗 개설",
+                                                        font: .sub16,
+                                                        backgroundColor: .PointBlue,
+                                                        cornerRadius: 10)
+    private let indicatorBackgroundView = UIView().view(backgroundColor: .DarkGray6)
+    private let indicatorView = UIView().view(backgroundColor: .White)
+    
+    let backgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .White
+        view.backgroundColor = .DarkGray3
         return view
     }()
     
     private var topTapBarCollectionView: UICollectionView!
     private var topTapDataSource: TopTapDataSource!
-    private var chatListTableView: UITableView!
-    private var chatListDataSource: ChatListDataSource!
+    private var personalChatListTableView: UITableView!
+    private var personalChatListDataSource: ChatListDataSource!
+    private var groupChatListTableView: UITableView!
+    private var groupChatListDataSource: ChatListDataSource!
     
     private var chatList: [ChatList] = [
         ChatList(chatState: .personalChat,
-                 chatNotification: true,
-                 bookMark: false,
+                 chatNotification: false,
+                 bookMark: true,
+                 chatTitle: "상운",
                  profileImageURL: "",
-                 name: "하늘이",
-                 latestMessage: "프로젝트 참여 가능한가요?",
-                 latestMessageDate: "2022/06/03"),
+                 projectMasterID: "",
+                 participantIDs: [""],
+                 latestMessage: "마지막",
+                 latestMessageDate: "1일전"),
         ChatList(chatState: .personalChat,
-                 chatNotification: true,
+                 chatNotification: false,
                  bookMark: false,
+                 chatTitle: "호진",
                  profileImageURL: "",
-                 name: "장호진",
-                 latestMessage: "프로젝트 참여 가능한가요?",
-                 latestMessageDate: "2022/06/03"),
+                 projectMasterID: "",
+                 participantIDs: [""],
+                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지",
+                 latestMessageDate: "3일전"),
         ChatList(chatState: .groupChat,
-                 chatNotification: true,
-                 bookMark: false,
+                 chatNotification: false,
+                 bookMark: true,
+                 chatTitle: "그룹챗 테스트",
                  profileImageURL: "",
-                 name: "이상운",
-                 latestMessage: "프로젝트 참여 가능한가요?",
-                 latestMessageDate: "2022/06/03")]
+                 projectMasterID: "",
+                 participantIDs: ["", "", ""],
+                 latestMessage: "마지막",
+                 latestMessageDate: "1일전"),
+        ChatList(chatState: .groupChat,
+                 chatNotification: false,
+                 bookMark: false,
+                 chatTitle: "그룹챗 테스트2",
+                 profileImageURL: "",
+                 projectMasterID: "",
+                 participantIDs: ["", ""],
+                 latestMessage: "마지막",
+                 latestMessageDate: "1일전")
+    ]
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -64,6 +89,7 @@ extension ChatListViewController {
     
     // MARK: - Methods
     private func configureUI() {
+        self.navigationController?.navigationBar.isHidden = true
         view.backgroundColor = .DarkGray1
         
         view.addSubview(topTapBarCollectionView)
@@ -71,7 +97,14 @@ extension ChatListViewController {
         topTapBarCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
+            make.height.equalTo(70)
+        }
+        
+        view.addSubview(indicatorBackgroundView)
+        indicatorBackgroundView.snp.makeConstraints { make in
+            make.top.equalTo(topTapBarCollectionView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(2)
         }
         
         view.addSubview(indicatorView)
@@ -82,20 +115,53 @@ extension ChatListViewController {
             make.height.equalTo(2)
         }
         
-        view.addSubview(chatListTableView)
-        chatListTableView.backgroundColor = .DarkGray1
-        chatListTableView.snp.makeConstraints { make in
-            make.top.equalTo(indicatorView.snp.bottom)
+        configureOpenGroupChatButtonLayout()
+        
+        view.addSubview(groupChatListTableView)
+        groupChatListTableView.backgroundColor = .DarkGray1
+        groupChatListTableView.snp.makeConstraints { make in
+            make.top.equalTo(indicatorBackgroundView.snp.bottom).offset(80)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        view.addSubview(personalChatListTableView)
+        personalChatListTableView.backgroundColor = .DarkGray1
+        personalChatListTableView.snp.makeConstraints { make in
+            make.top.equalTo(indicatorBackgroundView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    // MARK: CollectionView
+    private func showGroupChatView() {
+        groupChatListTableView.isHidden = false
+        personalChatListTableView.isHidden = true
+        configureOpenGroupChatButtonLayout()
+    }
+    
+    private func showPersonalChatView() {
+        groupChatListTableView.isHidden = true
+        personalChatListTableView.isHidden = false
+        openGroupChatButton.removeFromSuperview()
+    }
+    
+    private func configureOpenGroupChatButtonLayout() {
+        view.addSubview(openGroupChatButton)
+        openGroupChatButton.snp.makeConstraints { make in
+            make.top.equalTo(indicatorBackgroundView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(40)
+        }
+    }
+    
+    // MARK: - CollectionView
     private func configureCollectionView() {
-        topTapBarCollectionView = UICollectionView(frame: view.bounds,
+        topTapBarCollectionView = UICollectionView(frame: .zero,
                                                    collectionViewLayout: topTapBarlayout())
+        topTapBarCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         topTapBarCollectionView.isScrollEnabled = false
         topTapBarCollectionView.delegate = self
+        topTapBarCollectionView.automaticallyAdjustsScrollIndicatorInsets = false
         
         configureCollectionViewDataSource()
     }
@@ -106,9 +172,10 @@ extension ChatListViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(50))
+                                               heightDimension: .absolute(70))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                       subitems: [item])
+                                                       subitem: item,
+                                                       count: 2)
         
         let section = NSCollectionLayoutSection(group: group)
         
@@ -116,21 +183,15 @@ extension ChatListViewController {
     }
     
     private func configureCollectionViewDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, ChatState> {
+        let cellRegistration = UICollectionView.CellRegistration<TopBarCell, ChatState> {
             cell, indexPath, itemIdentifier in
-            var config = cell.defaultContentConfiguration()
-            config.text = itemIdentifier.rawValue
-            config.textProperties.alignment = .center
-            config.textProperties.font = .sub14
-            config.textProperties.color = .White
-            let backgroundView: UIView = {
-                let view = UIView()
-                view.backgroundColor = .DarkGray1
-                return view
-            }()
-            cell.backgroundView = backgroundView
-            cell.selectedBackgroundView = backgroundView
-            cell.contentConfiguration = config
+            switch itemIdentifier {
+            case .groupChat:
+                cell.label.text = "스터디챗"
+            case .personalChat:
+                cell.label.text = "개인챗"
+                cell.label.textColor = .DarkGray6
+            }
         }
         
         topTapDataSource = TopTapDataSource(collectionView: topTapBarCollectionView, cellProvider: {
@@ -142,46 +203,58 @@ extension ChatListViewController {
         
         var topTapSnapshot = TopTapSnapshot()
         topTapSnapshot.appendSections([0])
-        topTapSnapshot.appendItems([.personalChat, .groupChat])
+        topTapSnapshot.appendItems([.groupChat, .personalChat])
         topTapDataSource.apply(topTapSnapshot)
     }
     
     // MARK: - TableView
     private func configureTableView() {
-        chatListTableView = UITableView(frame: view.bounds, style: .plain)
-        chatListTableView.register(ChatListCell.self, forCellReuseIdentifier: ChatListCell.reuseIdentifier)
-        chatListTableView.rowHeight = 100
+        personalChatListTableView = UITableView(frame: view.bounds, style: .plain)
+        personalChatListTableView.register(PersonalChatListCell.self, forCellReuseIdentifier: PersonalChatListCell.reuseIdentifier)
+        personalChatListTableView.rowHeight = 100
+        
+        groupChatListTableView = UITableView(frame: view.bounds, style: .plain)
+        groupChatListTableView.register(GroupChatListCell.self, forCellReuseIdentifier: GroupChatListCell.reuseIdentifier)
+        groupChatListTableView.rowHeight = 100
         configureTableViewDataSource()
+        
+        personalChatListTableView.isHidden = true
     }
     
     private func configureTableViewDataSource() {
-        chatListDataSource = ChatListDataSource(tableView: chatListTableView,
+        
+        // 개인챗
+        personalChatListDataSource = ChatListDataSource(tableView: personalChatListTableView,
                                                 cellProvider: { tableView, indexPath, itemIdentifier in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatListCell.reuseIdentifier,
-                                                           for: indexPath) as? ChatListCell else { fatalError() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PersonalChatListCell.reuseIdentifier,
+                                                           for: indexPath) as? PersonalChatListCell else { fatalError() }
             cell.chatListInfo = itemIdentifier
-            let backgroundView: UIView = {
-                let view = UIView()
-                view.backgroundColor = .DarkGray3
-                return view
-            }()
-            cell.backgroundView = backgroundView
-            cell.selectedBackgroundView = backgroundView
+            cell.backgroundView = self.backgroundView
+            cell.selectedBackgroundView = self.backgroundView
             return cell
         })
         
-        var chatListSnapshot = ChatListSnapshot()
-        chatListSnapshot.appendSections([0])
-        chatListSnapshot.appendItems(chatList.filter { $0.chatState == .personalChat })
+        personalChatListDataSource.apply(snapshot(chatState: .personalChat))
         
-        chatListDataSource.apply(chatListSnapshot)
+        // 그룹챗
+        groupChatListDataSource = ChatListDataSource(tableView: groupChatListTableView,
+                                                     cellProvider: { tableView, indexPath, itemIdentifier in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupChatListCell.reuseIdentifier,
+                                                           for: indexPath) as? GroupChatListCell else { fatalError() }
+            cell.chatListInfo = itemIdentifier
+            cell.backgroundView = self.backgroundView
+            cell.selectedBackgroundView = self.backgroundView
+            return cell
+        })
+        
+        groupChatListDataSource.apply(snapshot(chatState: .groupChat))
     }
     
-    private func updateChatListSnapshot(selected: ChatState) {
-        var snapshot = ChatListSnapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(chatList.filter { $0.chatState == selected })
-        chatListDataSource.apply(snapshot, animatingDifferences: false)
+    private func snapshot(chatState: ChatState) -> ChatListSnapshot {
+        var chatListSnapshot = ChatListSnapshot()
+        chatListSnapshot.appendSections([0])
+        chatListSnapshot.appendItems(chatList.filter { $0.chatState == chatState })
+        return chatListSnapshot
     }
 }
 
@@ -190,15 +263,21 @@ extension ChatListViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        guard let selectedCell = collectionView.cellForItem(at: indexPath) as? TopBarCell else { return }
+        let unselectedIndexPath = IndexPath(row: 0, section: 0) == indexPath ? IndexPath(row: 1, section: 0) : IndexPath(row: 0, section: 0)
+        guard let unselectedCell = collectionView.cellForItem(at: unselectedIndexPath)  as? TopBarCell else { return }
+        
+        selectedCell.label.textColor = .White
+        unselectedCell.label.textColor = .DarkGray6
+        
         // 개인챗, 단체챗 선택시 indicator 이동 애니메이션
         // constraints를 지우고 다시 설정해야합니다. removeConstraints()
         // 안그러면 중복되서 constraints가 안바뀝니다.
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         indicatorView.snp.removeConstraints()
         indicatorView.snp.makeConstraints { make in
             make.top.equalTo(topTapBarCollectionView.snp.bottom)
-            make.leading.equalTo(cell.snp.leading)
-            make.trailing.equalTo(cell.snp.trailing)
+            make.leading.equalTo(selectedCell.snp.leading)
+            make.trailing.equalTo(selectedCell.snp.trailing)
             make.height.equalTo(2)
         }
         UIView.animate(withDuration: 0.3) {
@@ -207,9 +286,9 @@ extension ChatListViewController: UICollectionViewDelegate {
         
         // chatList 업데이트
         if indexPath.row == 0 {
-            updateChatListSnapshot(selected: .personalChat)
+            showGroupChatView()
         } else {
-            updateChatListSnapshot(selected: .groupChat)
+            showPersonalChatView()
         }
     }
 }
