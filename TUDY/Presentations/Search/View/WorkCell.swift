@@ -10,12 +10,23 @@ import UIKit
 class WorkCell: UICollectionViewCell {
     
     // MARK: - Properties
+    
+    lazy var isSelectedView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray.withAlphaComponent(0.8)
+        view.layer.cornerRadius = 10
+        return view
+    }()
+
+    lazy var checkIcon: UIImageView = {
+        let imageview = UIImageView()
+        imageview.image = UIImage(named: "check_white")
+        return imageview
+    }()
+    
     lazy var workCircle: UIView = {
         let view = UIView()
-        view.frame.size.width = contentView.frame.width * 0.4
-        view.frame.size.height = contentView.frame.width * 0.4
-        view.layer.cornerRadius = view.frame.width / 2
-        print("hey ! \(view.frame.width)")
+        view.layer.cornerRadius = 15
         view.clipsToBounds = true
         view.backgroundColor = .white
         return view
@@ -46,12 +57,15 @@ class WorkCell: UICollectionViewCell {
 
 extension WorkCell {
     private func configureUI() {
+
         contentView.addSubview(workCircle)
-        workCircle.addSubview(workIcon)
         contentView.addSubview(workTitle)
         
+        workCircle.addSubview(workIcon)
+        
+        
         workCircle.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
+            make.top.equalToSuperview().inset(10)
             make.centerX.equalToSuperview()
         }
         
@@ -64,6 +78,25 @@ extension WorkCell {
             make.bottom.equalToSuperview().offset(-10)
             make.centerX.equalToSuperview()
         }
-        
+    }
+    
+    override var isSelected: Bool {
+        didSet{
+            if isSelected {
+                contentView.addSubview(isSelectedView)
+                isSelectedView.addSubview(checkIcon)
+                
+                isSelectedView.snp.makeConstraints { make in
+                    make.edges.equalToSuperview()
+                }
+                checkIcon.snp.makeConstraints { make in
+                    make.width.height.equalTo(20)
+                    make.centerX.centerY.equalToSuperview()
+                }
+                
+            } else {
+                isSelectedView.removeFromSuperview()
+            }
+        }
     }
 }

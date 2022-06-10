@@ -101,12 +101,13 @@ class SearchViewController: UIViewController {
     lazy var workCell: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets.zero
-        flowLayout.minimumInteritemSpacing = 10
-        flowLayout.minimumLineSpacing = 10
+        flowLayout.minimumInteritemSpacing = 6
+        flowLayout.minimumLineSpacing = 6
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.register(WorkCell.self, forCellWithReuseIdentifier: WorkCellId)
         cv.backgroundColor = UIColor.DarkGray1
         cv.isScrollEnabled = false
+        cv.allowsMultipleSelection = true
         return cv
     }()
 
@@ -225,6 +226,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
              }
              if (indexPath.row == 2) {
                  work.workTitle.textColor = .black
+                 work.workCircle.backgroundColor = .black
              }
              work.contentView.layer.cornerRadius = 10
              work.workIcon.image = UIImage(named: "mac_icon")
@@ -240,9 +242,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
              return ResultCell.fittingSize(availableHeight: 40, name: ResultList[indexPath.item])
          } else {
              let halfWidth = bodytitlestackView.bounds.width / 3
-             return CGSize(width: halfWidth * 0.9 , height: halfWidth * 1.05)
+             return CGSize(width: halfWidth * 0.95 , height: halfWidth * 1.03)
          }
      }
+    
 }
 
 extension SearchViewController: UISearchBarDelegate {

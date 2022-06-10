@@ -14,8 +14,9 @@ extension UIView {
         return view
     }
     
-    func circleImage() -> UIView {
+    func circleImage(width: CGFloat, height: CGFloat) -> UIView {
         let view = UIView()
+        
         view.layer.cornerRadius = view.frame.width / 2
         view.clipsToBounds = true
         return view
