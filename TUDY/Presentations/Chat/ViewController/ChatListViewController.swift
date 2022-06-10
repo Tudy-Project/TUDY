@@ -37,25 +37,7 @@ class ChatListViewController: UIViewController {
     private var groupChatListTableView: UITableView!
     private var groupChatListDataSource: ChatListDataSource!
     
-    private var chatList: [ChatList] = [
-        ChatList(chatState: .personalChat,
-                 chatNotification: false,
-                 bookMark: true,
-                 chatTitle: "상운",
-                 profileImageURL: "",
-                 projectMasterID: "",
-                 participantIDs: [""],
-                 latestMessage: "마지막",
-                 latestMessageDate: "1일전"),
-        ChatList(chatState: .personalChat,
-                 chatNotification: false,
-                 bookMark: false,
-                 chatTitle: "호진",
-                 profileImageURL: "",
-                 projectMasterID: "",
-                 participantIDs: [""],
-                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지",
-                 latestMessageDate: "3일전"),
+    private lazy var groupChatList = [
         ChatList(chatState: .groupChat,
                  chatNotification: false,
                  bookMark: true,
@@ -74,6 +56,27 @@ class ChatListViewController: UIViewController {
                  participantIDs: ["", ""],
                  latestMessage: "마지막",
                  latestMessageDate: "1일전")
+    ]
+    
+    private lazy var personalChatList = [
+        ChatList(chatState: .personalChat,
+                 chatNotification: false,
+                 bookMark: true,
+                 chatTitle: "상운",
+                 profileImageURL: "",
+                 projectMasterID: "",
+                 participantIDs: [""],
+                 latestMessage: "마지막",
+                 latestMessageDate: "1일전"),
+        ChatList(chatState: .personalChat,
+                 chatNotification: false,
+                 bookMark: false,
+                 chatTitle: "호진",
+                 profileImageURL: "",
+                 projectMasterID: "",
+                 participantIDs: [""],
+                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지",
+                 latestMessageDate: "3일전")
     ]
     
     // MARK: - Life Cycle
@@ -210,10 +213,12 @@ extension ChatListViewController {
     // MARK: - TableView
     private func configureTableView() {
         personalChatListTableView = UITableView(frame: view.bounds, style: .plain)
+        personalChatListTableView.delegate = self
         personalChatListTableView.register(PersonalChatListCell.self, forCellReuseIdentifier: PersonalChatListCell.reuseIdentifier)
         personalChatListTableView.rowHeight = 100
         
         groupChatListTableView = UITableView(frame: view.bounds, style: .plain)
+        groupChatListTableView.delegate = self
         groupChatListTableView.register(GroupChatListCell.self, forCellReuseIdentifier: GroupChatListCell.reuseIdentifier)
         groupChatListTableView.rowHeight = 100
         configureTableViewDataSource()
@@ -225,7 +230,7 @@ extension ChatListViewController {
         
         // 개인챗
         personalChatListDataSource = ChatListDataSource(tableView: personalChatListTableView,
-                                                cellProvider: { tableView, indexPath, itemIdentifier in
+                                                        cellProvider: { tableView, indexPath, itemIdentifier in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PersonalChatListCell.reuseIdentifier,
                                                            for: indexPath) as? PersonalChatListCell else { fatalError() }
             cell.chatListInfo = itemIdentifier
@@ -253,8 +258,20 @@ extension ChatListViewController {
     private func snapshot(chatState: ChatState) -> ChatListSnapshot {
         var chatListSnapshot = ChatListSnapshot()
         chatListSnapshot.appendSections([0])
-        chatListSnapshot.appendItems(chatList.filter { $0.chatState == chatState })
+        
+        switch chatState {
+        case .personalChat:
+            chatListSnapshot.appendItems(personalChatList)
+        case .groupChat:
+            chatListSnapshot.appendItems(groupChatList)
+        }
         return chatListSnapshot
+    }
+    
+    private func updateGroupChatListSnapshot(_ chatListInfo: ChatList) {
+        var groupChatListSnapshot = groupChatListDataSource.snapshot()
+        groupChatListSnapshot.reloadItems([chatListInfo])
+        groupChatListDataSource.apply(groupChatListSnapshot)
     }
 }
 
@@ -298,5 +315,63 @@ extension ChatListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: Swipe actions
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
+            // 삭제하시겠습니까? alert
+            completion(true)
+        }
+        deleteAction.image = UIImage(systemName: "trash")?.withTintColor(.White, renderingMode: .alwaysOriginal)
+        deleteAction.backgroundColor = .DarkGray4
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        // 채팅정보 가져오기
+        var chatListInfo: ChatList
+        if tableView == groupChatListTableView {
+            chatListInfo = groupChatList[indexPath.row]
+        } else {
+            chatListInfo = personalChatList[indexPath.row]
+        }
+        
+        print(chatListInfo)
+        
+        // 알림
+        let notificationAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+            // DB에 업데이트 해야함
+            switch chatListInfo.chatState {
+            case .personalChat:
+                self?.personalChatList[indexPath.row].chatNotification.toggle()
+            case .groupChat:
+                self?.groupChatList[indexPath.row].chatNotification.toggle()
+            }
+            completion(true)
+        }
+        
+        let notificationImage = chatListInfo.chatNotification ? UIImage(systemName: "bell") : UIImage(systemName: "bell.fill")
+        notificationAction.image = notificationImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
+        notificationAction.backgroundColor = .PointBlue
+        
+        // 즐겨찾기
+        let bookmarkAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+            // DB에 업데이트 해야함
+            switch chatListInfo.chatState {
+            case .personalChat:
+                self?.personalChatList[indexPath.row].bookMark.toggle()
+            case .groupChat:
+                self?.groupChatList[indexPath.row].bookMark.toggle()
+            }
+            completion(true)
+        }
+        
+        let bookmarkImage = chatListInfo.bookMark ? UIImage(systemName: "star") : UIImage(systemName: "star.fill")
+        bookmarkAction.image = bookmarkImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
+        bookmarkAction.backgroundColor = .PointRed
+        
+        return UISwipeActionsConfiguration(actions: [notificationAction, bookmarkAction])
     }
 }
