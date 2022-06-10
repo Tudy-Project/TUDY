@@ -115,7 +115,7 @@ extension TabCoordinator: CoordinatorFinishDelegate {
         
         switch childCoordinator.type {
         case .login:
-            navigationController.popViewController(animated: true)
+            navigationController.dismiss(animated: true)
         default: break
         }
     }

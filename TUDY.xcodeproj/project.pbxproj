@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C0C33283E20A700C6199F /* UIFont+Custom.swift */; };
 		4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F12837260700B954B9 /* SearchViewController.swift */; };
-		4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64F828376E1300B954B9 /* WorkThemeView.swift */; };
 		4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */; };
 		4AB16F0C2844F3F500EB36A6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F0B2844F3F500EB36A6 /* User.swift */; };
 		4AB16F0E2844F40000EB36A6 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F0D2844F40000EB36A6 /* Project.swift */; };
 		4AB16F112844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F102844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift */; };
+		4AB9498F2850399E00594C83 /* ResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB9498E2850399E00594C83 /* ResultCell.swift */; };
+		4AC095C5285116150003BAFB /* WorkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C4285116150003BAFB /* WorkCell.swift */; };
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
@@ -90,11 +91,12 @@
 		4A2C0C33283E20A700C6199F /* UIFont+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Custom.swift"; sourceTree = "<group>"; };
 		4A6E64F12837260700B954B9 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		4A6E64F52837272A00B954B9 /* TUDY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TUDY.entitlements; sourceTree = "<group>"; };
-		4A6E64F828376E1300B954B9 /* WorkThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkThemeView.swift; sourceTree = "<group>"; };
 		4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		4AB16F0B2844F3F500EB36A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4AB16F0D2844F40000EB36A6 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		4AB16F102844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFirebaseDatabaseNetworkService.swift; sourceTree = "<group>"; };
+		4AB9498E2850399E00594C83 /* ResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCell.swift; sourceTree = "<group>"; };
+		4AC095C4285116150003BAFB /* WorkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkCell.swift; sourceTree = "<group>"; };
 		4AEEC0B1283496F4004A08F8 /* TUDY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUDY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -320,7 +322,6 @@
 		4A6E6512283E04F500B954B9 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4A6E64F828376E1300B954B9 /* WorkThemeView.swift */,
 				FF13AFA128372C69006E678D /* PostListCell.swift */,
 			);
 			path = View;
@@ -354,6 +355,8 @@
 			isa = PBXGroup;
 			children = (
 				4A6E64FA2837888300B954B9 /* SearchTableViewCell.swift */,
+				4AB9498E2850399E00594C83 /* ResultCell.swift */,
+				4AC095C4285116150003BAFB /* WorkCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -765,7 +768,6 @@
 				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
 				D87CBB582843CE28003397A5 /* SubwayListCell.swift in Sources */,
 				D81091E528459A1600B4544C /* NetworkError.swift in Sources */,
-				4A6E64F928376E1300B954B9 /* WorkThemeView.swift in Sources */,
 				D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */,
 				FF13AFA4283739BC006E678D /* Post.swift in Sources */,
 				D85ED4DE283EFFB500D0A006 /* SearchCoordinator.swift in Sources */,
@@ -811,11 +813,13 @@
 				FF85A4F22850823500DB124E /* ProjectConditionsViewController.swift in Sources */,
 				4AB16F112844F42C00EB36A6 /* CommonFirebaseDatabaseNetworkService.swift in Sources */,
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
+				4AB9498F2850399E00594C83 /* ResultCell.swift in Sources */,
 				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
 				D87CBB562843C42E003397A5 /* Subway.swift in Sources */,
 				D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */,
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
+				4AC095C5285116150003BAFB /* WorkCell.swift in Sources */,
 				4AB16F0C2844F3F500EB36A6 /* User.swift in Sources */,
 				D87CBB4A28432075003397A5 /* JobCell.swift in Sources */,
 				D87CBB5428439F4B003397A5 /* DetailJobButton.swift in Sources */,
