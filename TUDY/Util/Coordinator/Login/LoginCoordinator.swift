@@ -45,7 +45,8 @@ extension LoginCoordinator {
                 self?.showSetNameViewController()
             }
         }
-        navigationController.pushViewController(loginViewController, animated: true)
+        loginViewController.modalPresentationStyle = .fullScreen
+        navigationController.present(loginViewController, animated: true)
     }
     
     func showSetNameViewController() {
