@@ -30,7 +30,7 @@ class HomeViewController: UIViewController {
     
     private let welcomeTitle = UILabel().label(text: "반가워요 다인님, 🎨\n관심있는 프로젝트가 있나요?", font: .sub20)
     
-    private let fakeTextFieldView: UIView = {
+    private let fakeSearchBarView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 7
         view.layer.borderWidth = 1
@@ -71,7 +71,7 @@ class HomeViewController: UIViewController {
     //해당 프로퍼티를 이용하여 bottomSheet의 높이를 조절
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
     private lazy var defaultHeight: CGFloat = screenSize.height * 0.464
-
+    
     private lazy var floatingButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .DarkGray5
@@ -88,18 +88,6 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        print("=================BEFORE===================")
-        //        let user = User(userId: 123, signUpDate: 456, nickname: "호진", profileImage: "123", interestedJob: ["123","123"], subways: "123", likeProjectId: "123", personalChat: ["123","123"], groupChat: ["123","123"])
-        //        let A = CommonFirebaseDatabaseNetworkServiceClass()
-        //
-        //        A.save(user) { error in
-        //            if let error = error {
-        //                print("error : \(error)")
-        //                print("ERROR!!!!!!")
-        //            }
-        //        }
-        //        print("=================AFTER===================")
-        
         configureUI()
     }
     
@@ -126,14 +114,18 @@ extension HomeViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(43)
             make.leading.equalToSuperview().offset(30)
         }
-        welcomeHeaderView.addSubview(fakeTextFieldView)
-        fakeTextFieldView.snp.makeConstraints { make in
+        
+        welcomeHeaderView.addSubview(fakeSearchBarView)
+        let tapFakeSearchBar = UITapGestureRecognizer(target: self, action: #selector(didTapFakeSearchBar))
+        fakeSearchBarView.addGestureRecognizer(tapFakeSearchBar)
+        fakeSearchBarView.snp.makeConstraints { make in
             make.top.equalTo(welcomeTitle.snp.bottom).offset(19)
             make.leading.equalToSuperview().offset(30)
             make.height.equalTo(36)
             make.trailing.equalToSuperview().offset(-30)
         }
-        fakeTextFieldView.addSubview(searchIcon)
+        
+        fakeSearchBarView.addSubview(searchIcon)
         searchIcon.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
@@ -170,7 +162,7 @@ extension HomeViewController {
         let leftItem = UIBarButtonItem(customView: logo)
         self.navigationItem.leftBarButtonItem = leftItem
         
-        let rightItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        let rightItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(didTapProfile))
         self.navigationItem.rightBarButtonItem = rightItem
         
         //floatingButton
@@ -202,7 +194,7 @@ extension HomeViewController {
         } else {
             bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
         }
-
+        
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -219,8 +211,8 @@ extension HomeViewController {
             bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
         case .changed:
             //네브바와 닿으면 더이상 안올라가게
-            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
-            print("바텀시트 최대화 시 네브바와의 패딩값: \(bottomSheetPanMinTopConstant)")
+            //            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
+            //            print("바텀시트 최대화 시 네브바와의 패딩값: \(bottomSheetPanMinTopConstant)")
             if bottomSheetPanStartingTopConstant + translation.y > bottomSheetPanMinTopConstant {
                 bottomSheetViewTopConstraint.constant = bottomSheetPanStartingTopConstant + translation.y
             }
@@ -240,26 +232,30 @@ extension HomeViewController {
             //defaultHeight일 때 safeAreaTop과 bottomSheet 사이의 거리를 계산한 변수
             let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
             
-            // 2
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
             
-            // 3
             if nearestValue == bottomSheetPanMinTopConstant {
-                print("Bottom Sheet을 Expanded 상태로 변경하기!")
                 showBottomSheet(atState: .expanded)
             } else if nearestValue == defaultPadding {
-                // Bottom Sheet을 .normal 상태로 보여주기
                 showBottomSheet(atState: .normal)
-            } else {
-                // Bottom Sheet을 숨기고 현재 View Controller를 dismiss시키기
-//                hideBottomSheetAndGoBack()
             }
         default:
             break
         }
         
         //        사용자가 위로 드래그할 경우 translation.y의 값은 음수가 되고, 사용자가 아래로 드래그할 경우 translation.y의 값은 양수가 되는 걸 확인할 수 있다. translation.y의 값을 top constraint value와 합하여 Bottom Sheet을 움직여줄 수 있답니다.
-//        print("유저가 위아래로 \(translation.y)만큼 드래그하였습니다.")
+        //        print("유저가 위아래로 \(translation.y)만큼 드래그하였습니다.")
+    }
+    
+    @objc private func didTapProfile() {
+        if isLogin() {
+            //로그인 되어 있으면 마이페이지로
+        }
+        didSendEventClosure?(.showLogin)
+    }
+    
+    @objc private func didTapFakeSearchBar() {
+        didSendEventClosure?(.showSearch)
     }
     
     @objc private func didTapFloatingButton() {
@@ -268,13 +264,6 @@ extension HomeViewController {
         } else {
             didSendEventClosure?(.showLogin)
         }
-    }
-    
-    @objc private func searchButtonPressed(_: UIButton) {
-        didSendEventClosure?(.showSearch)
-        //        let searchVC = SearchViewController()
-        //        self.navigationController?.isNavigationBarHidden = false
-        //        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 }
 
