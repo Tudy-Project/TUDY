@@ -8,156 +8,257 @@
 import UIKit
 import SnapKit
 
-enum Section {
-    case main
-}
-
 class HomeViewController: UIViewController {
     
-    // MARK: - Property
+    // MARK: - Properties
     enum Event {
         case showSearch
         case showProjectWrite
         case showLogin
     }
+    
     var didSendEventClosure: ((Event) -> Void)?
     
-    private var postData: [Post] = []
+    let screenSize: CGRect = UIScreen.main.bounds
+    private let logo = UILabel().label(text: "TUDY", font: .logo26)
     
-    //    private var refreshControl = UIRefreshControl()
-    private var collectionView: UICollectionView! = nil
-    
-    private let sectionHeaderElementKind = "section-header-element-kind"
-    
-    //데이터 관리, cell들을 collectionView에 제공해주는 객체
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Post>!
-    
-    lazy var jobOfInterestBar: UIView = {
+    private let welcomeHeaderView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .DarkGray1
         return view
     }()
     
-    lazy var jobOfInterestButton: UIButton = {
-        let button = UIButton().imageButton(imageName: "arrowtriangle.down.fill")
-        button.setTitle("관심 직무", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.tintColor = .black
-        button.semanticContentAttribute = .forceRightToLeft
-        button.addTarget(self, action: #selector(didTapJobButton), for: .touchUpInside)
-        return button
+    private let welcomeTitle = UILabel().label(text: "반가워요 다인님, 🎨\n관심있는 프로젝트가 있나요?", font: .sub20)
+    
+
+    private let fakeSearchBarView: UIView = {
+
+        let view = UIView()
+        view.layer.cornerRadius = 7
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.DarkGray4.cgColor
+        view.backgroundColor = .DarkGray3
+        return view
     }()
     
-    lazy var floatingButton: UIButton = {
+    private let searchIcon = UIImageView(image: UIImage(named: "searchIcon"))
+    
+    enum BottomSheetViewState {
+        case expanded
+        case normal
+    }
+    
+    private let dragIndicatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray
+        view.layer.cornerRadius = 3
+        return view
+    }()
+    
+    // Bottom Sheet과 safe Area Top 사이의 최소값을 지정하기 위한 프로퍼티
+    //기본값을 0으로 해서 드래그하면 네브바 바로 아래까지 딱 붙게 설정
+    var bottomSheetPanMinTopConstant: CGFloat = 0.0
+    // 드래그 하기 전에 Bottom Sheet의 top Constraint value를 저장하기 위한 프로퍼티
+    private lazy var bottomSheetPanStartingTopConstant: CGFloat = bottomSheetPanMinTopConstant
+    private let bottomSheetView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .DarkGray3
+        view.layer.cornerRadius = 17
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    //bottomSheet이 view의 상단에서 떨어진 거리를 설정
+    //해당 프로퍼티를 이용하여 bottomSheet의 높이를 조절
+    private var bottomSheetViewTopConstraint: NSLayoutConstraint!
+    private lazy var defaultHeight: CGFloat = screenSize.height * 0.464
+    
+
+    private lazy var floatingButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
-        
+        button.backgroundColor = .DarkGray5
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
-        
         button.setImage(image, for: .normal)
         button.tintColor = .white
         button.setTitleColor(.white, for: .normal)
-        
         button.layer.shadowRadius = 10
         button.layer.shadowOpacity = 0.3
         button.layer.cornerRadius = 30
         return button
     }()
     
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
-        return refreshControl
-    }()
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("=================BEFORE===================")
-        var user = User(userId: 123, signUpDate: 456, nickname: "호진", profileImage: "123", interestedJob: ["123","123"], subways: "123", likeProjectId: "123", personalChat: ["123","123"], groupChat: ["123","123"])
-        let A = CommonFirebaseDatabaseNetworkServiceClass()
-        
-        A.save(user) { error in
-            if let error = error {
-                print("error : \(error)")
-                print("ERROR!!!!!!")
-            }
-        }
-        print("=================AFTER===================")
-        
-        configureCollectionView()
-        configureDataSource()
         configureUI()
-        collectionView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = "TUDY"
-//        navigationController?.navigationBar.topItem?.title = "TUDY"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        view.backgroundColor = .white
-        navigationController?.navigationBar.backgroundColor = .black
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
-            .font: UIFont(name: "AppleSDGothicNeoEB00", size: 26)!
-        ]
-        
+        view.backgroundColor = .DarkGray1
+        navigationController?.navigationBar.backgroundColor = .DarkGray1
         navigationController?.navigationBar.tintColor = .white
-        
         tabBarController?.tabBar.isHidden = false
     }
-    
+}
+
+extension HomeViewController {
+    // MARK: - Methods
     private func configureUI() {
-        let leftItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        
+        view.addSubview(welcomeHeaderView)
+        welcomeHeaderView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        welcomeHeaderView.addSubview(welcomeTitle)
+        welcomeTitle.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(43)
+            make.leading.equalToSuperview().offset(30)
+        }
+        
+        welcomeHeaderView.addSubview(fakeSearchBarView)
+        let tapFakeSearchBar = UITapGestureRecognizer(target: self, action: #selector(didTapFakeSearchBar))
+        fakeSearchBarView.addGestureRecognizer(tapFakeSearchBar)
+        fakeSearchBarView.snp.makeConstraints { make in
+            make.top.equalTo(welcomeTitle.snp.bottom).offset(19)
+            make.leading.equalToSuperview().offset(30)
+            make.height.equalTo(36)
+            make.trailing.equalToSuperview().offset(-30)
+        }
+        
+        fakeSearchBarView.addSubview(searchIcon)
+        searchIcon.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalToSuperview()
+        }
+        
+        view.addSubview(bottomSheetView)
+        bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
+        let topConstant: CGFloat = screenSize.height * 0.464
+        //top Constraint의 constant 값은 미리 계산해준 topConstant 값으로 지정해줍니다! 계산해준 topConstant 값은 bottomSheet이 처음에 보이지 않도록 하는 것을 목적으로 계산한 값
+        //           let topConstant = view.safeAreaInsets.bottom + view.safeAreaLayoutGuide.layoutFrame.height
+        bottomSheetViewTopConstraint = bottomSheetView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstant)
+        NSLayoutConstraint.activate([
+            bottomSheetView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            bottomSheetView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            bottomSheetView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomSheetViewTopConstraint,
+        ])
+        // Pan Gesture Recognizer를 view controller의 view에 추가하기 위한 코드
+        let viewPan = UIPanGestureRecognizer(target: self, action: #selector(viewPanned(_:)))
+        // 기본적으로 iOS는 터치가 드래그하였을 때 딜레이가 발생함
+        // 우리는 드래그 제스쳐가 바로 발생하길 원하기 때문에 딜레이가 없도록 아래와 같이 설정
+        viewPan.delaysTouchesBegan = false
+        viewPan.delaysTouchesEnded = false
+        view.addGestureRecognizer(viewPan)
+        
+        view.addSubview(dragIndicatorView)
+        dragIndicatorView.snp.makeConstraints { make in
+            make.width.equalTo(60)
+            make.height.equalTo(dragIndicatorView.layer.cornerRadius * 2)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(bottomSheetView.snp.top).offset(-10)
+        }
+        
+        let leftItem = UIBarButtonItem(customView: logo)
         self.navigationItem.leftBarButtonItem = leftItem
         
-        let rightItem = UIBarButtonItem(image:UIImage(named: "magnify"), style: .plain, target: self, action: #selector(searchButtonPressed))
+        let rightItem = UIBarButtonItem(image:UIImage(named: "profile"), style: .plain, target: self, action: #selector(didTapProfile))
         self.navigationItem.rightBarButtonItem = rightItem
-    
+        
+        //floatingButton
         view.addSubview(floatingButton)
         floatingButton.addTarget(self, action: #selector(didTapFloatingButton), for: .touchUpInside)
         
         floatingButton.snp.makeConstraints { make in
-            make.width.equalTo(60)
-            make.height.equalTo(60)
+            make.width.equalTo(screenSize.height * 0.0714)
+            make.height.equalTo(screenSize.height * 0.0714)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
-        
-        view.addSubview(jobOfInterestBar)
-        jobOfInterestBar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(55)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+    }
+    
+    //바텀시트뷰 스냅 효과
+    //주어진 CGFloat 배열의 값 중 number로 주어진 값과 가까운 값을 찾아내는 메소드
+    private func nearest(to number: CGFloat, inValues values: [CGFloat]) -> CGFloat {
+        guard let nearestVal = values.min(by: { abs(number - $0) < abs(number - $1) })
+        else { return number }
+        return nearestVal
+    }
+    
+    private func showBottomSheet(atState: BottomSheetViewState = .normal) {
+        if atState == .normal {
+            let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
+            let bottomPadding: CGFloat = view.safeAreaInsets.bottom
+            
+            bottomSheetViewTopConstraint.constant = (safeAreaHeight + bottomPadding) - defaultHeight
+        } else {
+            bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
         }
         
-        jobOfInterestBar.addSubview(jobOfInterestButton)
-        jobOfInterestButton.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(jobOfInterestBar.snp.bottom)
-            make.bottom.equalToSuperview().multipliedBy(1)
-            make.trailing.leading.equalToSuperview()
-        }
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
-// MARK: - action method
+// MARK: - Action methods
 extension HomeViewController {
-    @objc private func refresh(send: UIRefreshControl) {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.refreshControl.endRefreshing()
+    // 해당 메소드는 사용자가 view를 드래그하면 실행됨
+    @objc private func viewPanned(_ panGestureRecognizer: UIPanGestureRecognizer) {
+        let translation = panGestureRecognizer.translation(in: self.view)
+        switch panGestureRecognizer.state {
+        case .began:
+            bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
+        case .changed:
+            //네브바와 닿으면 더이상 안올라가게
+            //            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
+            //            print("바텀시트 최대화 시 네브바와의 패딩값: \(bottomSheetPanMinTopConstant)")
+            if bottomSheetPanStartingTopConstant + translation.y > bottomSheetPanMinTopConstant {
+                bottomSheetViewTopConstraint.constant = bottomSheetPanStartingTopConstant + translation.y
+            }
+            
+            //기본 바텀시트 높이보다 아래로 드래그 시 바텀시트 높이 변화하지 않게 만들기
+            //바텀시트를 아래로 드래그 해도 기본높이 바텀시트 나오게 고정
+            if bottomSheetPanStartingTopConstant + translation.y > defaultHeight {
+                bottomSheetViewTopConstraint.constant = defaultHeight
+            }
+            
+        case .ended:
+            
+            //화면전체 높이
+            let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
+            let bottomPadding = view.safeAreaInsets.bottom
+            
+            //defaultHeight일 때 safeAreaTop과 bottomSheet 사이의 거리를 계산한 변수
+            let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
+            
+            let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
+            
+            if nearestValue == bottomSheetPanMinTopConstant {
+                showBottomSheet(atState: .expanded)
+            } else if nearestValue == defaultPadding {
+                showBottomSheet(atState: .normal)
+            }
+        default:
+            break
         }
+        
+        //        사용자가 위로 드래그할 경우 translation.y의 값은 음수가 되고, 사용자가 아래로 드래그할 경우 translation.y의 값은 양수가 되는 걸 확인할 수 있다. translation.y의 값을 top constraint value와 합하여 Bottom Sheet을 움직여줄 수 있답니다.
+        //        print("유저가 위아래로 \(translation.y)만큼 드래그하였습니다.")
     }
     
-    @objc private func didTapJobButton() {
-        let alert = UIAlertController(title: "관심 직무 선택", message: "관심직무탭", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismass", style: .cancel, handler: nil))
-        present(alert, animated: true)
+    @objc private func didTapProfile() {
+        if isLogin() {
+            //로그인 되어 있으면 마이페이지로
+        }
+        didSendEventClosure?(.showLogin)
+    }
+    
+    @objc private func didTapFakeSearchBar() {
+        didSendEventClosure?(.showSearch)
     }
     
     @objc private func didTapFloatingButton() {
@@ -167,97 +268,17 @@ extension HomeViewController {
             didSendEventClosure?(.showLogin)
         }
     }
-    
-    @objc private func searchButtonPressed(_: UIButton) {
-        didSendEventClosure?(.showSearch)
-//        let searchVC = SearchViewController()
-//        self.navigationController?.isNavigationBarHidden = false
-//        self.navigationController?.pushViewController(searchVC, animated: true)
-    }
-}
-extension HomeViewController {
-    func createLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout {
-            (Section, env) -> NSCollectionLayoutSection? in
-            
-            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(CGFloat(150))))
-            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(180)), subitems: [item])
-            let section = NSCollectionLayoutSection(group: group)
-            
-            //headerView 설정
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50))
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: self.sectionHeaderElementKind, alignment: .top)
-            section.boundarySupplementaryItems = [sectionHeader]
-            return section
-        }
-    }
-    
-    // 컬렉션뷰레이아웃 추가, 컬렉션뷰 인스턴스 생성 역할
-    func configureCollectionView() {
-       
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        view.addSubview(collectionView)
-        collectionView.addSubview(refreshControl)
-        //        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
-    }
-    
-    func configureDataSource() {
-        // cell custom
-        let cellRegistration = UICollectionView.CellRegistration<PostListCell, Post> {
-            (cell, indexPath, post) in
-            cell.layer.cornerRadius = 10
-            cell.layer.masksToBounds = false
-            cell.layer.shadowOpacity = 0.5
-            cell.layer.shadowOffset = CGSize(width: 0, height: 0)
-            cell.layer.shadowRadius = 5.0
-            cell.tintColor = .black
-            cell.update(with: post)
-            cell.contentView.backgroundColor = .white
-        }
-        
-        dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
-            (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
-        }
-        
-        
-        //collectionview headerView custom
-        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: self.sectionHeaderElementKind) {supplementaryView,elementKind,indexPath in
-            supplementaryView.backgroundColor = .white
-        }
-        dataSource.supplementaryViewProvider = { (view, kind, index) in
-            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
-        }
-        
-        // 특정 시점에서 view 내의 데이터의 state를 나타낸다.
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Post>()
-        snapshot.appendSections([.main])
-        //postData 대신 더미데이터 적용
-        snapshot.appendItems(Post.dummyPostList)
-        dataSource.apply(snapshot)
-        
-    }
-}
-
-extension HomeViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-           self.navigationController?.pushViewController(ProjectDetailViewController(), animated: true)
-           let indexPath = indexPath.row
-           print("home collectionItem indexpath \(indexPath)")
-    }
 }
 
 // MARK: - Login Check Protocol
 extension HomeViewController: LoginCheck {}
 
 extension UIApplication {
-
+    
     var statusBarView: UIView? {
         return value(forKey: "statusBar") as? UIView
     }
-
+    
 }
 
 #if DEBUG
@@ -301,4 +322,3 @@ extension UIViewController {
     }
 }
 #endif
-

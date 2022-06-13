@@ -133,7 +133,7 @@ extension CategoriesViewController {
     
     private func updateDevelopFieldsSnapshotWhenTappedDevelopFields() {
         var snapshot = developFieldsDataSource.snapshot()
-        snapshot.reconfigureItems(developFields)
+        snapshot.reloadItems(developFields)
         developFieldsDataSource.apply(snapshot)
     }
     

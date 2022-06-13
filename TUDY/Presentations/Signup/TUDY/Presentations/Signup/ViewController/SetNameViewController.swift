@@ -130,6 +130,11 @@ extension SetNameViewController {
         nameTextField.rightView = noSeeButton
     }
     
+    private func setUser() {
+        guard let nickname = nameTextField.text else { return }
+        UserForRegister.shared.nickname = nickname
+    }
+    
     // MARK: - Action Methods
     @objc private func checkNameValidation() {
         // 정규식으로 이름 유효성 체크
@@ -152,6 +157,7 @@ extension SetNameViewController {
     }
     
     @objc private func goNext() {
+        setUser()
         didSendEventClosure?(.next)
     }
     

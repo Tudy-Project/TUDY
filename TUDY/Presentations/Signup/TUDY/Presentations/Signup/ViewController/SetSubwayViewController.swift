@@ -28,8 +28,6 @@ class SetSubwayViewController: UIViewController {
     
     private let subwayTextField = UITextField().textField(withPlaceholder: "지하철명을 초성 혹은 단어로 검색하세요.")
     private let signUpButton = UIButton().nextButton(text: "가입하기")
-    private let signUpToolbarButton = UIButton().nextButton(text: "가입하기")
-    private let signUpToolbar = UIToolbar().toolbar()
     
     // 지하철 선택 view
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, Subway>
@@ -100,13 +98,6 @@ extension SetSubwayViewController {
         view.addSubview(signUpButton)
         signUpButton.addTarget(self, action: #selector(goNext), for: .touchUpInside)
         signUpButton.nextButtonLayout(view: view)
-        
-        let signUpBarButtonItem = UIBarButtonItem(customView: signUpToolbarButton)
-        signUpToolbarButton.addTarget(self, action: #selector(goNext), for: .touchUpInside)
-        signUpToolbar.frame = CGRect(x: 0, y: view.frame.size.height - 50, width: view.frame.size.width, height: 50)
-        signUpToolbar.items = [signUpBarButtonItem]
-        signUpToolbar.updateConstraintsIfNeeded()
-        subwayTextField.inputAccessoryView = signUpToolbar
     }
     
     private func setNavigationBar() {
@@ -125,14 +116,16 @@ extension SetSubwayViewController {
     
     private func buttonChangeEnableTrue() {
         signUpButton.changeIsEnabledTrue()
-        signUpToolbarButton.changeIsEnabledTrue()
-        signUpToolbar.changeColorDarkGray4()
     }
     
     private func buttonChangeEnableFalse() {
         signUpButton.changeIsEnabledFalse()
-        signUpToolbarButton.changeIsEnabledFalse()
-        signUpToolbar.changeColorDarkGray2()
+    }
+    
+    private func setUser(_ subway: Subway) {
+        // 유저 지하철 정보 저장
+        UserForRegister.shared.subwayStation = subway.station
+        UserForRegister.shared.subwayLines = subway.lines
     }
     
     // MARK: CollectionView
@@ -278,8 +271,9 @@ extension SetSubwayViewController: UICollectionViewDelegate {
         subwayTextField.text = selectedSubwayStation.station
         
         filteredSubwayList = []
-        updateSnapshot()
         
+        setUser(selectedSubwayStation)
+        updateSnapshot()
         buttonChangeEnableTrue()
     }
 }

@@ -124,6 +124,8 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     func configureUI() {
         view.backgroundColor = UIColor.DarkGray1
+    func configureUI() {
+        view.backgroundColor = UIColor.DarkGray1
 
         view.addSubview(bodyview)
         bodyview.addSubview(bodytitlestackView)
@@ -248,7 +250,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
 }
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchbar.text else {
             return
