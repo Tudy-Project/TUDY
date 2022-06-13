@@ -54,6 +54,7 @@ class HomeViewController: UIViewController {
         let collectionView =  UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(FastSearchCell.self, forCellWithReuseIdentifier: fastSearchCellId)
         collectionView.backgroundColor = .DarkGray1
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.tag = 1
         collectionView.delegate = self
         collectionView.dataSource = self
