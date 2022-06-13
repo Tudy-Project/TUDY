@@ -11,11 +11,15 @@ import CryptoKit
 class ChatListViewController: UIViewController {
     
     // MARK: - Properties
+    enum Event {
+        case showChat
+    }
+    var didSendEventClosure: ((Event, ChatInfo) -> Void)?
     
     typealias TopTapDataSource = UICollectionViewDiffableDataSource<Int, ChatState>
     typealias TopTapSnapshot = NSDiffableDataSourceSnapshot<Int, ChatState>
-    typealias ChatListDataSource = UITableViewDiffableDataSource<Int, ChatList>
-    typealias ChatListSnapshot = NSDiffableDataSourceSnapshot<Int, ChatList>
+    typealias ChatListDataSource = UITableViewDiffableDataSource<Int, ChatInfo>
+    typealias ChatListSnapshot = NSDiffableDataSourceSnapshot<Int, ChatInfo>
     
     private let openGroupChatButton = UIButton().button(text: "+ 스터디챗 개설",
                                                         font: .sub16,
@@ -38,7 +42,7 @@ class ChatListViewController: UIViewController {
     private var groupChatListDataSource: ChatListDataSource!
     
     private lazy var groupChatList = [
-        ChatList(chatState: .groupChat,
+        ChatInfo(chatState: .groupChat,
                  chatNotification: false,
                  bookMark: true,
                  chatTitle: "그룹챗 테스트",
@@ -47,7 +51,7 @@ class ChatListViewController: UIViewController {
                  participantIDs: ["", "", ""],
                  latestMessage: "마지막",
                  latestMessageDate: "1일전"),
-        ChatList(chatState: .groupChat,
+        ChatInfo(chatState: .groupChat,
                  chatNotification: false,
                  bookMark: false,
                  chatTitle: "그룹챗 테스트2",
@@ -59,7 +63,7 @@ class ChatListViewController: UIViewController {
     ]
     
     private lazy var personalChatList = [
-        ChatList(chatState: .personalChat,
+        ChatInfo(chatState: .personalChat,
                  chatNotification: false,
                  bookMark: true,
                  chatTitle: "상운",
@@ -68,7 +72,7 @@ class ChatListViewController: UIViewController {
                  participantIDs: [""],
                  latestMessage: "마지막",
                  latestMessageDate: "1일전"),
-        ChatList(chatState: .personalChat,
+        ChatInfo(chatState: .personalChat,
                  chatNotification: false,
                  bookMark: false,
                  chatTitle: "호진",
@@ -85,6 +89,11 @@ class ChatListViewController: UIViewController {
         configureCollectionView()
         configureTableView()
         configureUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navDisappear()
+        tabAppear()
     }
 }
 
@@ -268,7 +277,7 @@ extension ChatListViewController {
         return chatListSnapshot
     }
     
-    private func updateGroupChatListSnapshot(_ chatListInfo: ChatList) {
+    private func updateGroupChatListSnapshot(_ chatListInfo: ChatInfo) {
         var groupChatListSnapshot = groupChatListDataSource.snapshot()
         groupChatListSnapshot.reloadItems([chatListInfo])
         groupChatListDataSource.apply(groupChatListSnapshot)
@@ -315,9 +324,14 @@ extension ChatListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if tableView == personalChatListTableView {
+            didSendEventClosure?(.showChat, personalChatList[indexPath.row])
+        } else {
+            didSendEventClosure?(.showChat, groupChatList[indexPath.row])
+        }
     }
     
-    // MARK: Swipe actions
+    // MARK: - Swipe actions
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
             // 삭제하시겠습니까? alert
@@ -331,7 +345,7 @@ extension ChatListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // 채팅정보 가져오기
-        var chatListInfo: ChatList
+        var chatListInfo: ChatInfo
         if tableView == groupChatListTableView {
             chatListInfo = groupChatList[indexPath.row]
         } else {

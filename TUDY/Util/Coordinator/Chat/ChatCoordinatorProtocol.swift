@@ -10,4 +10,7 @@ import Foundation
 protocol ChatCoordinatorProtocol: Coordinator {
     
     var chatListViewController: ChatListViewController { get set }
+    var chatViewController: ChatProtocol? { get set }
+    
+    func pushChatViewController(chatInfo: ChatInfo)
 }
