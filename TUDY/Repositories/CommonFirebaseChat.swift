@@ -26,7 +26,7 @@ struct CommonFirebaseChat {
         
         var chatInfos: [ChatInfo] = []
         let collectionPath = collectionPath(chatState)
-        let uid = CommonFirebaseDatabaseNetworkService.getUserID()
+        let uid = CommonFirebaseUserData.getUserID()
         
         Firestore.firestore()
             .collection(collectionPath)
@@ -46,7 +46,7 @@ struct CommonFirebaseChat {
     }
     
     // 채팅 개설 시 채팅정보 저장 (개인, 단체)
-    static func saveChatInfo(_ chatInfo: ChatInfo, completion: @escaping ((String) -> Void)) {
+    static func saveChatInfo(_ chatInfo: ChatInfo) {
         
         let collectionPath = collectionPath(chatInfo.chatState)
         let collectionListener = Firestore.firestore().collection(collectionPath)
@@ -56,16 +56,12 @@ struct CommonFirebaseChat {
             return
         }
         
-        let chatInfoID = collectionListener
-            .addDocument(data: dictionary) { error in
-                if let error = error {
-                    print("DEBUG: 파이어베이스 채팅 저장 오류\(error.localizedDescription)")
-                    return
-                }
+        collectionListener.addDocument(data: dictionary) { error in
+            if let error = error {
+                print("DEBUG: 파이어베이스 채팅 저장 오류\(error.localizedDescription)")
+                return
             }
-            .documentID
-        
-        completion(chatInfoID)
+        }
     }
     
     static func updateChatInfo() {}
