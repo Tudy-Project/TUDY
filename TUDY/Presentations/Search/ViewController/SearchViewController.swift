@@ -117,8 +117,6 @@ class SearchViewController: UIViewController {
         configureNav()
         configureUI()
         setDelegate()
-        resultCell.tag = 1
-        workCell.tag = 2
     }
     
     // MARK: - Methods
@@ -185,6 +183,8 @@ class SearchViewController: UIViewController {
         searchbar.delegate = self
         workCell.delegate = self
         workCell.dataSource = self
+        resultCell.tag = 1
+        workCell.tag = 2
     }
     
     @objc func deleteAllSearch(_: UIButton) {

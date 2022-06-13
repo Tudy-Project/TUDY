@@ -10,28 +10,26 @@ import UIKit
 class ProjectDetailViewController: UIViewController {
     
     // MARK: - Properties
-    private var postData: Post?
+//    private lazy var detailTitle: UILabel = {
+//        let label = UILabel().label(text: postData?.title ?? "제목 없음", font: UIFont.sub20, color: .white)
+//        label.numberOfLines = 2
+//        return label
+//    }()
     
-    private lazy var detailTitle: UILabel = {
-        let label = UILabel().label(text: postData?.title ?? "제목 없음", font: UIFont.sub20, color: .white)
-        label.numberOfLines = 2
-        return label
-    }()
+//    private lazy var detailDesc: UILabel = {
+//        let label = UILabel().label(text: postData?.desc ?? "내용 없음", font: UIFont.body14, color: .white)
+//        return label
+//    }()
     
-    private lazy var detailDesc: UILabel = {
-        let label = UILabel().label(text: postData?.desc ?? "내용 없음", font: UIFont.body14, color: .white)
-        return label
-    }()
-    
-    private lazy var authorName: UILabel = {
-        let label = UILabel().label(text: postData?.writer ?? "작성자 없음", font: UIFont.caption11, color: .white)
-        return label
-    }()
+//    private lazy var authorName: UILabel = {
+//        let label = UILabel().label(text: postData?.writer ?? "작성자 없음", font: UIFont.caption11, color: .white)
+//        return label
+//    }()
     
     lazy var authorImage: UIImageView = {
         let ImageView = UIImageView()
         ImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        ImageView.loadFrom(URLAddress: postData!.imageUrl)
+//        ImageView.loadFrom(URLAddress: postData!.imageUrl)
         ImageView.contentMode = .scaleAspectFit
         ImageView.layer.cornerRadius = ImageView.frame.width / 2
         ImageView.clipsToBounds = true
