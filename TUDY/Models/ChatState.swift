@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ChatState: String, Hashable {
+enum ChatState: String, Hashable, Codable {
     case personalChat = "개인챗"
     case groupChat = "단체챗"
 }
