@@ -11,8 +11,9 @@ enum NetworkError: Error {
     case invalidURL
     case transportError
     case serverError
-    case missinfDataError
+    case missingDataError
     case decodingError
+    case encodingError
     
     var errorDescription: String? {
         switch self {
@@ -22,10 +23,12 @@ enum NetworkError: Error {
             return "TransportError가 발생하였습니다."
         case .serverError:
             return "서버에러 입니다."
-        case .missinfDataError:
+        case .missingDataError:
             return "데이터가 유실되었습니다."
         case .decodingError:
             return "디코딩에 실패하였습니다."
+        case .encodingError:
+            return "인코딩에 실패하였습니다."
         }
     }
 }
