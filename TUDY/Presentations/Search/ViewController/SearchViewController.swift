@@ -124,6 +124,7 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     func configureUI() {
         view.backgroundColor = UIColor.DarkGray1
+
         view.addSubview(bodyview)
         bodyview.addSubview(bodytitlestackView)
         bodyview.addSubview(resultCell)
@@ -175,6 +176,7 @@ class SearchViewController: UIViewController {
         self.navigationItem.titleView = searchbar
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.topItem?.title = ""
+        tabBarController?.tabBar.isHidden = true
     }
     
     func setDelegate() {
@@ -244,6 +246,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
              return CGSize(width: halfWidth * 0.95 , height: halfWidth * 1.03)
          }
      }
+    
 }
 
 extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
@@ -258,9 +261,7 @@ extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
         ResultList.insert(text, at: 0)
         searchbar.text = ""
         resultCell.reloadData()
-
         searchbar.resignFirstResponder()
-
     }
 }
 

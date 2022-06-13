@@ -9,7 +9,8 @@ import UIKit
 
 class WorkCell: UICollectionViewCell {
     
-    // MARK: - Properties    
+    // MARK: - Properties
+    
     lazy var isSelectedView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray.withAlphaComponent(0.8)
@@ -56,6 +57,7 @@ class WorkCell: UICollectionViewCell {
 
 extension WorkCell {
     private func configureUI() {
+
         contentView.addSubview(workCircle)
         contentView.addSubview(workTitle)
         
@@ -77,7 +79,7 @@ extension WorkCell {
             make.centerX.equalToSuperview()
         }
     }
-
+    
     override var isSelected: Bool {
         didSet{
             if isSelected {
