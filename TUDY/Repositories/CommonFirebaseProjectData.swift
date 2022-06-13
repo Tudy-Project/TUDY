@@ -22,7 +22,7 @@ struct CommonFirebaseProjectData {
         project.writeDate = Date().description
         
         guard let dictionary = project.asDictionary else {
-            print("[DEBUg] 프로젝트 Firebase 디버그 오류")
+            print("[DEBUG] 프로젝트 Firebase 디버그 오류")
             return
         }
         projectRef.setData(dictionary) { error in
@@ -36,7 +36,7 @@ struct CommonFirebaseProjectData {
         var projects: [Project] = []
         Firestore.firestore().collection("PROJECT").getDocuments { snapshot, error in
             if let error = error {
-                print("DEBUG: 프로젝트 정보 가져오기 실패 \(error.localizedDescription)")
+                print("[DEBUG] 프로젝트 정보 가져오기 실패 \(error.localizedDescription)")
                 return
             }
             snapshot?.documents.forEach({ document in
