@@ -11,7 +11,10 @@ import UIKit
 extension UIViewController {
     func navAppear() {
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .DarkGray1
+        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barTintColor = .DarkGray1
+        navigationController?.navigationBar.isTranslucent = false
     }
     
     func navDisappear() {
@@ -22,6 +25,7 @@ extension UIViewController {
     func tabAppear() {
         tabBarController?.tabBar.isHidden = false
         tabBarController?.tabBar.barTintColor = .DarkGray1
+        tabBarController?.tabBar.isTranslucent = false
     }
     
     func tabDisappear() {
