@@ -124,8 +124,6 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     func configureUI() {
         view.backgroundColor = UIColor.DarkGray1
-    func configureUI() {
-        view.backgroundColor = UIColor.DarkGray1
 
         view.addSubview(bodyview)
         bodyview.addSubview(bodytitlestackView)
@@ -178,6 +176,7 @@ class SearchViewController: UIViewController {
         self.navigationItem.titleView = searchbar
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.topItem?.title = ""
+        tabBarController?.tabBar.isHidden = true
     }
     
     func setDelegate() {
