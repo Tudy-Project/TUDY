@@ -30,7 +30,9 @@ class HomeViewController: UIViewController {
     
     private let welcomeTitle = UILabel().label(text: "반가워요 다인님, 🎨\n관심있는 프로젝트가 있나요?", font: .sub20)
     
+
     private let fakeSearchBarView: UIView = {
+
         let view = UIView()
         view.layer.cornerRadius = 7
         view.layer.borderWidth = 1
@@ -72,6 +74,7 @@ class HomeViewController: UIViewController {
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
     private lazy var defaultHeight: CGFloat = screenSize.height * 0.464
     
+
     private lazy var floatingButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .DarkGray5
