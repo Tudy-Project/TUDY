@@ -287,7 +287,7 @@ extension LoginViewController {
                     } else {
                         print("DEBUG: 파이어베이스 사용자 생성")
                         self.didSendEventClosure?(.showSignUp)
-                        
+                        self.dismiss(animated: true)
                     }
                 }
             }
