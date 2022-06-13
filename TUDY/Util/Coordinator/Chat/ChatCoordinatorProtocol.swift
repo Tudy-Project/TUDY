@@ -12,5 +12,5 @@ protocol ChatCoordinatorProtocol: Coordinator {
     var chatListViewController: ChatListViewController { get set }
     var chatViewController: ChatProtocol? { get set }
     
-    func pushChatViewController(chatInfo: ChatList)
+    func pushChatViewController(chatInfo: ChatInfo)
 }

@@ -10,7 +10,7 @@ import UIKit
 class GroupChatViewController: UIViewController {
     
     // MARK: - Properties
-    var chatInfo: ChatList? {
+    var chatInfo: ChatInfo? {
         didSet {
             configureUI()
         }

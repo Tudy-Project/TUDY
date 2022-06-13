@@ -12,7 +12,7 @@ class PersonalChatListCell: UITableViewCell {
     // MARK: - Properties
     static let reuseIdentifier = "PersonalChatListCell"
     
-    var chatListInfo: ChatList? {
+    var chatListInfo: ChatInfo? {
         didSet {
             configurePersonalChatListCell()
         }

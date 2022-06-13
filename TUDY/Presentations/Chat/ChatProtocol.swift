@@ -9,7 +9,7 @@ import Foundation
 
 protocol ChatProtocol {
     
-    var chatInfo: ChatList? { get set }
+    var chatInfo: ChatInfo? { get set }
     
     // 메세지들
     // 채팅 DB로 보내기

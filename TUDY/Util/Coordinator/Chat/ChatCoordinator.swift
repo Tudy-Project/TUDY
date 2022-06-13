@@ -37,7 +37,7 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
 
 extension ChatCoordinator {
     
-    func pushChatViewController(chatInfo: ChatList) {
+    func pushChatViewController(chatInfo: ChatInfo) {
         switch chatInfo.chatState {
         case .groupChat:
             chatViewController = GroupChatViewController()
