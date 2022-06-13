@@ -30,9 +30,9 @@ class HomeViewController: UIViewController {
     
     private let welcomeTitle = UILabel().label(text: "반가워요 다인님, 🎨\n관심있는 프로젝트가 있나요?", font: .sub20)
     
-
+    
     private let fakeSearchBarView: UIView = {
-
+        
         let view = UIView()
         view.layer.cornerRadius = 7
         view.layer.borderWidth = 1
@@ -43,17 +43,45 @@ class HomeViewController: UIViewController {
     
     private let searchIcon = UIImageView(image: UIImage(named: "searchIcon"))
     
+    let bottomSheetCellId: String = "cellId"
+    let fastSearchCellId: String = "cellId"
+    
+    private var fastSearchButtonList = ["백엔드", "프론트엔드", "iOS", "Android", "그래픽디자인", "UX/UI","3D/모션그래픽","브랜딩"]
+    
+    private lazy var fastSearchCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView =  UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(FastSearchCell.self, forCellWithReuseIdentifier: fastSearchCellId)
+        collectionView.backgroundColor = .DarkGray1
+        collectionView.tag = 1
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        return collectionView
+    }()
+    
+    private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14)
+    
+    
+    private lazy var bottomSheetCollectionView: BottomSheetCollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = BottomSheetCollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(BottomSheetCell.self, forCellWithReuseIdentifier: bottomSheetCellId)
+        collectionView.backgroundColor = .DarkGray3
+        collectionView.isScrollEnabled = false
+        collectionView.tag = 2
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        return collectionView
+    }()
+    
+    private let collectionViewData = testData()
+    
     enum BottomSheetViewState {
         case expanded
         case normal
     }
-    
-    private let dragIndicatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray
-        view.layer.cornerRadius = 3
-        return view
-    }()
     
     // Bottom Sheet과 safe Area Top 사이의 최소값을 지정하기 위한 프로퍼티
     //기본값을 0으로 해서 드래그하면 네브바 바로 아래까지 딱 붙게 설정
@@ -74,7 +102,7 @@ class HomeViewController: UIViewController {
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
     private lazy var defaultHeight: CGFloat = screenSize.height * 0.464
     
-
+    
     private lazy var floatingButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .DarkGray5
@@ -91,20 +119,26 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCollectionView()
         configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        view.backgroundColor = .DarkGray1
-        navigationController?.navigationBar.backgroundColor = .DarkGray1
-        navigationController?.navigationBar.tintColor = .white
-        tabBarController?.tabBar.isHidden = false
+        configureNav()
     }
 }
 
 extension HomeViewController {
     // MARK: - Methods
+    
+    private func configureNav() {
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        view.backgroundColor = .DarkGray1
+        navigationController?.navigationBar.tintColor = .white
+        navAppear()
+        tabAppear()
+    }
+    
     private func configureUI() {
         
         view.addSubview(welcomeHeaderView)
@@ -126,6 +160,13 @@ extension HomeViewController {
             make.leading.equalToSuperview().offset(30)
             make.height.equalTo(36)
             make.trailing.equalToSuperview().offset(-30)
+        }
+        
+        welcomeHeaderView.addSubview(fastSearchCollectionView)
+        fastSearchCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(fakeSearchBarView.snp.bottom).offset(32)
+            make.leading.width.equalToSuperview()
+            make.height.equalTo(100)
         }
         
         fakeSearchBarView.addSubview(searchIcon)
@@ -154,14 +195,6 @@ extension HomeViewController {
         viewPan.delaysTouchesEnded = false
         view.addGestureRecognizer(viewPan)
         
-        view.addSubview(dragIndicatorView)
-        dragIndicatorView.snp.makeConstraints { make in
-            make.width.equalTo(60)
-            make.height.equalTo(dragIndicatorView.layer.cornerRadius * 2)
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalTo(bottomSheetView.snp.top).offset(-10)
-        }
-        
         let leftItem = UIBarButtonItem(customView: logo)
         self.navigationItem.leftBarButtonItem = leftItem
         
@@ -180,6 +213,35 @@ extension HomeViewController {
         }
     }
     
+    
+    private func setUpNavBarSearchBar() {
+        let fakeSearchBarView: UIView = {
+            
+            let view = UIView()
+            view.layer.cornerRadius = 7
+            view.layer.borderWidth = 1
+            view.layer.borderColor = UIColor.DarkGray4.cgColor
+            view.backgroundColor = .DarkGray3
+            view.frame = CGRect(x: 0.0, y: 0.0, width: 306, height: 36)
+            return view
+        }()
+        
+        let fakeSearchNavBar = UIBarButtonItem(customView: fakeSearchBarView)
+        let currWidth = fakeSearchNavBar.customView?.widthAnchor.constraint(equalToConstant: 306)
+        currWidth?.isActive = true
+        let currHeight = fakeSearchNavBar.customView?.heightAnchor.constraint(equalToConstant:  36)
+        currHeight?.isActive = true
+        self.navigationItem.leftBarButtonItem = fakeSearchNavBar
+        let tapFakeSearchBar = UITapGestureRecognizer(target: self, action: #selector(didTapFakeSearchBar))
+        fakeSearchBarView.addGestureRecognizer(tapFakeSearchBar)
+        
+    }
+    
+    private func resetUpNavBar() {
+        let leftItem = UIBarButtonItem(customView: logo)
+        self.navigationItem.leftBarButtonItem = leftItem
+    }
+    
     //바텀시트뷰 스냅 효과
     //주어진 CGFloat 배열의 값 중 number로 주어진 값과 가까운 값을 찾아내는 메소드
     private func nearest(to number: CGFloat, inValues values: [CGFloat]) -> CGFloat {
@@ -194,13 +256,40 @@ extension HomeViewController {
             let bottomPadding: CGFloat = view.safeAreaInsets.bottom
             
             bottomSheetViewTopConstraint.constant = (safeAreaHeight + bottomPadding) - defaultHeight
+            
+            bottomSheetCollectionView.isScrollEnabled = false
+            bottomSheetView.layer.cornerRadius = 17
+            navigationController?.navigationBar.isHidden = false
+            
+            resetUpNavBar()
+            
         } else {
             bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
+            
+            //expanded상태에서는 스크롤 가능하게 설정
+            bottomSheetCollectionView.isScrollEnabled = true
+            bottomSheetView.layer.cornerRadius = 0
+            
+            setUpNavBarSearchBar()
         }
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    private func configureCollectionView() {
+        bottomSheetView.addSubview(bottomSheetFilterLabel)
+        bottomSheetFilterLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(19)
+            make.leading.equalToSuperview().offset(183)
+        }
+        
+        bottomSheetView.addSubview(bottomSheetCollectionView)
+        bottomSheetCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(56)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 }
 
@@ -236,7 +325,8 @@ extension HomeViewController {
             let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
             
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
-            
+            print("니얼벨류값이 모니: \(nearestValue)")
+            print("디폴트패딩 값이 모니: \(defaultPadding)")
             if nearestValue == bottomSheetPanMinTopConstant {
                 showBottomSheet(atState: .expanded)
             } else if nearestValue == defaultPadding {
@@ -269,6 +359,60 @@ extension HomeViewController {
         }
     }
 }
+
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var idx: Int = 0
+        if(collectionView.tag == 1) {
+            idx = fastSearchButtonList.count
+        } else {
+            idx = collectionViewData.title.count
+        }
+        return idx
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let bottomSheetWidth = bottomSheetView.bounds.width
+        if collectionView.tag == 1 {
+            return CGSize(width: bottomSheetWidth * 0.227, height: 100)
+        } else {
+            return  CGSize(width: bottomSheetWidth * 0.906, height: 146)
+        }
+         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView.tag == 1 {
+            guard let fastSearchBtn =
+                    fastSearchCollectionView.dequeueReusableCell(withReuseIdentifier: fastSearchCellId, for: indexPath) as? FastSearchCell else {
+                return UICollectionViewCell()
+            }
+            if (indexPath.row == 2) {
+                fastSearchBtn.workTitle.textColor = .black
+                fastSearchBtn.workCircle.backgroundColor = .black
+            }
+            fastSearchBtn.contentView.layer.cornerRadius = 10
+            fastSearchBtn.workIcon.image = UIImage(named: "mac_icon")
+            fastSearchBtn.workTitle.text = fastSearchButtonList[indexPath.row]
+            fastSearchBtn.contentView.backgroundColor = UIColor.DarkGray5
+            fastSearchBtn.contentView.backgroundColor = UIColor.WorkColorArr[indexPath.row]
+            return  fastSearchBtn
+        } else {
+            guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: bottomSheetCellId, for: indexPath) as? BottomSheetCell else {
+                return UICollectionViewCell()
+            }
+                    cell.layer.cornerRadius = 5
+                    cell.backgroundColor = .DarkGray1
+                    cell.titleLabel.text = collectionViewData.title[indexPath.row]
+                    cell.contentsLabel.text = collectionViewData.contents[indexPath.row]
+                    cell.authorLabel.text = collectionViewData.author[indexPath.row]
+                    cell.writeDateLabel.text = collectionViewData.writeDate[indexPath.row]
+                    return cell
+        }
+    }
+}
+
 
 // MARK: - Login Check Protocol
 extension HomeViewController: LoginCheck {}
