@@ -11,6 +11,10 @@ import CryptoKit
 class ChatListViewController: UIViewController {
     
     // MARK: - Properties
+    enum Event {
+        case showChat
+    }
+    var didSendEventClosure: ((Event, ChatList) -> Void)?
     
     typealias TopTapDataSource = UICollectionViewDiffableDataSource<Int, ChatState>
     typealias TopTapSnapshot = NSDiffableDataSourceSnapshot<Int, ChatState>
@@ -85,6 +89,11 @@ class ChatListViewController: UIViewController {
         configureCollectionView()
         configureTableView()
         configureUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navDisappear()
+        tabAppear()
     }
 }
 
@@ -315,9 +324,14 @@ extension ChatListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if tableView == personalChatListTableView {
+            didSendEventClosure?(.showChat, personalChatList[indexPath.row])
+        } else {
+            didSendEventClosure?(.showChat, groupChatList[indexPath.row])
+        }
     }
     
-    // MARK: Swipe actions
+    // MARK: - Swipe actions
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
             // 삭제하시겠습니까? alert

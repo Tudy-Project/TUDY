@@ -9,7 +9,10 @@ import UIKit
 
 final class ChatCoordinator: ChatCoordinatorProtocol {
     
+    // MARK: - Properties
+    
     var chatListViewController: ChatListViewController
+    var chatViewController: ChatProtocol?
     
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
@@ -22,9 +25,34 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
     }
     
     func start() {
+        chatListViewController.didSendEventClosure = { event, chatInfo in
+            switch event {
+            case .showChat:
+                self.pushChatViewController(chatInfo: chatInfo)
+            }
+        }
         self.navigationController.pushViewController(self.chatListViewController, animated: true)
     }
 }
+
+extension ChatCoordinator {
+    
+    func pushChatViewController(chatInfo: ChatList) {
+        switch chatInfo.chatState {
+        case .groupChat:
+            chatViewController = GroupChatViewController()
+        case .personalChat:
+            chatViewController = PersonalChatViewController()
+        }
+        chatViewController?.chatInfo = chatInfo
+        
+        if let chatViewController = chatViewController as? UIViewController {
+            navigationController.pushViewController(chatViewController, animated: true)
+        }
+    }
+}
+
+// MARK: - CoordinatorFinishDelegate
 
 extension ChatCoordinator: CoordinatorFinishDelegate {
     
