@@ -39,7 +39,7 @@ class SubwayDataManager {
             
             guard let data = data else {
                 print("데이터 fetch 실패")
-                completion(.failure(NetworkError.missinfDataError))
+                completion(.failure(NetworkError.missingDataError))
                 return
             }
             
