@@ -26,8 +26,7 @@ class ResultCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configureUI()
+        fatalError("init(coder) has not been implemented")
     }
 }
 

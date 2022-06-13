@@ -73,12 +73,11 @@ class SearchViewController: UIViewController {
     
     lazy var workLabel: UILabel = {
         let label = UILabel()
-        label.text = "원하는 직무도\n함께 검색 해보세요!"
         label.numberOfLines = 2
         label.font = UIFont.caption11
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        let attrString = NSMutableAttributedString(string: label.text!)
+        let attrString = NSMutableAttributedString(string: "원하는 직무도\n함께 검색 해보세요!")
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
@@ -102,16 +101,13 @@ class SearchViewController: UIViewController {
     lazy var workCell: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets.zero
-        flowLayout.minimumInteritemSpacing = 10
-        flowLayout.minimumLineSpacing = 10
-        let halfWidth = UIScreen.main.bounds.width / 3
-        flowLayout.itemSize = CGSize(width: halfWidth * 0.9 , height: halfWidth * 0.9)
-        flowLayout.footerReferenceSize = CGSize(width: halfWidth * 3, height: 70)
-        flowLayout.sectionFootersPinToVisibleBounds = true
+        flowLayout.minimumInteritemSpacing = 6
+        flowLayout.minimumLineSpacing = 6
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.register(WorkCell.self, forCellWithReuseIdentifier: WorkCellId)
         cv.backgroundColor = UIColor.DarkGray1
         cv.isScrollEnabled = false
+        cv.allowsMultipleSelection = true
         return cv
     }()
 
@@ -128,8 +124,6 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     func configureUI() {
         view.backgroundColor = UIColor.DarkGray1
-        self.searchbar.becomeFirstResponder()
-
         view.addSubview(bodyview)
         bodyview.addSubview(bodytitlestackView)
         bodyview.addSubview(resultCell)
@@ -157,11 +151,11 @@ class SearchViewController: UIViewController {
         workLabel.snp.makeConstraints { make in
             make.top.equalTo(bodytitlestackView.snp.bottom).offset(50)
             make.leading.equalTo(bodytitlestackView.snp.leading)
-            make.height.equalToSuperview().multipliedBy(0.2)
+            make.height.equalToSuperview().multipliedBy(0.15)
         }
         
         workCell.snp.makeConstraints { make in
-            make.top.equalTo(workLabel.snp.bottom).offset(10)
+            make.top.equalTo(workLabel.snp.bottom)
             make.leading.equalTo(workLabel.snp.leading)
             make.width.equalTo(bodytitlestackView.snp.width)
             make.height.equalToSuperview().multipliedBy(0.6)
@@ -189,7 +183,6 @@ class SearchViewController: UIViewController {
         searchbar.delegate = self
         workCell.delegate = self
         workCell.dataSource = self
-        searchbar.searchTextField.delegate = self
     }
     
     @objc func deleteAllSearch(_: UIButton) {
@@ -230,10 +223,15 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
              guard let work = workCell.dequeueReusableCell(withReuseIdentifier: WorkCellId, for: indexPath) as? WorkCell else {
                  return UICollectionViewCell()
              }
+             if (indexPath.row == 2) {
+                 work.workTitle.textColor = .black
+                 work.workCircle.backgroundColor = .black
+             }
              work.contentView.layer.cornerRadius = 10
              work.workIcon.image = UIImage(named: "mac_icon")
              work.workTitle.text = workList[indexPath.row]
              work.contentView.backgroundColor = UIColor.DarkGray5
+             work.contentView.backgroundColor = UIColor.WorkColorArr[indexPath.row]
              return work
          }
      }
@@ -243,7 +241,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
              return ResultCell.fittingSize(availableHeight: 40, name: ResultList[indexPath.item])
          } else {
              let halfWidth = bodytitlestackView.bounds.width / 3
-             return CGSize(width: halfWidth * 0.9 , height: halfWidth * 0.9)
+             return CGSize(width: halfWidth * 0.95 , height: halfWidth * 1.03)
          }
      }
 }
@@ -260,7 +258,9 @@ extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
         ResultList.insert(text, at: 0)
         searchbar.text = ""
         resultCell.reloadData()
-        searchBar.searchTextField.resignFirstResponder()
+
+        searchbar.resignFirstResponder()
+
     }
 }
 

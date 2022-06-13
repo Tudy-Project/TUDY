@@ -33,4 +33,12 @@ extension UIView {
         view.backgroundColor = .DarkGray5
         return view
     }
+    
+    func circleImage(width: CGFloat, height: CGFloat) -> UIView {
+        let view = UIView()
+        
+        view.layer.cornerRadius = view.frame.width / 2
+        view.clipsToBounds = true
+        return view
+    }
 }
