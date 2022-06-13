@@ -124,7 +124,6 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     func configureUI() {
         view.backgroundColor = UIColor.DarkGray1
-
         view.addSubview(bodyview)
         bodyview.addSubview(bodytitlestackView)
         bodyview.addSubview(resultCell)
@@ -245,10 +244,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
              return CGSize(width: halfWidth * 0.95 , height: halfWidth * 1.03)
          }
      }
-    
 }
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchBarDelegate, UITextFieldDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchbar.text else {
             return
@@ -260,7 +258,9 @@ extension SearchViewController: UISearchBarDelegate {
         ResultList.insert(text, at: 0)
         searchbar.text = ""
         resultCell.reloadData()
+
         searchbar.resignFirstResponder()
+
     }
 }
 

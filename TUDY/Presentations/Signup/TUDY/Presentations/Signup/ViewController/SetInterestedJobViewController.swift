@@ -96,6 +96,12 @@ extension SetInterestedJobViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    private func setUser() {
+        guard let interestedJob = selectedJob?.rawValue else { fatalError() }
+        UserForRegister.shared.interestedJob = interestedJob
+        UserForRegister.shared.interestedDetailJobs = selectedDetailJobs
+    }
+    
     // MARK: CollectionView
     
     func collectionViewLayout(height: CGFloat) -> UICollectionViewLayout {
@@ -196,7 +202,7 @@ extension SetInterestedJobViewController {
     
     private func updateJobSnapshot() {
         var snapshot = jobDataSource.snapshot()
-        snapshot.reconfigureItems(jobs)
+        snapshot.reloadItems(jobs)
         jobDataSource.apply(snapshot)
     }
     
@@ -217,15 +223,16 @@ extension SetInterestedJobViewController {
         var snapshot = detailJobDataSource.snapshot()
         switch selectedJob {
         case .programmer:
-            snapshot.reconfigureItems(programmerJobs)
+            snapshot.reloadItems(programmerJobs)
         case .designer:
-            snapshot.reconfigureItems(designerJobs)
+            snapshot.reloadItems(designerJobs)
         }
         detailJobDataSource.apply(snapshot)
     }
     
     // MARK: - Action Methods
     @objc private func goNext() {
+        setUser()
         didSendEventClosure?(.next)
     }
     
