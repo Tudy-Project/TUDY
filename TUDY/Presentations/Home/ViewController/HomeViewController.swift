@@ -333,7 +333,9 @@ extension HomeViewController {
         let translation = panGestureRecognizer.translation(in: self.view)
         switch panGestureRecognizer.state {
         case .began:
+            print(bottomSheetPanStartingTopConstant)
             bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
+            print(bottomSheetPanStartingTopConstant)
         case .changed:
             //네브바와 닿으면 더이상 안올라가게
             //            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
@@ -358,8 +360,8 @@ extension HomeViewController {
             let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
             
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
-            print("니얼벨류값이 모니: \(nearestValue)")
-            print("디폴트패딩 값이 모니: \(defaultPadding)")
+//            print("니얼벨류값이 모니: \(nearestValue)")
+//            print("디폴트패딩 값이 모니: \(defaultPadding)")
             if nearestValue == bottomSheetPanMinTopConstant {
                 showBottomSheet(atState: .expanded)
             } else if nearestValue == defaultPadding {
@@ -421,15 +423,26 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     fastSearchCollectionView.dequeueReusableCell(withReuseIdentifier: fastSearchCellId, for: indexPath) as? FastSearchCell else {
                 return UICollectionViewCell()
             }
-            if (indexPath.row == 2) {
-                fastSearchBtn.workTitle.textColor = .black
-                fastSearchBtn.workCircle.backgroundColor = .black
-            }
             fastSearchBtn.contentView.layer.cornerRadius = 10
             fastSearchBtn.workIcon.image = UIImage(named: "mac_icon")
             fastSearchBtn.workTitle.text = fastSearchButtonList[indexPath.row]
             fastSearchBtn.contentView.backgroundColor = UIColor.DarkGray5
             fastSearchBtn.contentView.backgroundColor = UIColor.WorkColorArr[indexPath.row]
+            
+            if (indexPath.row == 2) {
+                fastSearchBtn.workTitle.textColor = .black
+                fastSearchBtn.workCircle.backgroundColor = .black
+                fastSearchBtn.workIcon.image = UIImage(named:"apple_icon")
+            } else if indexPath.row == 3 {
+                fastSearchBtn.workIcon.image = UIImage(named:"android_icon")
+            } else if indexPath.row == 4 {
+                fastSearchBtn.workIcon.image = UIImage(named:"‍‍design_icon")
+            } else if indexPath.row == 5 {
+                fastSearchBtn.workIcon.image = UIImage(named:"uxui_icon")
+            } else if indexPath.row == 7 {
+                fastSearchBtn.workIcon.image = UIImage(named:"branding_icon")
+            }
+            
             return  fastSearchBtn
         } else {
             guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: bottomSheetCellId, for: indexPath) as? BottomSheetCell else {
