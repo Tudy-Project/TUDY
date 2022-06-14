@@ -82,6 +82,23 @@ extension UIButton {
         button.backgroundColor = .DarkGray4
         button.layer.cornerRadius = 8
         button.contentHorizontalAlignment = .center
+        button.snp.makeConstraints { make in
+            make.width.equalTo(35)
+            make.height.equalTo(16)
+        }
+        return button
+    }
+    
+    func notificationCountButton() -> UIButton {
+        let button = UIButton().button(text: "",
+                                       font: .caption12,
+                                       fontColor: .White,
+                                       backgroundColor: .PointRed,
+                                       cornerRadius: 8)
+        button.snp.makeConstraints { make in
+            make.width.equalTo(29)
+            make.height.equalTo(16)
+        }
         return button
     }
 }
