@@ -120,8 +120,13 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let userNickname = UserInfo.shared
+        let userNickname2 = UserInfo.shared
+        
         configureCollectionView()
         configureUI()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
