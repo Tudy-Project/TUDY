@@ -61,8 +61,32 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
     
-    private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14)
+    private let FilterStackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        return stackView
+    }()
     
+    private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14, numberOfLines: 1)
+    private lazy var switchButton: UISwitch = {
+       let switchButton = UISwitch()
+        switchButton.thumbTintColor = .DarkGray6
+        let onColor = UIColor.systemBlue
+        let offColor = UIColor.DarkGray5
+        
+        //for on State
+        switchButton.onTintColor = onColor
+        
+        //for off State
+        switchButton.tintColor = offColor
+        switchButton.layer.cornerRadius = switchButton.frame.height / 2.0
+//        switchButton.layer.borderWidth = 2
+//        switchButton.layer.borderColor = UIColor.LightGray1.cgColor
+        switchButton.backgroundColor = offColor
+        switchButton.clipsToBounds = true
+        return switchButton
+    }()
     
     private lazy var bottomSheetCollectionView: BottomSheetCollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -285,12 +309,15 @@ extension HomeViewController {
     }
     
     private func configureCollectionView() {
-        bottomSheetView.addSubview(bottomSheetFilterLabel)
-        bottomSheetFilterLabel.snp.makeConstraints { make in
+        bottomSheetView.addSubview(FilterStackView)
+        FilterStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(19)
-            make.leading.equalToSuperview().offset(183)
+            make.trailing.equalToSuperview().offset(-17)
         }
         
+        FilterStackView.addArrangedSubview(bottomSheetFilterLabel)
+        FilterStackView.addArrangedSubview(switchButton)
+
         bottomSheetView.addSubview(bottomSheetCollectionView)
         bottomSheetCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(56)
