@@ -8,5 +8,5 @@
 import UIKit
 
 class JobButton: UIButton {
-    var job: Job?
+    var job: JobType?
 }

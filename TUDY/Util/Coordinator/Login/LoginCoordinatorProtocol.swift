@@ -15,5 +15,4 @@ protocol LoginCoordinatorProtocol: Coordinator {
     func showSetNameViewController()
     func showSetInterestedJobViewController()
     func showSetSubwayViewController()
-    func showWelcomeViewController()
 }
