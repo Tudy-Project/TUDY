@@ -28,14 +28,14 @@ class SetInterestedJobViewController: UIViewController {
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
     
-    private var jobs: [String] = ["개발자", "디자이너"]
-    private var programmerJobs: [String] = ["프론트엔드", "백엔드", "안드로이드", "iOS"]
-    private var designerJobs: [String] = ["UI/UX"]
+    private var jobs: [String] = Jobs.allJobTypes.map { $0.rawValue }
+    private var programmerJobs: [String] = Jobs.allProgrammersJobs.map { $0.rawValue }
+    private var designerJobs: [String] = Jobs.allDesignerJobs.map { $0.rawValue }
     private var jobCollectionView: UICollectionView!
     private var jobDataSource: DataSource!
     private var detailJobCollectionView: UICollectionView!
     private var detailJobDataSource: DataSource!
-    private var selectedJob: Job?
+    private var selectedJob: JobType?
     private var selectedDetailJobs: [String] = []
     
     private let step = 2
@@ -206,7 +206,7 @@ extension SetInterestedJobViewController {
         jobDataSource.apply(snapshot)
     }
     
-    private func updateDetailJobSnapshotWhenTappedJob(job: Job) {
+    private func updateDetailJobSnapshotWhenTappedJob(job: JobType) {
         var snapshot = Snapshot()
         snapshot.appendSections([0])
         switch job {

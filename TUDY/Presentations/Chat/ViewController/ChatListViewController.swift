@@ -45,7 +45,7 @@ class ChatListViewController: UIViewController {
         ChatInfo(chatState: .groupChat,
                  chatNotification: false,
                  bookMark: true,
-                 chatTitle: "그룹챗 테스트",
+                 chatTitle: "그룹챗 테스트 그룹챗 테스트 그룹챗 테스트 그룹챗 테스트",
                  profileImageURL: "",
                  projectMasterID: "",
                  participantIDs: ["", "", ""],
@@ -58,7 +58,7 @@ class ChatListViewController: UIViewController {
                  profileImageURL: "",
                  projectMasterID: "",
                  participantIDs: ["", ""],
-                 latestMessage: "마지막",
+                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지",
                  latestMessageDate: "1일전")
     ]
     
@@ -79,7 +79,7 @@ class ChatListViewController: UIViewController {
                  profileImageURL: "",
                  projectMasterID: "",
                  participantIDs: [""],
-                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지",
+                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지",
                  latestMessageDate: "3일전")
     ]
     
@@ -105,11 +105,11 @@ extension ChatListViewController {
         view.backgroundColor = .DarkGray1
         
         view.addSubview(topTapBarCollectionView)
-        topTapBarCollectionView.backgroundColor = .DarkGray1
+        topTapBarCollectionView.backgroundColor = .DarkGray2
         topTapBarCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(70)
+            make.height.equalTo(50)
         }
         
         view.addSubview(indicatorBackgroundView)
@@ -132,7 +132,7 @@ extension ChatListViewController {
         view.addSubview(groupChatListTableView)
         groupChatListTableView.backgroundColor = .DarkGray1
         groupChatListTableView.snp.makeConstraints { make in
-            make.top.equalTo(indicatorBackgroundView.snp.bottom).offset(80)
+            make.top.equalTo(indicatorBackgroundView.snp.bottom).offset(66)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -184,7 +184,7 @@ extension ChatListViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(70))
+                                               heightDimension: .absolute(50))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitem: item,
                                                        count: 2)
@@ -224,14 +224,18 @@ extension ChatListViewController {
         personalChatListTableView = UITableView(frame: view.bounds, style: .plain)
         personalChatListTableView.delegate = self
         personalChatListTableView.register(PersonalChatListCell.self, forCellReuseIdentifier: PersonalChatListCell.reuseIdentifier)
-        personalChatListTableView.rowHeight = 100
+        personalChatListTableView.rowHeight = 108
+        personalChatListTableView.separatorColor = .LightGray2
+        personalChatListTableView.separatorInset = .init(top: 0, left: 13, bottom: 0, right: 13)
         
         groupChatListTableView = UITableView(frame: view.bounds, style: .plain)
         groupChatListTableView.delegate = self
         groupChatListTableView.register(GroupChatListCell.self, forCellReuseIdentifier: GroupChatListCell.reuseIdentifier)
-        groupChatListTableView.rowHeight = 100
-        configureTableViewDataSource()
+        groupChatListTableView.rowHeight = 108
+        groupChatListTableView.separatorColor = .LightGray2
+        groupChatListTableView.separatorInset = .init(top: 0, left: 13, bottom: 0, right: 13)
         
+        configureTableViewDataSource()
         personalChatListTableView.isHidden = true
     }
     
@@ -351,9 +355,7 @@ extension ChatListViewController: UITableViewDelegate {
         } else {
             chatListInfo = personalChatList[indexPath.row]
         }
-        
-        print(chatListInfo)
-        
+
         // 알림
         let notificationAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
             // DB에 업데이트 해야함
@@ -366,9 +368,9 @@ extension ChatListViewController: UITableViewDelegate {
             completion(true)
         }
         
-        let notificationImage = chatListInfo.chatNotification ? UIImage(systemName: "bell") : UIImage(systemName: "bell.fill")
+        let notificationImage = chatListInfo.chatNotification ? UIImage(named: "bell.fill") : UIImage(named: "bell.cancel")
         notificationAction.image = notificationImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
-        notificationAction.backgroundColor = .PointBlue
+        notificationAction.backgroundColor = .LightGray1
         
         // 즐겨찾기
         let bookmarkAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
@@ -382,9 +384,9 @@ extension ChatListViewController: UITableViewDelegate {
             completion(true)
         }
         
-        let bookmarkImage = chatListInfo.bookMark ? UIImage(systemName: "star") : UIImage(systemName: "star.fill")
+        let bookmarkImage = chatListInfo.bookMark ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin")
         bookmarkAction.image = bookmarkImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
-        bookmarkAction.backgroundColor = .PointRed
+        bookmarkAction.backgroundColor = .DarkGray5
         
         return UISwipeActionsConfiguration(actions: [notificationAction, bookmarkAction])
     }

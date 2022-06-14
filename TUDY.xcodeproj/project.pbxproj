@@ -343,6 +343,7 @@
 		4A6E6512283E04F500B954B9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FF13AFA128372C69006E678D /* PostListCell.swift */,
 				FFC79E262856F53200E2A0DC /* BottomSheetCollectionView.swift */,
 				FFC79E282856F70000E2A0DC /* BottomSheetCell.swift */,
 				FFC79E2A28573BCE00E2A0DC /* FastSearchCell.swift */,

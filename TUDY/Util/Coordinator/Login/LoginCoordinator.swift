@@ -70,18 +70,9 @@ extension LoginCoordinator {
     func showSetSubwayViewController() {
         let setSubwayViewController = SetSubwayViewController()
         setSubwayViewController.didSendEventClosure = { [weak self] event in
-            self?.showWelcomeViewController()
-        }
-        navigationController.pushViewController(setSubwayViewController, animated: true)
-    }
-    
-    func showWelcomeViewController() {
-        let welcomeViewController = WelcomeViewController()
-        welcomeViewController.didSendEventClosure = { [weak self] event in
             self?.loginCoordinatorDelegate?.showHomeCoordinator()
         }
-        
-        navigationController.pushViewController(welcomeViewController, animated: true)
+        navigationController.pushViewController(setSubwayViewController, animated: true)
     }
 }
 
