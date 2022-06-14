@@ -18,11 +18,10 @@ class PersonalChatListCell: UITableViewCell {
         }
     }
     
-    private let nameLabel = UILabel().label(text: "", font: .sub14)
-    private let latestMessageLabel = UILabel().label(text: "", font: .body14)
-    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption11)
-    private let participantsCountButton = UIButton().peopleCountButton()
-    private let dot = UIView().notificationDot()
+    private let nameLabel = UILabel().label(text: "", font: .sub16)
+    private let latestMessageLabel = UILabel().label(text: "", font: .body14, numberOfLines: 2)
+    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption12)
+    private let notificationCountButton = UIButton().notificationCountButton()
     
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -47,7 +46,7 @@ class PersonalChatListCell: UITableViewCell {
 extension PersonalChatListCell {
     
     // MARK: - methods
-    func configureUI() {
+    private func configureUI() {
         backgroundColor = .DarkGray1
         
         addSubview(profileImageView)
@@ -67,29 +66,19 @@ extension PersonalChatListCell {
             make.centerY.equalTo(self.snp.centerY)
         }
         
-        addSubview(dot)
-        dot.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
+        latestMessageLabel.snp.makeConstraints { make in
+            make.width.lessThanOrEqualTo(180)
         }
         
         addSubview(latestMessageDateLabel)
         latestMessageDateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-12)
+            make.top.equalTo(self.snp.top).offset(30)
+            make.trailing.equalTo(self.snp.trailing).offset(-30)
         }
-        
-        addSubview(participantsCountButton)
-        participantsCountButton.isEnabled = false
-        participantsCountButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-30)
-            make.bottom.equalToSuperview().offset(-20)
-            make.width.equalTo(35)
-            make.height.equalTo(16)
-        }
+
     }
     
-    func configurePersonalChatListCell() {
+    private func configurePersonalChatListCell() {
         guard let chatListInfo = chatListInfo else { return }
         
         switch chatListInfo.bookMark {
@@ -100,9 +89,19 @@ extension PersonalChatListCell {
         }
         latestMessageLabel.text = chatListInfo.latestMessage
         latestMessageDateLabel.text = chatListInfo.latestMessageDate
-        participantsCountButton.setTitle("\(chatListInfo.participantIDs.count)", for: .normal)
+        
+        addSubViewNotificationCount(count: 99)
         
 //        guard let url = URL(string: user.profileImageUrl) else { return }
 //        profileImageView.sd_setImage(with: url)
+    }
+    
+    private func addSubViewNotificationCount(count: Int) {
+        notificationCountButton.setTitle("\(count)", for: .normal)
+        addSubview(notificationCountButton)
+        notificationCountButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview().offset(-30)
+        }
     }
 }
