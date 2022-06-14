@@ -58,13 +58,6 @@ extension HomeCoordinator {
     }
     
     func showLogin() {
-        self.prepareLoginCoordinator(self)
-    }
-}
-
-// MARK: - HomeCoordinatorDelegate
-extension HomeCoordinator: HomeCoordinatorDelegate {
-    func prepareLoginCoordinator(_ coordinator: HomeCoordinator) {
         self.homeDelegate?.prepareLoginCoordinator(self)
     }
 }
