@@ -17,8 +17,8 @@ struct User: Codable {
     var subwayStation: String
     var subwayLines: [String]
     var likeProjectIDs: [String]
-    var personalChatIDs: [String]
-    var groupChatIDs: [String]
+//    var personalChatInfos: [UserChatInfo]
+//    var groupChatInfos: [UserChatInfo]
     
     init (
         userID: String = "",
@@ -29,9 +29,9 @@ struct User: Codable {
         interestedDetailJobs: [String] = [],
         subwayStation: String = "",
         subwayLines: [String] = [],
-        likeProjectIDs: [String] = [],
-        personalChatIDs: [String] = [],
-        groupChatIDs: [String] = []
+        likeProjectIDs: [String] = []
+//        personalChatInfos: [UserChatInfo] = [],
+//        groupChatInfos: [UserChatInfo] = []
     ) {
         self.userID = userID
         self.signUpDate = signUpDate
@@ -42,8 +42,8 @@ struct User: Codable {
         self.subwayStation = subwayStation
         self.subwayLines = subwayLines
         self.likeProjectIDs = likeProjectIDs
-        self.personalChatIDs = personalChatIDs
-        self.groupChatIDs = groupChatIDs
+//        self.personalChatInfos = personalChatInfos
+//        self.groupChatInfos = groupChatInfos
     }
     
     init(dict: [String : Any]) {
@@ -56,8 +56,8 @@ struct User: Codable {
         self.subwayStation = dict["subwayStation"] as? String ?? ""
         self.subwayLines = dict["subwayLines"] as? [String] ?? []
         self.likeProjectIDs = dict["likeProjectIDs"] as? [String] ?? []
-        self.personalChatIDs = dict["personalChatIDs"] as? [String] ?? []
-        self.groupChatIDs = dict["groupChatIDs"] as? [String] ?? []
+//        self.personalChatInfos = dict["personalChatInfos"] as? [UserChatInfo] ?? []
+//        self.groupChatInfos = dict["groupChatInfos"] as? [UserChatInfo] ?? []
     }
 }
 

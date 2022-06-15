@@ -12,13 +12,13 @@ class PersonalChatListCell: UITableViewCell {
     // MARK: - Properties
     static let reuseIdentifier = "PersonalChatListCell"
     
-    var chatListInfo: ChatInfo? {
+    var chatInfo: ChatInfo? {
         didSet {
             configurePersonalChatListCell()
         }
     }
     
-    private let nameLabel = UILabel().label(text: "", font: .sub16)
+    private let titleLabel = UILabel().label(text: "", font: .sub16)
     private let latestMessageLabel = UILabel().label(text: "", font: .body14, numberOfLines: 2)
     private let latestMessageDateLabel = UILabel().label(text: "", font: .caption12)
     private let notificationCountButton = UIButton().notificationCountButton()
@@ -57,7 +57,7 @@ extension PersonalChatListCell {
             make.centerY.equalTo(self.snp.centerY)
         }
         
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, latestMessageLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, latestMessageLabel])
         stackView.axis = .vertical
         stackView.spacing = 6
         addSubview(stackView)
@@ -79,16 +79,19 @@ extension PersonalChatListCell {
     }
     
     private func configurePersonalChatListCell() {
-        guard let chatListInfo = chatListInfo else { return }
+        guard let chatInfo = chatInfo else { return }
         
-        switch chatListInfo.bookMark {
-        case true:
-            nameLabel.text = "📍 \(chatListInfo.chatTitle)"
-        case false:
-            nameLabel.text = chatListInfo.chatTitle
+        FirebaseUserChatInfo.fetchUserChatInfo(chatInfoID: chatInfo.chatInfoID) { [weak self] userChatInfo in
+            switch userChatInfo.bookMark {
+            case true:
+                self?.titleLabel.text = "📍 \(chatInfo.chatTitle)"
+            case false:
+                self?.titleLabel.text = "  \(chatInfo.chatTitle)"
+            }
         }
-        latestMessageLabel.text = chatListInfo.latestMessage
-        latestMessageDateLabel.text = chatListInfo.latestMessageDate
+        
+        latestMessageLabel.text = chatInfo.latestMessage
+        latestMessageDateLabel.text = chatInfo.latestMessageDate
         
         addSubViewNotificationCount(count: 99)
         

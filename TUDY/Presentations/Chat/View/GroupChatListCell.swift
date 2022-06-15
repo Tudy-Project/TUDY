@@ -12,7 +12,7 @@ class GroupChatListCell: UITableViewCell {
     // MARK: - Properties
     static let reuseIdentifier = "GroupChatListCell"
     
-    var chatListInfo: ChatInfo? {
+    var chatInfo: ChatInfo? {
         didSet {
             configureGroupChatListCell()
         }
@@ -77,30 +77,33 @@ extension GroupChatListCell {
             make.top.equalTo(self.snp.top).offset(30)
             make.trailing.equalTo(self.snp.trailing).offset(-30)
         }
+        
+        masterButton.isHidden = true
     }
     
     private func configureGroupChatListCell() {
-        guard let chatListInfo = chatListInfo else { return }
+        guard let chatInfo = chatInfo else { return }
         
-        switch chatListInfo.bookMark {
-        case true:
-            titleLabel.text = "📍 \(chatListInfo.chatTitle)"
-        case false:
-            titleLabel.text = "  \(chatListInfo.chatTitle)"
+        FirebaseUserChatInfo.fetchUserChatInfo(chatInfoID: chatInfo.chatInfoID) { [weak self] userChatInfo in
+            switch userChatInfo.bookMark {
+            case true:
+                self?.titleLabel.text = "📍 \(chatInfo.chatTitle)"
+            case false:
+                self?.titleLabel.text = "  \(chatInfo.chatTitle)"
+            }
+            
+            if userChatInfo.dontReadCount != 0 {
+                self?.addSubViewNotificationCount(count: userChatInfo.dontReadCount)
+            }
         }
-        latestMessageLabel.text = "  \(chatListInfo.latestMessage)"
-        latestMessageDateLabel.text = chatListInfo.latestMessageDate
-        participantsCountButton.setTitle("\(chatListInfo.participantIDs.count)", for: .normal)
         
-        addSubViewNotificationCount(count: 110)
+        latestMessageLabel.text = "  \(chatInfo.latestMessage)"
+        latestMessageDateLabel.text = chatInfo.latestMessageDate
+        participantsCountButton.setTitle("\(chatInfo.participantIDs.count)", for: .normal)
         
-        //        if CommonFirebaseDatabaseNetworkService.getUserID() == chatListInfo.projectMasterID {
-        //            addSubview(masterLabel)
-        //            masterLabel.snp.makeConstraints { make in
-        //                make.top.equalTo(titleLabel.snp.top)
-        //                make.leading.equalTo(titleLabel.snp.trailing).offset(8)
-        //            }
-        //        }
+        if FirebaseUser.getUserID() == chatInfo.projectMasterID {
+            masterButton.isHidden = false
+        }
     }
     
     private func addSubViewNotificationCount(count: Int) {
