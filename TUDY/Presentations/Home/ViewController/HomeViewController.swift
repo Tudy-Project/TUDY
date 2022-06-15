@@ -54,14 +54,39 @@ class HomeViewController: UIViewController {
         let collectionView =  UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(FastSearchCell.self, forCellWithReuseIdentifier: fastSearchCellId)
         collectionView.backgroundColor = .DarkGray1
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.tag = 1
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
     }()
     
-    private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14)
+    private let FilterStackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        return stackView
+    }()
     
+    private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14, numberOfLines: 1)
+    private lazy var switchButton: UISwitch = {
+       let switchButton = UISwitch()
+        switchButton.thumbTintColor = .DarkGray6
+        let onColor = UIColor.systemBlue
+        let offColor = UIColor.DarkGray5
+        
+        //for on State
+        switchButton.onTintColor = onColor
+        
+        //for off State
+        switchButton.tintColor = offColor
+        switchButton.layer.cornerRadius = switchButton.frame.height / 2.0
+//        switchButton.layer.borderWidth = 2
+//        switchButton.layer.borderColor = UIColor.LightGray1.cgColor
+        switchButton.backgroundColor = offColor
+        switchButton.clipsToBounds = true
+        return switchButton
+    }()
     
     private lazy var bottomSheetCollectionView: BottomSheetCollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -119,8 +144,13 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let userNickname = UserInfo.shared
+        let userNickname2 = UserInfo.shared
+        
         configureCollectionView()
         configureUI()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -279,12 +309,15 @@ extension HomeViewController {
     }
     
     private func configureCollectionView() {
-        bottomSheetView.addSubview(bottomSheetFilterLabel)
-        bottomSheetFilterLabel.snp.makeConstraints { make in
+        bottomSheetView.addSubview(FilterStackView)
+        FilterStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(19)
-            make.leading.equalToSuperview().offset(183)
+            make.trailing.equalToSuperview().offset(-17)
         }
         
+        FilterStackView.addArrangedSubview(bottomSheetFilterLabel)
+        FilterStackView.addArrangedSubview(switchButton)
+
         bottomSheetView.addSubview(bottomSheetCollectionView)
         bottomSheetCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(56)
@@ -300,7 +333,9 @@ extension HomeViewController {
         let translation = panGestureRecognizer.translation(in: self.view)
         switch panGestureRecognizer.state {
         case .began:
+            print(bottomSheetPanStartingTopConstant)
             bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
+            print(bottomSheetPanStartingTopConstant)
         case .changed:
             //네브바와 닿으면 더이상 안올라가게
             //            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
@@ -325,8 +360,8 @@ extension HomeViewController {
             let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
             
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
-            print("니얼벨류값이 모니: \(nearestValue)")
-            print("디폴트패딩 값이 모니: \(defaultPadding)")
+//            print("니얼벨류값이 모니: \(nearestValue)")
+//            print("디폴트패딩 값이 모니: \(defaultPadding)")
             if nearestValue == bottomSheetPanMinTopConstant {
                 showBottomSheet(atState: .expanded)
             } else if nearestValue == defaultPadding {
@@ -388,15 +423,26 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     fastSearchCollectionView.dequeueReusableCell(withReuseIdentifier: fastSearchCellId, for: indexPath) as? FastSearchCell else {
                 return UICollectionViewCell()
             }
-            if (indexPath.row == 2) {
-                fastSearchBtn.workTitle.textColor = .black
-                fastSearchBtn.workCircle.backgroundColor = .black
-            }
             fastSearchBtn.contentView.layer.cornerRadius = 10
             fastSearchBtn.workIcon.image = UIImage(named: "mac_icon")
             fastSearchBtn.workTitle.text = fastSearchButtonList[indexPath.row]
             fastSearchBtn.contentView.backgroundColor = UIColor.DarkGray5
             fastSearchBtn.contentView.backgroundColor = UIColor.WorkColorArr[indexPath.row]
+            
+            if (indexPath.row == 2) {
+                fastSearchBtn.workTitle.textColor = .black
+                fastSearchBtn.workCircle.backgroundColor = .black
+                fastSearchBtn.workIcon.image = UIImage(named:"apple_icon")
+            } else if indexPath.row == 3 {
+                fastSearchBtn.workIcon.image = UIImage(named:"android_icon")
+            } else if indexPath.row == 4 {
+                fastSearchBtn.workIcon.image = UIImage(named:"‍‍design_icon")
+            } else if indexPath.row == 5 {
+                fastSearchBtn.workIcon.image = UIImage(named:"uxui_icon")
+            } else if indexPath.row == 7 {
+                fastSearchBtn.workIcon.image = UIImage(named:"branding_icon")
+            }
+            
             return  fastSearchBtn
         } else {
             guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: bottomSheetCellId, for: indexPath) as? BottomSheetCell else {
