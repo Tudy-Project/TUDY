@@ -37,6 +37,7 @@ extension GroupChatViewController {
     
     private func configureNavigationBar() {
         navigationItem.title = chatInfo?.chatTitle
+        navigationController?.navigationBar.backgroundColor = .systemBlue
     }
 }
 
