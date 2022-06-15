@@ -9,6 +9,7 @@ target 'TUDY' do
   pod 'SnapKit', '~> 5.6.0'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Database'
   pod 'Firebase/Firestore'
   pod 'GoogleSignIn'
   pod 'KakaoSDKCommon'  # 필수 요소를 담은 공통 모듈

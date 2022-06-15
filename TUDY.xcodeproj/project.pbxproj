@@ -57,6 +57,7 @@
 		D89615E42849E55300C86130 /* ChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E32849E55300C86130 /* ChatInfo.swift */; };
 		D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E62849E79500C86130 /* PersonalChatListCell.swift */; };
 		D8C0266228595C1F004CACFF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0266128595C1F004CACFF /* Message.swift */; };
+		D8C0266628599B93004CACFF /* FirebaseRealtimeChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */; };
 		D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */; };
 		D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */; };
 		D8C7F225283B5ABD00424AE5 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */; };
@@ -153,6 +154,7 @@
 		D89615E32849E55300C86130 /* ChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfo.swift; sourceTree = "<group>"; };
 		D89615E62849E79500C86130 /* PersonalChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalChatListCell.swift; sourceTree = "<group>"; };
 		D8C0266128595C1F004CACFF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRealtimeChat.swift; sourceTree = "<group>"; };
 		D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D8C7F224283B5ABD00424AE5 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				4AB16F102844F42C00EB36A6 /* CommonFirebaseUserData.swift */,
 				4AC095C828571D2E0003BAFB /* CommonFirebaseProjectData.swift */,
 				D8034E902857356A008C569F /* CommonFirebaseChat.swift */,
+				D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -806,6 +809,7 @@
 				FFC79E2B28573BCE00E2A0DC /* FastSearchCell.swift in Sources */,
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
 				FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */,
+				D8C0266628599B93004CACFF /* FirebaseRealtimeChat.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
 				FFA3616528406DAE00560F69 /* ProjectWriteViewController.swift in Sources */,
