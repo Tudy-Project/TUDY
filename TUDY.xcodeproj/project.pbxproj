@@ -17,6 +17,9 @@
 		4AC095C5285116150003BAFB /* WorkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C4285116150003BAFB /* WorkCell.swift */; };
 		4AC095C72856EE7F0003BAFB /* UIViewController+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */; };
 		4AC095C928571D2E0003BAFB /* CommonFirebaseProjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C828571D2E0003BAFB /* CommonFirebaseProjectData.swift */; };
+		4AC095CB285752A50003BAFB /* Codable+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CA285752A50003BAFB /* Codable+Custom.swift */; };
+		4AC095CD2859BD660003BAFB /* InvitedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CC2859BD650003BAFB /* InvitedViewController.swift */; };
+		4AC095D02859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */; };
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
@@ -111,6 +114,9 @@
 		4AC095C4285116150003BAFB /* WorkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkCell.swift; sourceTree = "<group>"; };
 		4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Custom.swift"; sourceTree = "<group>"; };
 		4AC095C828571D2E0003BAFB /* CommonFirebaseProjectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFirebaseProjectData.swift; sourceTree = "<group>"; };
+		4AC095CA285752A50003BAFB /* Codable+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Custom.swift"; sourceTree = "<group>"; };
+		4AC095CC2859BD650003BAFB /* InvitedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedViewController.swift; sourceTree = "<group>"; };
+		4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBottomSheetTableViewCell.swift; sourceTree = "<group>"; };
 		4AEEC0B1283496F4004A08F8 /* TUDY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUDY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -366,6 +372,7 @@
 		4A6E6514283E051D00B954B9 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				4AC095CC2859BD650003BAFB /* InvitedViewController.swift */,
 				D8C7F240283B99C100424AE5 /* ChatListViewController.swift */,
 				D8034E8C28572D16008C569F /* PersonalChatViewController.swift */,
 				D8034E8A28572AC3008C569F /* GroupChatViewController.swift */,
@@ -575,6 +582,7 @@
 				D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */,
 				D81091EE2845B47B00B4544C /* String+Custom.swift */,
 				4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */,
+				4AC095CA285752A50003BAFB /* Codable+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -594,6 +602,7 @@
 				D83412952852D8BF00D1D835 /* TopBarCell.swift */,
 				D89615E62849E79500C86130 /* PersonalChatListCell.swift */,
 				D83412972852E1F200D1D835 /* GroupChatListCell.swift */,
+				4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -804,6 +813,7 @@
 				D8C7F23D283B992200424AE5 /* ChatCoordinator.swift in Sources */,
 				D87CBB5028439EF2003397A5 /* Job.swift in Sources */,
 				D85ED4D5283E690900D0A006 /* GroupChatListCoordinator.swift in Sources */,
+				4AC095CB285752A50003BAFB /* Codable+Custom.swift in Sources */,
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
 				FFC79E2B28573BCE00E2A0DC /* FastSearchCell.swift in Sources */,
@@ -830,6 +840,7 @@
 				D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */,
 				D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */,
 				D8CA051528450E62006E59DC /* SubwayData.swift in Sources */,
+				4AC095D02859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
 				D8034E8D28572D16008C569F /* PersonalChatViewController.swift in Sources */,
 				D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */,
@@ -877,6 +888,7 @@
 				D87CBB4C2843207F003397A5 /* DetailJobCell.swift in Sources */,
 				D8C7F227283B628600424AE5 /* TabBarPage.swift in Sources */,
 				FFC79E292856F70000E2A0DC /* BottomSheetCell.swift in Sources */,
+				4AC095CD2859BD660003BAFB /* InvitedViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

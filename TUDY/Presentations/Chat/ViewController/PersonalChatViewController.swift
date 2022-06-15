@@ -37,8 +37,20 @@ extension PersonalChatViewController {
     
     private func configureNavigationBar() {
         navigationItem.title = chatInfo?.chatTitle
+        navigationItem.backButtonTitle = ""
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
+
     }
 }
+// MARK: - extensions
+extension PersonalChatViewController {
+    @objc func invitedButtonClicked() {
+        let invitedVC = InvitedViewController()
+        invitedVC.modalPresentationStyle = .overFullScreen
+        self.present(invitedVC, animated: false, completion: nil)
+    }
+}
+
 
 
 // MARK: - ChatProtocol
