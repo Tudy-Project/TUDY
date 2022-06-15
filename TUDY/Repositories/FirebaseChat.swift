@@ -39,10 +39,6 @@ struct FirebaseChat {
                 snapshot?.documents.forEach({ document in
                     let dict = document.data()
                     let chatInfo = ChatInfo(dict: dict)
-                    print("============")
-                    print(dict)
-                    print("============")
-                    print(chatInfo)
                     chatInfos.append(chatInfo)
                 })
                 completion(chatInfos)

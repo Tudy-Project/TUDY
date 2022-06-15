@@ -210,6 +210,7 @@ extension ChatListViewController {
         chatInfo.participantIDs.append(userID)
         
         FirebaseChat.saveChatInfo(chatInfo)
+        fetchUserChatInfoList()
     }
     
     // MARK: - CollectionView
