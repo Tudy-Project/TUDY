@@ -174,7 +174,7 @@ class SearchViewController: UIViewController {
         self.navigationItem.titleView = searchbar
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.topItem?.title = ""
-        tabBarController?.tabBar.isHidden = true
+        tabDisappear()
     }
     
     func setDelegate() {
