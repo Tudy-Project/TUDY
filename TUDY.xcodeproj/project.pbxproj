@@ -57,7 +57,6 @@
 		D89615E42849E55300C86130 /* ChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E32849E55300C86130 /* ChatInfo.swift */; };
 		D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E62849E79500C86130 /* PersonalChatListCell.swift */; };
 		D8C0266228595C1F004CACFF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0266128595C1F004CACFF /* Message.swift */; };
-		D8C02664285993DE004CACFF /* Codable+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C02663285993DE004CACFF /* Codable+Custom.swift */; };
 		D8C0266628599B93004CACFF /* FirebaseRealtimeChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */; };
 		D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */; };
 		D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */; };
@@ -155,7 +154,6 @@
 		D89615E32849E55300C86130 /* ChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfo.swift; sourceTree = "<group>"; };
 		D89615E62849E79500C86130 /* PersonalChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalChatListCell.swift; sourceTree = "<group>"; };
 		D8C0266128595C1F004CACFF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		D8C02663285993DE004CACFF /* Codable+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Custom.swift"; sourceTree = "<group>"; };
 		D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRealtimeChat.swift; sourceTree = "<group>"; };
 		D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -577,7 +575,6 @@
 				D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */,
 				D81091EE2845B47B00B4544C /* String+Custom.swift */,
 				4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */,
-				D8C02663285993DE004CACFF /* Codable+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -834,7 +831,6 @@
 				D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */,
 				D8CA051528450E62006E59DC /* SubwayData.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
-				D8C02664285993DE004CACFF /* Codable+Custom.swift in Sources */,
 				D8034E8D28572D16008C569F /* PersonalChatViewController.swift in Sources */,
 				D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */,
 				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
