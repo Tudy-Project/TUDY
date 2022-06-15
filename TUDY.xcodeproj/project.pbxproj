@@ -91,7 +91,7 @@
 		FFBECD232850D8550092B524 /* DevelopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBECD222850D8550092B524 /* DevelopCell.swift */; };
 		FFBECD252850D8CB0092B524 /* DevelopButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBECD242850D8CB0092B524 /* DevelopButton.swift */; };
 		FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC658442848FA50008889C2 /* OptionSelectionBar.swift */; };
-		FFC79E272856F53200E2A0DC /* BottomSheetCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC79E262856F53200E2A0DC /* BottomSheetCollectionView.swift */; };
+		FFC79E272856F53200E2A0DC /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC79E262856F53200E2A0DC /* TestData.swift */; };
 		FFC79E292856F70000E2A0DC /* BottomSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC79E282856F70000E2A0DC /* BottomSheetCell.swift */; };
 		FFC79E2B28573BCE00E2A0DC /* FastSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC79E2A28573BCE00E2A0DC /* FastSearchCell.swift */; };
 		FFC79E2D28581D1C00E2A0DC /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC79E2C28581D1C00E2A0DC /* UserInfo.swift */; };
@@ -189,7 +189,7 @@
 		FFBECD222850D8550092B524 /* DevelopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DevelopCell.swift; path = ProjectWrite/View/DevelopCell.swift; sourceTree = SOURCE_ROOT; };
 		FFBECD242850D8CB0092B524 /* DevelopButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DevelopButton.swift; path = ProjectWrite/View/DevelopButton.swift; sourceTree = SOURCE_ROOT; };
 		FFC658442848FA50008889C2 /* OptionSelectionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OptionSelectionBar.swift; path = ProjectWrite/View/OptionSelectionBar.swift; sourceTree = SOURCE_ROOT; };
-		FFC79E262856F53200E2A0DC /* BottomSheetCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetCollectionView.swift; sourceTree = "<group>"; };
+		FFC79E262856F53200E2A0DC /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		FFC79E282856F70000E2A0DC /* BottomSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetCell.swift; sourceTree = "<group>"; };
 		FFC79E2A28573BCE00E2A0DC /* FastSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastSearchCell.swift; sourceTree = "<group>"; };
 		FFC79E2C28581D1C00E2A0DC /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
@@ -348,7 +348,7 @@
 		4A6E6512283E04F500B954B9 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				FFC79E262856F53200E2A0DC /* BottomSheetCollectionView.swift */,
+				FFC79E262856F53200E2A0DC /* TestData.swift */,
 				FFC79E282856F70000E2A0DC /* BottomSheetCell.swift */,
 				FFC79E2A28573BCE00E2A0DC /* FastSearchCell.swift */,
 			);
@@ -839,7 +839,7 @@
 				D85ED4DC283EFFA800D0A006 /* SearchCoordinatorProtocol.swift in Sources */,
 				FFBECD252850D8CB0092B524 /* DevelopButton.swift in Sources */,
 				FFC79E2D28581D1C00E2A0DC /* UserInfo.swift in Sources */,
-				FFC79E272856F53200E2A0DC /* BottomSheetCollectionView.swift in Sources */,
+				FFC79E272856F53200E2A0DC /* TestData.swift in Sources */,
 				FF07DE96284E011B003BB46D /* BottomSheetViewController.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */,

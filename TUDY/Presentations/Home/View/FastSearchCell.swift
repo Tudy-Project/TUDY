@@ -9,6 +9,9 @@ import UIKit
 
 class FastSearchCell: UICollectionViewCell {
     // MARK: - Properties
+    
+    static let identifier = "FastSearchCell"
+    
     lazy var workCircle: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15

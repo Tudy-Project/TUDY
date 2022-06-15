@@ -217,7 +217,7 @@ class ProjectWriteViewController: UIViewController {
         ]
         navigationController?.navigationBar.tintColor = .PointBlue
         navigationController?.navigationBar.topItem?.title = ""
-        tabBarController?.tabBar.isHidden = true
+        tabDisappear()
         
         let rightItem =
         UIBarButtonItem(title:"등록", style: .plain, target: self, action: #selector(didTapRegisterButton))

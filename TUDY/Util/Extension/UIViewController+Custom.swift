@@ -14,7 +14,15 @@ extension UIViewController {
         navigationController?.navigationBar.backgroundColor = .DarkGray1
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barTintColor = .DarkGray1
-        navigationController?.navigationBar.isTranslucent = false
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .DarkGray1
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
     }
     
     func navDisappear() {
@@ -26,9 +34,11 @@ extension UIViewController {
         tabBarController?.tabBar.isHidden = false
         tabBarController?.tabBar.barTintColor = .DarkGray1
         tabBarController?.tabBar.isTranslucent = false
+        tabBarController?.tabBar.backgroundColor = .DarkGray1
     }
     
     func tabDisappear() {
+        navigationController?.view.backgroundColor = .DarkGray1
         tabBarController?.tabBar.isHidden = true
         tabBarController?.tabBar.isTranslucent = true
     }

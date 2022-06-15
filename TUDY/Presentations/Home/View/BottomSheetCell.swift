@@ -10,6 +10,7 @@ import UIKit
 class BottomSheetCell: UICollectionViewCell {
     
     // MARK: - Properties
+    static let identifier = "BottomSheetCell"
     
     lazy var titleLabel: UILabel = {
        let label = UILabel()

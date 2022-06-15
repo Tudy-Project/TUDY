@@ -14,6 +14,7 @@ extension UIFont {
     static var sub20: UIFont { UIFont(name: "AppleSDGothicNeoEB00", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold) }
     static var sub16: UIFont { UIFont(name: "AppleSDGothicNeoEB00", size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold) }
     static var sub14: UIFont { UIFont(name: "AppleSDGothicNeoEB00", size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .bold) }
+    static var sub13: UIFont { UIFont(name: "AppleSDGothicNeoEB00", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .bold) }
     static var body16: UIFont { UIFont.systemFont(ofSize: 16, weight: .medium) }
     static var body14: UIFont { UIFont.systemFont(ofSize: 14, weight: .medium) }
     static var caption12: UIFont { UIFont.systemFont(ofSize: 12, weight: .medium) }
