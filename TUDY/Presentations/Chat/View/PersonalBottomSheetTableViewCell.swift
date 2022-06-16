@@ -9,18 +9,36 @@ import UIKit
 
 class PersonalBottomSheetTableViewCell: UITableViewCell {
 
-    
     // MARK: - properties
     static let reuseIdentifier = "PersonalBottomSheetTableViewCell"
     
-    private let titleLabel = UILabel().label(text: "", font: .sub16, numberOfLines: 1)
-    private let participantsCountButton = UIButton().peopleCountButton()
-
-    var chatListInfo: ChatInfo? {
+    var isCheck: Bool = false {
         didSet {
-            configureGroupChatListCell()
+            let imageName = isCheck ? "circle" : "checkmark.circle.fill"
+            checkBoxButton.setImage(UIImage(systemName: imageName), for: .normal)
         }
     }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        isCheck.toggle()
+    }
+
+    lazy var checkBoxButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "circle"), for: .normal)
+        button.isUserInteractionEnabled = true
+        return button
+    }()
+    
+    lazy var titleStackView: UIStackView = {
+        let stackview = UIStackView(arrangedSubviews: [checkBoxButton, titleLabel, participantsCountButton])
+        stackview.axis = .horizontal
+        stackview.spacing = 6
+        return stackview
+    }()
+    
+    let titleLabel = UILabel().label(text: "", font: .sub16, numberOfLines: 1)
+    let participantsCountButton = UIButton().peopleCountButton()
     
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -36,29 +54,16 @@ class PersonalBottomSheetTableViewCell: UITableViewCell {
 extension PersonalBottomSheetTableViewCell {
 
     private func configureUI() {
-        backgroundColor = .DarkGray1
+        backgroundColor = .DarkGray3
 
-        let titleStackView = UIStackView(arrangedSubviews: [titleLabel, participantsCountButton])
-        titleStackView.axis = .horizontal
-        titleStackView.spacing = 6
-        
-        titleLabel.snp.makeConstraints { make in
-            make.width.lessThanOrEqualTo(180)
-        }
-        
         addSubview(titleStackView)
         titleStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(27)
             make.leading.equalToSuperview().offset(20)
         }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.width.lessThanOrEqualTo(200)
+        }
     }
-    
-    
-    private func configureGroupChatListCell() {
-        guard let chatListInfo = chatListInfo else { return }
-
-        titleLabel.text = "  \(chatListInfo.chatTitle)"
-        participantsCountButton.setTitle("\(chatListInfo.participantIDs.count)", for: .normal)
-    }
-
 }

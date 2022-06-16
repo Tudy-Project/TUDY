@@ -39,7 +39,7 @@ extension PersonalChatViewController {
         navigationItem.title = chatInfo?.chatTitle
         navigationItem.backButtonTitle = ""
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
-
+        navigationItem.rightBarButtonItem?.tintColor = .PointBlue
     }
 }
 // MARK: - extensions

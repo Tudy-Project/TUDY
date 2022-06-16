@@ -31,4 +31,12 @@ extension UILabel {
             self.attributedText = attributedString
         }
     }
+    
+    func startBlink() {
+        UIView.animate(withDuration: 0.8,
+              delay:0.0,
+              options:[.allowUserInteraction, .curveEaseInOut, .autoreverse, .repeat],
+              animations: { self.alpha = 0 },
+              completion: nil)
+    }
 }

@@ -10,15 +10,6 @@ import UIKit
 class InvitedViewController: UIViewController {
     // MARK: - Properties
     
-    private lazy var groupChatList = [
-        ChatInfo(chatState: .groupChat,
-                 chatTitle: "그룹챗 테스트 그룹챗 테스트 그룹챗 테스트 그룹챗 테스트",
-                 participantIDs: ["", "", ""]),
-        ChatInfo(chatState: .groupChat,
-                 chatTitle: "그룹챗 테스트2",
-                 participantIDs: ["", ""])
-    ]
-    
     private lazy var dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .DarkGray1
@@ -56,12 +47,31 @@ class InvitedViewController: UIViewController {
         label.textColor = UIColor.PointBlue
         return label
     }()
-
+    
+    private lazy var groupChatList = [
+        ChatInfo(chatState: .groupChat,
+                 chatTitle: "그룹챗 테스트 그룹챗 테스트 그룹챗 테스트 그룹챗 테스트",
+                 participantIDs: ["", "", ""]),
+        ChatInfo(chatState: .groupChat,
+                 chatTitle: "그룹챗 테스트2",
+                 participantIDs: ["", ""])
+    ]
+    
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
     
     private var defaultHeight: CGFloat = 300
     
-    private var groupChatListTableView: UITableView!
+    private var groupChatListTableView: UITableView = {
+        let tableview = UITableView()
+        tableview.backgroundColor = .DarkGray3
+        tableview.register(PersonalBottomSheetTableViewCell.self, forCellReuseIdentifier: PersonalBottomSheetTableViewCell.reuseIdentifier)
+        tableview.separatorColor = .LightGray2
+        tableview.separatorStyle = .singleLine
+        tableview.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tableview.separatorInsetReference = .fromAutomaticInsets
+        tableview.allowsMultipleSelection = true
+        return tableview
+    }()
 
 
     // MARK: - Life Cycle
@@ -70,6 +80,8 @@ class InvitedViewController: UIViewController {
         self.configureUI()
         configurebottomSheetUI()
         configureTableView()
+        groupChatListTableView.delegate = self
+        groupChatListTableView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,7 +104,6 @@ extension InvitedViewController {
         dimmedView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
         bottomSheetView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.bottom.equalToSuperview()
@@ -115,16 +126,17 @@ extension InvitedViewController {
     }
     
     private func configureTableView() {
-        groupChatListTableView = UITableView(frame: view.bounds, style: .plain)
-//        groupChatListTableView.delegate = self
-        groupChatListTableView.register(PersonalBottomSheetTableViewCell.self, forCellReuseIdentifier: PersonalBottomSheetTableViewCell.reuseIdentifier)
-        groupChatListTableView.rowHeight = 108
-        groupChatListTableView.separatorColor = .LightGray2
-        groupChatListTableView.separatorInset = .init(top: 0, left: 13, bottom: 0, right: 13)
-
+        bottomSheetView.addSubview(groupChatListTableView)
+        
+        groupChatListTableView.snp.makeConstraints { make in
+            make.top.equalTo(bottomsheetStackView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
     }
     
     @objc func bottomsheetgroupchatinvitedbuttonClicked(sender:UITapGestureRecognizer) {
+        hideBottomSheetAndGoBack()
         print("tap working")
     }
 }
@@ -164,5 +176,25 @@ extension InvitedViewController {
 
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideBottomSheetAndGoBack()
+    }
+}
+
+extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PersonalBottomSheetTableViewCell.reuseIdentifier) as! PersonalBottomSheetTableViewCell
+        let chatinfo: ChatInfo = groupChatList[indexPath.row]
+        cell.backgroundColor = .DarkGray3
+        cell.titleLabel.text = chatinfo.chatTitle
+        cell.participantsCountButton.setTitle("\(chatinfo.participantIDs.count)", for: .normal)
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return bottomSheetView.frame.height / 5
     }
 }
