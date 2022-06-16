@@ -33,7 +33,7 @@ class PersonalChatViewController: UIViewController {
     }
     
     override var inputAccessoryView: UIView? {
-        get { return chatinputView}
+        get { return chatinputView }
     }
     
     override var canBecomeFirstResponder: Bool {
