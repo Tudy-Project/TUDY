@@ -12,7 +12,7 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
     var homeViewController: HomeViewController
     
     weak var finishDelegate: CoordinatorFinishDelegate?
-    weak var homeDelegate: HomeCoordinatorDelegate?
+    weak var loginDelegate: LoginCheckDelegate?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .home
@@ -58,7 +58,7 @@ extension HomeCoordinator {
     }
     
     func showLogin() {
-        self.homeDelegate?.prepareLoginCoordinator(self)
+        self.loginDelegate?.prepareLoginCoordinator()
     }
 }
 

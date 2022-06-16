@@ -8,9 +8,9 @@
 import Foundation
 
 struct Message: Codable {
-    let content: String
-    let sender: User
-    let createdDate: String
+    var content: String
+    var sender: User
+    var createdDate: String
     
     init(content: String,
          sender: User,

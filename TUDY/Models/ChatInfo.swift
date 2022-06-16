@@ -9,9 +9,7 @@ import Foundation
 
 struct ChatInfo: Hashable, Codable {
     var chatInfoID: String = UUID().uuidString
-    var chatState: ChatState 
-    var chatNotification: Bool = true
-    var bookMark: Bool = false
+    var chatState: ChatState
     var chatTitle: String = "" // 개인챗 default: 상대방 이름, 그룹챗 default: 미정
     var profileImageURL: String = ""
     var projectMasterID = ""
@@ -20,8 +18,6 @@ struct ChatInfo: Hashable, Codable {
     var latestMessageDate: String = ""
     
     init(chatState: ChatState,
-         chatNotification: Bool = true,
-         bookMark: Bool = false,
          chatTitle: String = "",
          profileImageURL: String = "",
          projectMasterID: String = "",
@@ -29,8 +25,6 @@ struct ChatInfo: Hashable, Codable {
          latestMessage: String = "",
          latestMessageDate: String = "") {
         self.chatState = chatState
-        self.chatNotification = chatNotification
-        self.bookMark = bookMark
         self.chatTitle = chatTitle
         self.profileImageURL = profileImageURL
         self.projectMasterID = projectMasterID
@@ -41,9 +35,8 @@ struct ChatInfo: Hashable, Codable {
     
     init(dict: [String : Any]) {
         self.chatInfoID = dict["chatInfoID"] as? String ?? ""
-        self.chatState = dict["chatState"] as? ChatState ?? .personalChat
-        self.chatNotification = dict["chatNotification"] as? Bool ?? true
-        self.bookMark = dict["bookMark"] as? Bool ?? false
+        let chat = dict["chatState"] as? String ?? "personalChat"
+        self.chatState = chat == "groupChat" ? .groupChat : .personalChat
         self.chatTitle = dict["chatTitle"] as? String ?? ""
         self.profileImageURL = dict["profileImageURL"] as? String ?? ""
         self.projectMasterID = dict["projectMasterID"] as? String ?? ""
