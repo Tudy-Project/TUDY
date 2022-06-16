@@ -20,6 +20,8 @@
 		4AC095CB285752A50003BAFB /* Codable+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CA285752A50003BAFB /* Codable+Custom.swift */; };
 		4AC095CD2859BD660003BAFB /* InvitedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CC2859BD650003BAFB /* InvitedViewController.swift */; };
 		4AC095D02859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */; };
+		4AC095D2285B18C40003BAFB /* PersonalChatCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095D1285B18C40003BAFB /* PersonalChatCollectionViewController.swift */; };
+		4AC095DB285B1D890003BAFB /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095DA285B1D890003BAFB /* ChatInputAccessoryView.swift */; };
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
@@ -119,6 +121,8 @@
 		4AC095CA285752A50003BAFB /* Codable+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Codable+Custom.swift"; sourceTree = "<group>"; };
 		4AC095CC2859BD650003BAFB /* InvitedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedViewController.swift; sourceTree = "<group>"; };
 		4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBottomSheetTableViewCell.swift; sourceTree = "<group>"; };
+		4AC095D1285B18C40003BAFB /* PersonalChatCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalChatCollectionViewController.swift; sourceTree = "<group>"; };
+		4AC095DA285B1D890003BAFB /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		4AEEC0B1283496F4004A08F8 /* TUDY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUDY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 		4A6E64FE283E028F00B954B9 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
+				4AC095D7285B19F00003BAFB /* ChatList */,
 				FF07DE97284F7BF8003BB46D /* View */,
 				4A6E6507283E02FB00B954B9 /* Project */,
 				4A6E6506283E02F500B954B9 /* Search */,
@@ -378,7 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				4AC095CC2859BD650003BAFB /* InvitedViewController.swift */,
-				D8C7F240283B99C100424AE5 /* ChatListViewController.swift */,
 				D8034E8C28572D16008C569F /* PersonalChatViewController.swift */,
 				D8034E8A28572AC3008C569F /* GroupChatViewController.swift */,
 			);
@@ -413,6 +417,33 @@
 				D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		4AC095D7285B19F00003BAFB /* ChatList */ = {
+			isa = PBXGroup;
+			children = (
+				4AC095D8285B19FB0003BAFB /* View */,
+				4AC095D9285B1A010003BAFB /* ViewController */,
+			);
+			path = ChatList;
+			sourceTree = "<group>";
+		};
+		4AC095D8285B19FB0003BAFB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D89615E62849E79500C86130 /* PersonalChatListCell.swift */,
+				D83412972852E1F200D1D835 /* GroupChatListCell.swift */,
+				D83412952852D8BF00D1D835 /* TopBarCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4AC095D9285B1A010003BAFB /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D8C7F240283B99C100424AE5 /* ChatListViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		4AEEC0A8283496F3004A08F8 = {
@@ -605,10 +636,9 @@
 		D89615E52849E78A00C86130 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D83412952852D8BF00D1D835 /* TopBarCell.swift */,
-				D89615E62849E79500C86130 /* PersonalChatListCell.swift */,
-				D83412972852E1F200D1D835 /* GroupChatListCell.swift */,
 				4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */,
+				4AC095D1285B18C40003BAFB /* PersonalChatCollectionViewController.swift */,
+				4AC095DA285B1D890003BAFB /* ChatInputAccessoryView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -809,6 +839,7 @@
 			files = (
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
 				D8034E8F28572E0D008C569F /* ChatProtocol.swift in Sources */,
+				4AC095DB285B1D890003BAFB /* ChatInputAccessoryView.swift in Sources */,
 				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
 				D87CBB582843CE28003397A5 /* SubwayListCell.swift in Sources */,
 				D83412962852D8BF00D1D835 /* TopBarCell.swift in Sources */,
@@ -887,6 +918,7 @@
 				D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */,
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,
 				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
+				4AC095D2285B18C40003BAFB /* PersonalChatCollectionViewController.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
