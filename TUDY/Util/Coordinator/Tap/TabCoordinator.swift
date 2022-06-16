@@ -22,6 +22,7 @@ class TabCoordinator: NSObject, TabCoordinatorProtocol {
     }
     
     func start() {
+        self.navigationController.navigationBar.isHidden = true
         /// 탭 페이지 정의
         let pages: [TabBarPage] = TabBarPage.allCases
         /// 탭 페이지 각각의 뷰컨 생성
@@ -79,6 +80,7 @@ extension TabCoordinator {
             let homeCoordinator = HomeCoordinator(navigationController)
             homeCoordinator.finishDelegate = self
             homeCoordinator.loginDelegate = self
+            homeCoordinator.homeDelegate = self
             self.childCoordinators.append(homeCoordinator)
             homeCoordinator.start()
         case .chat:
@@ -119,6 +121,14 @@ extension TabCoordinator: CoordinatorFinishDelegate {
             navigationController.dismiss(animated: true)
         default: break
         }
+    }
+}
+
+// MARK: - HomeCoordinatorDelegate
+extension TabCoordinator: HomeCoordinatorDelegate {
+    
+    func showPersonalChat(with projectWriter: String) {
+        
     }
 }
 
