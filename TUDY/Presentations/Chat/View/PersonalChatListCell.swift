@@ -81,10 +81,17 @@ extension PersonalChatListCell {
     private func configurePersonalChatListCell() {
         guard let chatInfo = chatInfo else { return }
         
+        let pin = NSMutableAttributedString(string: "📍 ",
+                                            attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20)])
+        let title = NSMutableAttributedString(string: chatInfo.chatTitle,
+                                              attributes: [NSAttributedString.Key.font : UIFont.sub16,
+                                                           NSAttributedString.Key.foregroundColor : UIColor.White])
+        pin.append(title)
+        
         FirebaseUserChatInfo.fetchUserChatInfo(chatInfoID: chatInfo.chatInfoID) { [weak self] userChatInfo in
             switch userChatInfo.bookMark {
             case true:
-                self?.titleLabel.text = "📍 \(chatInfo.chatTitle)"
+                self?.titleLabel.attributedText = pin
             case false:
                 self?.titleLabel.text = "  \(chatInfo.chatTitle)"
             }
