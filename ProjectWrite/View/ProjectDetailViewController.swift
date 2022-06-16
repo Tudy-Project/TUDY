@@ -27,7 +27,7 @@ class ProjectDetailViewController: UIViewController {
     
     private lazy var detailDesc: UILabel = {
         let label = UILabel().label(text:testData().descLongText[0], font: UIFont.body14, color: .white)
-        let attrString = NSMutableAttributedString(string: label.text!)
+        let attrString = NSMutableAttributedString(string: label.text ?? "")
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
