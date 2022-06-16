@@ -78,12 +78,13 @@ extension TabCoordinator {
         case .home:
             let homeCoordinator = HomeCoordinator(navigationController)
             homeCoordinator.finishDelegate = self
-            homeCoordinator.homeDelegate = self
+            homeCoordinator.loginDelegate = self
             self.childCoordinators.append(homeCoordinator)
             homeCoordinator.start()
         case .chat:
             let chatCoordinator = ChatCoordinator(navigationController)
             chatCoordinator.finishDelegate = self
+            chatCoordinator.loginDelegate = self
             self.childCoordinators.append(chatCoordinator)
             chatCoordinator.start()
         }
@@ -93,8 +94,8 @@ extension TabCoordinator {
 }
 
 // MARK: - HomeCoordinatorDelegate
-extension TabCoordinator: HomeCoordinatorDelegate {
-    func prepareLoginCoordinator(_ coordinator: HomeCoordinator) {
+extension TabCoordinator: LoginCheckDelegate {
+    func prepareLoginCoordinator() {
         self.showLogin()
     }
 }

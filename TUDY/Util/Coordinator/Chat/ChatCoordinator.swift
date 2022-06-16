@@ -15,6 +15,7 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
     var chatViewController: ChatProtocol?
     
     weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var loginDelegate: LoginCheckDelegate?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .chat
@@ -29,6 +30,8 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
             switch event {
             case .showChat:
                 self.pushChatViewController(chatInfo: chatInfo)
+            case .showLogin:
+                self.loginDelegate?.prepareLoginCoordinator()
             }
         }
         self.navigationController.pushViewController(self.chatListViewController, animated: true)

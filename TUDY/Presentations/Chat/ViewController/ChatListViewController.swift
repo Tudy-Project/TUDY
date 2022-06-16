@@ -13,6 +13,7 @@ class ChatListViewController: UIViewController {
     // MARK: - Properties
     enum Event {
         case showChat
+        case showLogin
     }
     var didSendEventClosure: ((Event, ChatInfo) -> Void)?
     
@@ -89,13 +90,16 @@ class ChatListViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchUserChatInfoList()
+        
+        if isLogin() {
+            configureTableView()
+            fetchUserChatInfoList()
+            fetchGroupChatList()
+        }
         
         configureCollectionView()
-        configureTableView()
         configureUI()
         
-        fetchGroupChatList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,18 +140,22 @@ extension ChatListViewController {
         
         configureOpenGroupChatButtonLayout()
         
-        view.addSubview(groupChatListTableView)
-        groupChatListTableView.backgroundColor = .DarkGray1
-        groupChatListTableView.snp.makeConstraints { make in
-            make.top.equalTo(indicatorBackgroundView.snp.bottom).offset(66)
-            make.leading.trailing.bottom.equalToSuperview()
+        if let groupChatListTableView = groupChatListTableView {
+            view.addSubview(groupChatListTableView)
+            groupChatListTableView.backgroundColor = .DarkGray1
+            groupChatListTableView.snp.makeConstraints { make in
+                make.top.equalTo(indicatorBackgroundView.snp.bottom).offset(66)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
         }
         
-        view.addSubview(personalChatListTableView)
-        personalChatListTableView.backgroundColor = .DarkGray1
-        personalChatListTableView.snp.makeConstraints { make in
-            make.top.equalTo(indicatorBackgroundView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+        if let personalChatListTableView = personalChatListTableView {
+            view.addSubview(personalChatListTableView)
+            personalChatListTableView.backgroundColor = .DarkGray1
+            personalChatListTableView.snp.makeConstraints { make in
+                make.top.equalTo(indicatorBackgroundView.snp.bottom)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
         }
     }
     
@@ -356,6 +364,12 @@ extension ChatListViewController {
 extension ChatListViewController {
     
     @objc private func showAlert() {
+        
+        if !isLogin() {
+            didSendEventClosure?(.showLogin, ChatInfo(chatState: .personalChat))
+            return
+        }
+        
         let alert = UIAlertController(title: "스터디 이름을 입력해주세요.", message: nil, preferredStyle: .alert)
         
         alert.addTextField { textField in
@@ -404,6 +418,10 @@ extension ChatListViewController: UICollectionViewDelegate {
         }
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
+        }
+        
+        if !isLogin() {
+            return
         }
         
         // chatList 업데이트
@@ -488,3 +506,6 @@ extension ChatListViewController: UITableViewDelegate {
         return UISwipeActionsConfiguration(actions: [notificationAction, bookmarkAction])
     }
 }
+
+//  MARK: - Login Check
+extension ChatListViewController: LoginCheck {}

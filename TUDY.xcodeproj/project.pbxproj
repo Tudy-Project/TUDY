@@ -36,7 +36,7 @@
 		D83412982852E1F200D1D835 /* GroupChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83412972852E1F200D1D835 /* GroupChatListCell.swift */; };
 		D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
-		D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */; };
+		D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */; };
 		D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */; };
 		D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */; };
 		D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */; };
@@ -138,7 +138,7 @@
 		D83412972852E1F200D1D835 /* GroupChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCell.swift; sourceTree = "<group>"; };
 		D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserChatInfo.swift; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
-		D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorDelegate.swift; sourceTree = "<group>"; };
+		D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckDelegate.swift; sourceTree = "<group>"; };
 		D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIToolbar+Custom.swift"; sourceTree = "<group>"; };
 		D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
@@ -462,7 +462,6 @@
 		4AEEC0CB2834977B004A08F8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				D847DFFF283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift */,
 				D8C7F237283B986300424AE5 /* HomeCoordinatorProtocol.swift */,
 				D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */,
 			);
@@ -499,6 +498,7 @@
 		D85ED4C5283E672A00D0A006 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */,
 				D8C7F22C283B725400424AE5 /* CoordinatorFinishDelegate.swift */,
 				D8C7F22E283B726400424AE5 /* CoordinatorType.swift */,
 				D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */,
@@ -844,7 +844,7 @@
 				D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */,
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
-				D847E000283F4B9600BB4E08 /* HomeCoordinatorDelegate.swift in Sources */,
+				D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */,
 				D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */,
 				D8CA051528450E62006E59DC /* SubwayData.swift in Sources */,
 				4AC095D02859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift in Sources */,
