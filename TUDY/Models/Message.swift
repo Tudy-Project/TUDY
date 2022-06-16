@@ -22,7 +22,8 @@ struct Message: Codable {
     
     init(dict: [String : Any]) {
         self.content = dict["content"] as? String ?? ""
-        self.sender = dict["sender"] as? User ?? User()
+        let senderDict = dict["sender"] as? [String: Any] ?? [:]
+        self.sender = User(dict: senderDict)
         self.createdDate = dict["createdDate"] as? String ?? ""
     }
 }
