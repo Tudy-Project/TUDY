@@ -92,8 +92,8 @@ extension GroupChatListCell {
                 self?.titleLabel.text = "  \(chatInfo.chatTitle)"
             }
             
-            if userChatInfo.dontReadCount != 0 {
-                self?.addSubViewNotificationCount(count: userChatInfo.dontReadCount)
+            if userChatInfo.unReadCount != 0 {
+                self?.addSubViewNotificationCount(count: userChatInfo.unReadCount)
             }
         }
         

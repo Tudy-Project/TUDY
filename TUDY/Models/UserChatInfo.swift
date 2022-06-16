@@ -11,7 +11,7 @@ struct UserChatInfo: Codable {
     var chatInfoID: String
     var chatNotification: Bool = true
     var bookMark: Bool = false
-    var dontReadCount: Int = 0
+    var unReadCount: Int = 0
     
     init(chatInfoID: String,
          chatNotification: Bool = true,
@@ -25,6 +25,6 @@ struct UserChatInfo: Codable {
         self.chatInfoID = dict["chatInfoID"] as? String ?? ""
         self.chatNotification = dict["chatNotification"] as? Bool ?? true
         self.bookMark = dict["bookMark"] as? Bool ?? false
-        self.dontReadCount = dict["dontReadCount"] as? Int ?? 0
+        self.unReadCount = dict["dontReadCount"] as? Int ?? 0
     }
 }
