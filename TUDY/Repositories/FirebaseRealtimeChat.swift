@@ -41,17 +41,14 @@ struct FirebaseRealtimeChat {
             }
             completion(messages)
         }
-        
-        // 옵저버 확인
-        ref.child(path).observe(.childAdded) { snapshot in
-            print(snapshot.value)
-        }
     }
     
-    /// 채팅방 ID RealTimeDB에 Chat 메세지 추가될 때마다 호출
-    static func observeChat(chatInfoID path: String) {
+    /// 채팅방 ID RealTimeDB에 Chat 메세지 추가될 때마다 호출됨
+    static func observe(chatInfoID path: String, completion: @escaping (Message) -> Void) {
         ref.child(path).observe(.childAdded) { snapshot in
-            print(snapshot)
+            guard let dict = snapshot.value as? [String: Any] else { return}
+            let message = Message(dict: dict)
+            completion(message)
         }
     }
 }
