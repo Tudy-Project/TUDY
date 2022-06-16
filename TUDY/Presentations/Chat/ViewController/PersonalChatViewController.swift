@@ -16,14 +16,28 @@ class PersonalChatViewController: UIViewController {
         }
     }
     
+    private lazy var chatinputView: ChatInputAccessoryView = {
+        let iv = ChatInputAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        return iv
+    }()
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navAppear()
         tabDisappear()
+    }
+    
+    override var inputAccessoryView: UIView? {
+        get { return chatinputView }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
     }
 }
 
@@ -39,7 +53,7 @@ extension PersonalChatViewController {
         navigationItem.title = chatInfo?.chatTitle
         navigationItem.backButtonTitle = ""
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
-
+        navigationItem.rightBarButtonItem?.tintColor = .PointBlue
     }
 }
 // MARK: - extensions
