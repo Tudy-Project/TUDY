@@ -32,12 +32,14 @@
 		D8034E912857356A008C569F /* FirebaseChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8034E902857356A008C569F /* FirebaseChat.swift */; };
 		D81091E528459A1600B4544C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81091E428459A1600B4544C /* NetworkError.swift */; };
 		D81091EF2845B47B00B4544C /* String+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81091EE2845B47B00B4544C /* String+Custom.swift */; };
+		D8166C55285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8166C54285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift */; };
 		D83412962852D8BF00D1D835 /* TopBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83412952852D8BF00D1D835 /* TopBarCell.swift */; };
 		D83412982852E1F200D1D835 /* GroupChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83412972852E1F200D1D835 /* GroupChatListCell.swift */; };
 		D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */; };
 		D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */; };
+		D8517755285B161C00CF88F3 /* Date+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8517754285B161C00CF88F3 /* Date+Custom.swift */; };
 		D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */; };
 		D85ED4CD283E68DA00D0A006 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */; };
 		D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */; };
@@ -134,12 +136,14 @@
 		D8034E902857356A008C569F /* FirebaseChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseChat.swift; sourceTree = "<group>"; };
 		D81091E428459A1600B4544C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		D81091EE2845B47B00B4544C /* String+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Custom.swift"; sourceTree = "<group>"; };
+		D8166C54285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D83412952852D8BF00D1D835 /* TopBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarCell.swift; sourceTree = "<group>"; };
 		D83412972852E1F200D1D835 /* GroupChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCell.swift; sourceTree = "<group>"; };
 		D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserChatInfo.swift; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckDelegate.swift; sourceTree = "<group>"; };
 		D847E0032840B9F700BB4E08 /* UIToolbar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIToolbar+Custom.swift"; sourceTree = "<group>"; };
+		D8517754285B161C00CF88F3 /* Date+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Custom.swift"; sourceTree = "<group>"; };
 		D85ED4CA283E68CC00D0A006 /* LoginCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		D85ED4CC283E68DA00D0A006 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		D85ED4D2283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -462,6 +466,7 @@
 		4AEEC0CB2834977B004A08F8 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				D8166C54285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift */,
 				D8C7F237283B986300424AE5 /* HomeCoordinatorProtocol.swift */,
 				D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */,
 			);
@@ -499,6 +504,8 @@
 			isa = PBXGroup;
 			children = (
 				D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */,
+				D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */,
+				D85ED4C8283E682900D0A006 /* PrivateChatList */,
 				D8C7F22C283B725400424AE5 /* CoordinatorFinishDelegate.swift */,
 				D8C7F22E283B726400424AE5 /* CoordinatorType.swift */,
 				D8C7F220283B582B00424AE5 /* CoordinatorProtocol.swift */,
@@ -589,6 +596,7 @@
 				D81091EE2845B47B00B4544C /* String+Custom.swift */,
 				4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */,
 				4AC095CA285752A50003BAFB /* Codable+Custom.swift */,
+				D8517754285B161C00CF88F3 /* Date+Custom.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -623,8 +631,6 @@
 				D8C7F230283B969100424AE5 /* Chat */,
 				D85ED4C6283E681100D0A006 /* Login */,
 				D85ED4C9283E683300D0A006 /* GroupChatList */,
-				D85ED4C8283E682900D0A006 /* PrivateChatList */,
-				D87287CA2835D88C004B16A8 /* LoginCheckProtocol.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -810,6 +816,8 @@
 				D87287CB2835D88C004B16A8 /* LoginCheckProtocol.swift in Sources */,
 				D8034E8F28572E0D008C569F /* ChatProtocol.swift in Sources */,
 				D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */,
+				D8166C55285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift in Sources */,
+				D8517755285B161C00CF88F3 /* Date+Custom.swift in Sources */,
 				D87CBB582843CE28003397A5 /* SubwayListCell.swift in Sources */,
 				D83412962852D8BF00D1D835 /* TopBarCell.swift in Sources */,
 				D81091E528459A1600B4544C /* NetworkError.swift in Sources */,
