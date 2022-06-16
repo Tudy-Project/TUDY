@@ -58,7 +58,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        //kakaoLogout()
+//        print("============")
+//        try? Auth.auth().signOut()
+//        kakaoLogout()
     }
 }
 

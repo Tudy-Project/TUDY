@@ -42,50 +42,18 @@ class ChatListViewController: UIViewController {
     private var groupChatListTableView: UITableView!
     private var groupChatListDataSource: ChatListDataSource!
     
+    private var userChatInfoList: [UserChatInfo] = []
     private var groupChatInfoList: [ChatInfo] = [] {
         didSet {
             makeGroupChatListSnapshot(groupChatInfoList)
         }
     }
-    private var userChatInfoList: [UserChatInfo] = []
     
-    //    private lazy var groupChatList = [
-    //        ChatInfo(chatState: .groupChat,
-    //                 chatNotification: false,
-    //                 bookMark: true,
-    //                 chatTitle: "그룹챗 테스트 그룹챗 테스트 그룹챗 테스트 그룹챗 테스트",
-    //                 profileImageURL: "",
-    //                 projectMasterID: "",
-    //                 participantIDs: ["", "", ""],
-    //                 latestMessage: "마지막",
-    //                 latestMessageDate: "1일전"),
-    //        ChatInfo(chatState: .groupChat,
-    //                 chatNotification: false,
-    //                 bookMark: false,
-    //                 chatTitle: "그룹챗 테스트2",
-    //                 profileImageURL: "",
-    //                 projectMasterID: "",
-    //                 participantIDs: ["", ""],
-    //                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지",
-    //                 latestMessageDate: "1일전")
-    //    ]
-    
-    private lazy var personalChatInfoList = [
-        ChatInfo(chatState: .personalChat,
-                 chatTitle: "상운",
-                 profileImageURL: "",
-                 projectMasterID: "",
-                 participantIDs: [""],
-                 latestMessage: "마지막",
-                 latestMessageDate: "1일전"),
-        ChatInfo(chatState: .personalChat,
-                 chatTitle: "호진",
-                 profileImageURL: "",
-                 projectMasterID: "",
-                 participantIDs: [""],
-                 latestMessage: "마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지 마지막 메세지",
-                 latestMessageDate: "3일전")
-    ]
+    private var personalChatInfoList: [ChatInfo] = [] {
+        didSet {
+            makePersonalChatListSnapshot(personalChatInfoList)
+        }
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -200,7 +168,9 @@ extension ChatListViewController {
     }
     
     private func fetchPersonalChatList() {
-        
+        FirebaseChat.fetchChatInfo(chatState: .personalChat) { [weak self] chatInfos in
+            self?.personalChatInfoList = chatInfos
+        }
     }
     
     private func fetchUserChatInfoList() {
@@ -216,6 +186,8 @@ extension ChatListViewController {
         chatInfo.chatTitle = chatTitle
         chatInfo.projectMasterID = FirebaseUser.getUserID()
         chatInfo.participantIDs.append(userID)
+        chatInfo.latestMessage = "새로운 채팅방이 생성되었습니다."
+        chatInfo.latestMessageDate = Date().chatListDate()
         
         FirebaseChat.saveChatInfo(chatInfo)
         fetchUserChatInfoList()
@@ -344,7 +316,10 @@ extension ChatListViewController {
     }
     
     private func makePersonalChatListSnapshot(_ chatInfos: [ChatInfo]) {
-        
+        var snapshot = ChatListSnapshot()
+        snapshot.appendSections([0])
+        snapshot.appendItems((chatInfos))
+        personalChatListDataSource.apply(snapshot)
     }
     
     private func updateGroupChatListSnapshot(_ chatInfo: ChatInfo) {

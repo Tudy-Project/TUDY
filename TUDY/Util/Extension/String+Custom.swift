@@ -8,6 +8,63 @@
 import Foundation
 
 extension String {
+
+    func projectDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        
+        guard let date = dateFormatter.date(from: self) else { return "" }
+        let cur = Date()
+        
+        guard let distanceDay = Calendar.current.dateComponents([.day], from: date, to: cur).day else { return "" }
+        if 0 < distanceDay {
+            return "\(distanceDay)일 전"
+        }
+        
+        guard let distanceHour = Calendar.current.dateComponents([.hour], from: date, to: cur).hour else { return "" }
+        if 0 < distanceHour {
+            return "\(distanceHour)시간 전"
+        }
+        
+        guard let distanceMinute = Calendar.current.dateComponents([.hour], from: date, to: cur).hour else { return "" }
+        
+        return "\(distanceMinute)분 전"
+    }
+
+    func chatListDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        let monthDayFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M월 d일"
+        let hourMinuteFormatter = DateFormatter()
+        dateFormatter.dateFormat = "a h시 m분"
+        
+        guard let date = dateFormatter.date(from: self) else { return "" }
+        let cur = Date()
+        
+        guard let distanceDay = Calendar.current.dateComponents([.day], from: date, to: cur).day else { return "" }
+        if 0 == distanceDay {
+            return "어제"
+        } else if 1 < distanceDay {
+            return monthDayFormatter.string(from: date)
+        }
+        
+        guard let distanceHour = Calendar.current.dateComponents([.hour], from: date, to: cur).hour else { return "" }
+        if 0 < distanceHour {
+            return "\(distanceHour)시간 전"
+        }
+        
+        return hourMinuteFormatter.string(from: date)
+    }
+    
+    func chatChangedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 M월 d일"
+        
+        guard let date = dateFormatter.date(from: self) else { return "" }
+        return dateFormatter.string(from: date)
+    }
+    
     func subwayLineName() -> String {
         switch self {
         case "01호선":

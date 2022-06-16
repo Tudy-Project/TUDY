@@ -12,4 +12,7 @@ protocol HomeCoordinatorProtocol: Coordinator {
     var homeViewController: HomeViewController { get set }
     
     func pushSearchViewController()
+    func pushProjectWriteViewController()
+    func showLogin()
+    func showPersonalChatViewController()
 }

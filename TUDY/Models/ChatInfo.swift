@@ -10,8 +10,7 @@ import Foundation
 struct ChatInfo: Hashable, Codable {
     var chatInfoID: String = UUID().uuidString
     var chatState: ChatState
-    var chatTitle: String = "" // 개인챗 default: 상대방 이름, 그룹챗 default: 미정
-    var profileImageURL: String = ""
+    var chatTitle: String = "" // 개인챗 안씀, 그룹챗 default: 미정
     var projectMasterID = ""
     var participantIDs: [String] = []
     var latestMessage: String = ""
@@ -19,14 +18,12 @@ struct ChatInfo: Hashable, Codable {
     
     init(chatState: ChatState,
          chatTitle: String = "",
-         profileImageURL: String = "",
          projectMasterID: String = "",
          participantIDs: [String] = [],
          latestMessage: String = "",
          latestMessageDate: String = "") {
         self.chatState = chatState
         self.chatTitle = chatTitle
-        self.profileImageURL = profileImageURL
         self.projectMasterID = projectMasterID
         self.participantIDs = participantIDs
         self.latestMessage = latestMessage
@@ -38,7 +35,6 @@ struct ChatInfo: Hashable, Codable {
         let chat = dict["chatState"] as? String ?? "personalChat"
         self.chatState = chat == "groupChat" ? .groupChat : .personalChat
         self.chatTitle = dict["chatTitle"] as? String ?? ""
-        self.profileImageURL = dict["profileImageURL"] as? String ?? ""
         self.projectMasterID = dict["projectMasterID"] as? String ?? ""
         self.participantIDs = dict["participantIDs"] as? [String] ?? []
         self.latestMessage = dict["latestMessage"] as? String ?? ""

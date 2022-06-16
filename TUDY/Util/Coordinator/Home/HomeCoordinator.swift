@@ -13,6 +13,8 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
     
     weak var finishDelegate: CoordinatorFinishDelegate?
     weak var loginDelegate: LoginCheckDelegate?
+    weak var homeDelegate: HomeCoordinatorDelegate?
+    
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .home
@@ -59,6 +61,10 @@ extension HomeCoordinator {
     
     func showLogin() {
         self.loginDelegate?.prepareLoginCoordinator()
+    }
+    
+    func showPersonalChatViewController() {
+        self.homeDelegate?.showPersonalChat(with: "")
     }
 }
 
