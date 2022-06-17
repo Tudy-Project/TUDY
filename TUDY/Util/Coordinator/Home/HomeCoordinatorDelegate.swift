@@ -8,5 +8,5 @@
 import Foundation
 
 protocol HomeCoordinatorDelegate: AnyObject {
-    func showPersonalChat(with projectWriter : String)
+    func showPersonalChat(with projectWriter: User)
 }

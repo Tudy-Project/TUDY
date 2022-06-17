@@ -31,6 +31,8 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
                 self?.pushSearchViewController()
             case .showProjectWrite:
                 self?.pushProjectWriteViewController()
+            case .showProjectDetail:
+                self?.pushProjectDetailViewController()
             case .showLogin:
                 self?.showLogin()
             }
@@ -52,19 +54,23 @@ extension HomeCoordinator {
     }
     
     func pushProjectWriteViewController() {
-        let projectWriteViewController =
-        ProjectWriteViewController()
-        self.navigationController
-            .pushViewController(projectWriteViewController, animated: true)
-//        navigationController.navigationBar.backItem?.backButtonTitle = ""
+        let projectWriteViewController = ProjectWriteViewController()
+        self.navigationController.pushViewController(projectWriteViewController, animated: true)
+    }
+    
+    func pushProjectDetailViewController() {
+        let projectDetailViewController = ProjectDetailViewController()
+        projectDetailViewController.didSendEventClosure = { [weak self] event in
+            switch event {
+            case .showPersonalChat(let user):
+                self?.homeDelegate?.showPersonalChat(with: user)
+            }
+        }
+        self.navigationController.pushViewController(projectDetailViewController, animated: true)
     }
     
     func showLogin() {
         self.loginDelegate?.prepareLoginCoordinator()
-    }
-    
-    func showPersonalChatViewController() {
-        self.homeDelegate?.showPersonalChat(with: "")
     }
 }
 

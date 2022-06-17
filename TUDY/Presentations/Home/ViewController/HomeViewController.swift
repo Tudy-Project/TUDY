@@ -14,6 +14,7 @@ class HomeViewController: UIViewController {
     enum Event {
         case showSearch
         case showProjectWrite
+        case showProjectDetail
         case showLogin
     }
     
@@ -461,7 +462,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             print("선택하면 빠른 검색 \(fastSearchButtonList[indexPath.row])")
         } else {
             
-            self.navigationController?.pushViewController(ProjectDetailViewController(), animated: true)
+//            self.navigationController?.pushViewController(ProjectDetailViewController(), animated: true)
+            didSendEventClosure?(.showProjectDetail)
             let indexPath = indexPath.row
             print("선택하면 프로젝트 디테일뷰로 \(indexPath)")
         }

@@ -13,4 +13,5 @@ protocol ChatCoordinatorProtocol: Coordinator {
     var chatViewController: ChatProtocol? { get set }
     
     func pushChatViewController(chatInfo: ChatInfo)
+    func makePersonalChatViewController(with projectWriter: User)
 }

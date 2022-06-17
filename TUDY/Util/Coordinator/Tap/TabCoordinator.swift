@@ -127,8 +127,11 @@ extension TabCoordinator: CoordinatorFinishDelegate {
 // MARK: - HomeCoordinatorDelegate
 extension TabCoordinator: HomeCoordinatorDelegate {
     
-    func showPersonalChat(with projectWriter: String) {
-        
+    func showPersonalChat(with projectWriter: User) {
+        selectPage(.chat)
+        guard let index = childCoordinators.firstIndex (where: { $0.type == .chat }) else { return }
+        guard let chatCoordinator = childCoordinators[index] as? ChatCoordinator else { return }
+        chatCoordinator.makePersonalChatViewController(with: projectWriter)
     }
 }
 
