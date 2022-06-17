@@ -25,21 +25,30 @@ struct FirebaseRealtimeChat {
 //        ref.child(path).child(message.messageID).updateChildValues(dict)
     }
     
-    /// 채팅방 ID로 Chat 기록 가져오기 (최대 몇개?)
-    static func fetchChat(chatInfoID path: String) {
+    /// 채팅방 ID로 Chat 기록 가져오기
+    static func fetchChat(chatInfoID path: String, completion: @escaping ([Message]) -> Void) {
+        var messages: [Message] = []
         ref.child(path).getData { error, snapshot in
             if let error = error {
                 print("DEBUG: 채팅 가져오기 실패 \(error.localizedDescription)")
                 return
             }
-            print(snapshot)
+            guard let snapshot = snapshot.value as? [String: Any] else { return }
+            snapshot.forEach { key, value in
+                guard let dict = value as? [String: Any] else { return}
+                let message = Message(dict: dict)
+                messages.append(message)
+            }
+            completion(messages)
         }
     }
     
-    /// 채팅방 ID RealTimeDB에 Chat 메세지 추가될 때마다 호출
-    static func observeChat(chatInfoID path: String) {
+    /// 채팅방 ID RealTimeDB에 Chat 메세지 추가될 때마다 호출됨
+    static func observe(chatInfoID path: String, completion: @escaping (Message) -> Void) {
         ref.child(path).observe(.childAdded) { snapshot in
-            print(snapshot)
+            guard let dict = snapshot.value as? [String: Any] else { return}
+            let message = Message(dict: dict)
+            completion(message)
         }
     }
 }

@@ -88,6 +88,24 @@ struct FirebaseUser {
         // addUserSnapshotListener()
     }
     
+    /// 다른 사람의 유저 정보 가져오기
+    static func fetchOtherUser(userID: String, completion: @escaping (User) -> Void) {
+        userPath
+            .whereField("userID", isEqualTo: userID)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("[DEBUG] 유저정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let user = User(dict: dict)
+                    print("싱글톤객체에 유저 정보 담기")
+                    completion(user)
+                })
+            }
+    }
+    
     /// 자신의 User정보가 업데이트 되면 호출되는 함수
     static private func addUserSnapshotListener() {
         let userID = getUserID()

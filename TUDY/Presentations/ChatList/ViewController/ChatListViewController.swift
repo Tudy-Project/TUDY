@@ -63,6 +63,7 @@ class ChatListViewController: UIViewController {
             configureTableView()
             fetchUserChatInfoList()
             fetchGroupChatList()
+            fetchPersonalChatList()
         }
         
         configureCollectionView()
@@ -88,7 +89,7 @@ extension ChatListViewController {
         topTapBarCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
+            make.height.equalTo(70)
         }
         
         view.addSubview(indicatorBackgroundView)
@@ -180,16 +181,30 @@ extension ChatListViewController {
     }
     
     // 그룹챗 생성
-    private func makeGroupChat(text chatTitle: String) {
+    private func makeGroupChat(text title: String) {
         let userID = FirebaseUser.getUserID()
-        var chatInfo = ChatInfo(chatState: .groupChat)
-        chatInfo.chatTitle = chatTitle
-        chatInfo.projectMasterID = FirebaseUser.getUserID()
-        chatInfo.participantIDs.append(userID)
-        chatInfo.latestMessage = "새로운 채팅방이 생성되었습니다."
-        chatInfo.latestMessageDate = Date().chatListDate()
-        
+        let chatInfo = ChatInfo(chatState: .groupChat,
+                                chatTitle: title,
+                                projectMasterID: userID,
+                                participantIDs: [userID],
+                                latestMessage: "새로운 채팅방이 생성되었습니다.",
+                                latestMessageDate: Date().chatListDate())
         FirebaseChat.saveChatInfo(chatInfo)
+        fetchUserChatInfoList()
+    }
+    
+    func makePersonalChat(with projectWriter: User) {
+        let userID = FirebaseUser.getUserID()
+        let projectWriterID = projectWriter.userID
+        let chatInfo = ChatInfo(chatState: .personalChat,
+                                chatTitle: "",
+                                projectMasterID: "",
+                                participantIDs: [userID, projectWriterID],
+                                latestMessage: "새로운 채팅방이 생성되었습니다.",
+                                latestMessageDate: Date().chatListDate())
+        FirebaseChat.saveChatInfo(chatInfo) { [weak self] in
+            self?.fetchPersonalChatList()
+        }
         fetchUserChatInfoList()
     }
     
@@ -211,7 +226,7 @@ extension ChatListViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(50))
+                                               heightDimension: .absolute(70))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitem: item,
                                                        count: 2)
