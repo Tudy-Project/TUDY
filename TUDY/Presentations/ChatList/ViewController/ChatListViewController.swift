@@ -161,6 +161,22 @@ extension ChatListViewController {
         userChatInfoList[index].bookMark.toggle()
     }
     
+    private func showDeleteAlert(_ chatInfo: ChatInfo) {
+        let alert = UIAlertController(title: "채팅방 나가기", message: "채팅목록에서 삭제됩니다.", preferredStyle: .alert)
+        
+        let ok = UIAlertAction(title: "나가기", style: .default) { [weak self] _ in
+            self?.leaveChat(chatInfo: chatInfo)
+        }
+        ok.setValue(UIColor.PointRed, forKey: "titleTextColor")
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        cancel.setValue(UIColor.PointBlue, forKey: "titleTextColor")
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
+    }
+    
     // MARK: - API
     private func fetchGroupChatList() {
         FirebaseChat.fetchChatInfo(chatState: .groupChat) { [weak self] chatInfos in
@@ -202,10 +218,13 @@ extension ChatListViewController {
                                 participantIDs: [userID, projectWriterID],
                                 latestMessage: "새로운 채팅방이 생성되었습니다.",
                                 latestMessageDate: Date().chatListDate())
-        FirebaseChat.saveChatInfo(chatInfo) { [weak self] in
-            self?.fetchPersonalChatList()
-        }
+        FirebaseChat.saveChatInfo(chatInfo)
         fetchUserChatInfoList()
+    }
+    
+    func leaveChat(chatInfo: ChatInfo) {
+        FirebaseChat.leaveChat(chatInfo: chatInfo)
+        FirebaseUserChatInfo.deleteUserChatInfo(at: chatInfo.chatInfoID)
     }
     
     // MARK: - CollectionView
@@ -370,7 +389,7 @@ extension ChatListViewController {
         let ok = UIAlertAction(title: "만들기", style: .default) { [weak self] _ in
             if let text = alert.textFields?[0].text {
                 self?.makeGroupChat(text: text)
-                self?.fetchGroupChatList()
+//                self?.fetchGroupChatList()
             }
         }
         ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
@@ -437,8 +456,17 @@ extension ChatListViewController: UITableViewDelegate {
     
     // MARK: - Swipe actions
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
-            // 삭제하시겠습니까? alert
+        
+        var chatInfo: ChatInfo
+        if tableView == groupChatListTableView {
+            chatInfo = groupChatInfoList[indexPath.row]
+        } else {
+            chatInfo = personalChatInfoList[indexPath.row]
+        }
+        
+        // MARK: 스와이프 액션 Delete
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completion in
+            self?.showDeleteAlert(chatInfo)
             completion(true)
         }
         deleteAction.image = UIImage(systemName: "trash")?.withTintColor(.White, renderingMode: .alwaysOriginal)
@@ -459,7 +487,7 @@ extension ChatListViewController: UITableViewDelegate {
         // 유저 채팅 정보 가져오기
         guard let userChatInfo = userChatInfoList.filter({ $0.chatInfoID == chatInfo.chatInfoID }).first else { return nil }
         
-        // 스와이프 액션
+        // MARK: 스와이프 액션 알림, 즐겨찾기
         let notificationAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
             // DB에 알림설정 업데이트
             FirebaseUserChatInfo.updateNotification(chatInfoID: chatInfo.chatInfoID,
