@@ -13,6 +13,6 @@ protocol HomeCoordinatorProtocol: Coordinator {
     
     func pushSearchViewController()
     func pushProjectWriteViewController()
+    func pushProjectDetailViewController()
     func showLogin()
-    func showPersonalChatViewController()
 }

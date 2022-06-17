@@ -20,7 +20,7 @@ class PersonalChatListCell: UITableViewCell {
     
     private let titleLabel = UILabel().label(text: "", font: .sub16)
     private let latestMessageLabel = UILabel().label(text: "", font: .body14, numberOfLines: 2)
-    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption12)
+    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption12, numberOfLines: 1)
     private let notificationCountButton = UIButton().notificationCountButton()
     
     private lazy var profileImageView: UIImageView = {
@@ -67,13 +67,14 @@ extension PersonalChatListCell {
         }
         
         latestMessageLabel.snp.makeConstraints { make in
-            make.width.lessThanOrEqualTo(180)
+            make.width.equalTo(200)
         }
         
         addSubview(latestMessageDateLabel)
         latestMessageDateLabel.snp.makeConstraints { make in
             make.top.equalTo(self.snp.top).offset(30)
             make.trailing.equalTo(self.snp.trailing).offset(-30)
+            make.width.lessThanOrEqualTo(60)
         }
 
     }
@@ -81,19 +82,11 @@ extension PersonalChatListCell {
     private func configurePersonalChatListCell() {
         guard let chatInfo = chatInfo else { return }
         
-        let pin = NSMutableAttributedString(string: "📍 ",
-                                            attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20)])
-        let title = NSMutableAttributedString(string: chatInfo.chatTitle,
-                                              attributes: [NSAttributedString.Key.font : UIFont.sub16,
-                                                           NSAttributedString.Key.foregroundColor : UIColor.White])
-        pin.append(title)
-        
-        FirebaseUserChatInfo.fetchUserChatInfo(chatInfoID: chatInfo.chatInfoID) { [weak self] userChatInfo in
-            switch userChatInfo.bookMark {
-            case true:
-                self?.titleLabel.attributedText = pin
-            case false:
-                self?.titleLabel.text = "  \(chatInfo.chatTitle)"
+        let userID = FirebaseUser.getUserID()
+        for id in chatInfo.participantIDs where id != userID {
+            FirebaseUser.fetchOtherUser(userID: id) { [weak self] user in
+                print(user)
+                self?.setTitle(nickname: user.nickname)
             }
         }
         
@@ -112,6 +105,25 @@ extension PersonalChatListCell {
         notificationCountButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-30)
             make.bottom.equalToSuperview().offset(-30)
+        }
+    }
+    
+    private func setTitle(nickname: String) {
+        guard let chatInfo = chatInfo else { return }
+        
+        let pin = NSMutableAttributedString(string: "📍 ",
+                                            attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 20)])
+        let title = NSMutableAttributedString(string: nickname,
+                                              attributes: [NSAttributedString.Key.font : UIFont.sub16,
+                                                           NSAttributedString.Key.foregroundColor : UIColor.White])
+        pin.append(title)
+        FirebaseUserChatInfo.fetchUserChatInfo(chatInfoID: chatInfo.chatInfoID) { [weak self] userChatInfo in
+            switch userChatInfo.bookMark {
+            case true:
+                self?.titleLabel.attributedText = pin
+            case false:
+                self?.titleLabel.text = "\(nickname)"
+            }
         }
     }
 }

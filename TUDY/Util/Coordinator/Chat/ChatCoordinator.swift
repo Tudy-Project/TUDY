@@ -53,6 +53,10 @@ extension ChatCoordinator {
             navigationController.pushViewController(chatViewController, animated: true)
         }
     }
+    
+    func makePersonalChatViewController(with projectWriter: User) {
+        chatListViewController.makePersonalChat(with: projectWriter)
+    }
 }
 
 // MARK: - CoordinatorFinishDelegate

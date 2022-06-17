@@ -46,7 +46,7 @@ struct FirebaseChat {
     }
     
     // 채팅 개설 시 채팅정보 저장 (개인, 단체)
-    static func saveChatInfo(_ chatInfo: ChatInfo) {
+    static func saveChatInfo(_ chatInfo: ChatInfo, completion: (() -> Void)? = nil) {
         
         let collectionPath = collectionPath(chatInfo.chatState)
         let collectionListener = Firestore.firestore().collection(collectionPath)
@@ -60,6 +60,9 @@ struct FirebaseChat {
             if let error = error {
                 print("DEBUG: 파이어베이스 채팅 저장 오류\(error.localizedDescription)")
                 return
+            }
+            if let completion = completion {
+                completion()
             }
         }
         
