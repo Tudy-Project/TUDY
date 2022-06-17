@@ -51,4 +51,10 @@ struct FirebaseRealtimeChat {
             completion(message)
         }
     }
+    
+    /// 채팅 기록 삭제
+    static func removeMessages(chatInfoID path: String) {
+        ref.child(path).removeAllObservers()
+        ref.child(path).removeValue()
+    }
 }

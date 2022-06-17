@@ -80,6 +80,8 @@ struct FirebaseChat {
         if participantIDs.isEmpty {
             collectionListener.document(chatInfo.chatInfoID)
                 .delete()
+            // 채팅기록 삭제
+            FirebaseRealtimeChat.removeMessages(chatInfoID: chatInfo.chatInfoID)
         } else {
             if chatInfo.projectMasterID == userID {
                 collectionListener.document(chatInfo.chatInfoID)
