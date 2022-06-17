@@ -7,27 +7,38 @@
 
 import UIKit
 
+protocol ChatInputAccessoryViewDelegate: class {
+    func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String)
+}
+
 class ChatInputAccessoryView: UIView {
     
     // MARK: - Properties
-    private lazy var photoButton: UIButton = {
+    
+    weak var delegate: ChatInputAccessoryViewDelegate?
+    
+    let photoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
         return button
     }()
     
-    private let messageInputTextView: UITextView = {
+    lazy var messageInputTextView: UITextView = {
         let textview = UITextView()
-        textview.font = .sub16
+        textview.font = .sub14
+        textview.layer.borderWidth = 1
+        textview.layer.borderColor = UIColor.LightGray1.cgColor
+        textview.textColor = .black
+        textview.textContainer.lineFragmentPadding = 15
         textview.isScrollEnabled = false
-        textview.layer.cornerRadius = 20
+        textview.layer.cornerRadius = 15
         textview.backgroundColor = .white
         return textview
     }()
     
-    private lazy var sendButton: UIButton = {
+    lazy var sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "sendmessage"), for: .normal)
         button.tintColor = .white
@@ -44,26 +55,25 @@ class ChatInputAccessoryView: UIView {
         autoresizingMask = .flexibleHeight
         
         addSubview(photoButton)
-        addSubview(sendButton)
-        addSubview(messageInputTextView)
-
         photoButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
-            make.leading.equalToSuperview().offset(8)
+            make.top.equalToSuperview().offset(-4)
+            make.leading.equalToSuperview()
             make.width.height.equalTo(50)
         }
 
+        addSubview(sendButton)
         sendButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(8)
+            make.top.equalToSuperview()
+            make.trailing.equalToSuperview().offset(4)
             make.width.height.equalTo(50)
         }
         
+        addSubview(messageInputTextView)
         messageInputTextView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4).inset(12)
+            make.top.equalToSuperview().inset(4)
             make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(4)
-            make.leading.equalTo(photoButton.snp.trailing).offset(4)
-            make.trailing.equalTo(sendButton.snp.leading)
+            make.leading.equalTo(photoButton.snp.trailing)
+            make.trailing.equalTo(sendButton.snp.leading).offset(4)
         }
     }
     
@@ -79,12 +89,10 @@ class ChatInputAccessoryView: UIView {
 // MARK: - Extension
 
 extension ChatInputAccessoryView {
-    @objc func handlephoto() {
-        print("PHOTO")
-    }
-    
+
     @objc func handleSendMessage() {
-        print("HEYYYY")
+        guard let message = messageInputTextView.text else { return }
+        delegate?.inputView(self, wantsToSend: message)
     }
 }
 
