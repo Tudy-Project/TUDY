@@ -105,7 +105,12 @@ class ProjectDetailViewController: UIViewController {
         return button
     }()
     
-    private let heartButton = UIButton().imageButton(imageName: "heart")
+    private lazy var heartButton: HeartButton = {
+        let button = HeartButton()
+        button.sizeToFit()
+        button.setState(false)
+        return button
+    }()
     
     private let heartCount = UILabel().label(text: "12", font: UIFont.sub14, color: .white)
     
@@ -144,8 +149,8 @@ extension ProjectDetailViewController {
         //네비게이션바 왼쪽 타이틀
         navigationController?.navigationBar.topItem?.backButtonTitle = ""
         
-        let more = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: UIBarButtonItem.Style.plain, target: self, action: nil)
-        navigationItem.rightBarButtonItems = [more]
+        let moreVertical = UIBarButtonItem(image: UIImage(named: "more_vertical"), style: UIBarButtonItem.Style.plain, target: self, action: nil)
+        navigationItem.rightBarButtonItems = [moreVertical]
     }
     
     private func configureUI() {
