@@ -13,8 +13,35 @@ class ProjectWriteViewController: UIViewController {
     // MARK: - Properties
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    
+    //카테고리바
     private let categoriesView = OptionSelectionBar.init(title: "관련 직무 카테고리 📌")
+    private let resultSeletedCategoriesLabel = UILabel().label(text: "", font: UIFont.sub14, color: .white)
+    var isHiddenResultCategoriesLabel: Bool = true
+    
+    //프로젝트 조건바
     private let projectConditionsView = OptionSelectionBar.init(title: "프로젝트 조건 💡")
+    private let resultPersonnelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        return stackView
+    }()
+    
+    private let personnelTitle = UILabel().label(text: "인원", font: UIFont.sub14, color: .white)
+    private let personnelLabel = UILabel().label(text: "5명", font: UIFont.sub14, color: .white)
+    
+    private let resultEstimatedDurationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        return stackView
+    }()
+    
+    private let estimatedDurationTitle = UILabel().label(text: "예상 기간", font: UIFont.sub14, color: .white)
+    private let estimatedDurationLabel = UILabel().label(text: "1주", font: UIFont.sub14, color: .white)
+    
+    
     private var optionState: String = "categoriesBar"
     private var imageArray = [UIImage]()
     private var itemProviders: [NSItemProvider] = []
@@ -23,7 +50,7 @@ class ProjectWriteViewController: UIViewController {
         flowlayout.minimumLineSpacing = 10
         flowlayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .DarkGray1
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         return collectionView
     }()
@@ -53,8 +80,7 @@ class ProjectWriteViewController: UIViewController {
     private lazy var contentsTextView: UITextView = {
         let textView = UITextView()
         textView.isScrollEnabled = false
-        //        textView.backgroundColor = .DarkGray1
-        textView.backgroundColor = .blue
+        textView.backgroundColor = .DarkGray1
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = .zero
         textView.text = contentsTextViewPlaceHolder
@@ -120,13 +146,19 @@ class ProjectWriteViewController: UIViewController {
         categoriesView.addGestureRecognizer(categoriesViewTap)
         categoriesView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.height.equalTo(58)
+            make.height.equalTo(50)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        contentView.addSubview(resultSeletedCategoriesLabel)
+        resultSeletedCategoriesLabel.snp.makeConstraints { make in
+            make.top.equalTo(categoriesView.snp.bottom).offset(12)
+            make.leading.equalToSuperview().offset(30)
         }
         
         contentView.addSubview(grayDivider1)
         grayDivider1.snp.makeConstraints { make in
-            make.top.equalTo(categoriesView.snp.bottom)
+            make.top.equalTo(resultSeletedCategoriesLabel.snp.bottom).offset(16)
             make.height.equalTo(1)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
@@ -137,13 +169,33 @@ class ProjectWriteViewController: UIViewController {
         projectConditionsView.addGestureRecognizer(projectConditionsViewTap)
         projectConditionsView.snp.makeConstraints { make in
             make.top.equalTo(grayDivider1.snp.bottom)
-            make.height.equalTo(58)
+            make.height.equalTo(55)
             make.leading.trailing.equalToSuperview()
         }
         
+        //인원 선택 결과
+        contentView.addSubview(resultPersonnelStackView)
+        resultPersonnelStackView.snp.makeConstraints { make in
+            make.top.equalTo(projectConditionsView.snp.bottom)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-219)
+        }
+        resultPersonnelStackView.addArrangedSubview(personnelTitle)
+        resultPersonnelStackView.addArrangedSubview(personnelLabel)
+        
+        //예상기간 선택 결과
+        contentView.addSubview(resultEstimatedDurationStackView)
+        resultEstimatedDurationStackView.snp.makeConstraints { make in
+            make.top.equalTo(resultPersonnelStackView.snp.bottom)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-219)
+        }
+        resultEstimatedDurationStackView.addArrangedSubview(estimatedDurationTitle)
+        resultEstimatedDurationStackView.addArrangedSubview(estimatedDurationLabel)
+        
         contentView.addSubview(grayDivider2)
         grayDivider2.snp.makeConstraints { make in
-            make.top.equalTo(projectConditionsView.snp.bottom)
+            make.top.equalTo(resultEstimatedDurationStackView.snp.bottom).offset(19.77)
             make.height.equalTo(1)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
@@ -211,17 +263,15 @@ class ProjectWriteViewController: UIViewController {
         view.backgroundColor = .DarkGray1
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         title = "게시글 작성"
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
-            .font: UIFont.sub20
-        ]
-        navigationController?.navigationBar.tintColor = .PointBlue
+        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        //back button 이름 제거
         navigationController?.navigationBar.topItem?.title = ""
         tabDisappear()
         
         let rightItem =
         UIBarButtonItem(title:"등록", style: .plain, target: self, action: #selector(didTapRegisterButton))
-        self.navigationItem.rightBarButtonItem = rightItem
+        navigationItem.rightBarButtonItem = rightItem
     }
     
     private func addKeyboardNotification() {
@@ -243,19 +293,30 @@ extension ProjectWriteViewController {
     @objc func didTapCategoriesBarButton() {
         let bottomSheetVC = BottomSheetViewController(contentViewController: CategoriesViewController())
         bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.346
+        bottomSheetVC.defalutHeightDragFixd = false
+        //카테고리바 누르면 카테고리 결과바 나오게 설정
+        self.isHiddenResultCategoriesLabel = false
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
     @objc func didTapProjectConditionsBarButton() {
+        NotificationCenter.default.post(name: NSNotification.Name("forChangeCoditions"), object: nil)
+        
         let bottomSheetVC = BottomSheetViewController(contentViewController: ProjectConditionsViewController())
         bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.275
+        bottomSheetVC.defalutHeightDragFixd = false
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
+    // MARK: - 등록버튼
     @objc private func didTapRegisterButton() {
+        guard let title = titleTextField.text else { return }
+        guard let contents = contentsTextView.text else { return }
+        
         self.navigationController?.popViewController(animated: true)
+        FirebaseProject.saveProjectData(Project(projectId: UUID().uuidString, title: title, content: contents, isRecruit: true, writerId: "writer.id", writeDate: Date().toString(), imageUrl: "photoPath", wantedWorks: ["개발자", "디자이너"], endDate: "6주", maxPeople: 8, favoriteCount: 0))
     }
     
     @objc private func didTapPhotoButton() {
@@ -297,6 +358,7 @@ extension ProjectWriteViewController: UITextFieldDelegate {
         
         let newString: NSString =  currentString.replacingCharacters(in: range, with: string) as NSString
         print(currentString, newString, newString.length, maxLength)
+        
         return newString.length <= 30
     }
     

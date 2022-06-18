@@ -56,13 +56,12 @@ extension CategoriesViewController {
             make.leading.equalToSuperview().offset(22)
         }
         view.addSubview(developCollectionView)
-        developCollectionView.register(DevelopCell.self, forCellWithReuseIdentifier: "developCell")
-//        developCollectionView.backgroundColor = .white
+        developCollectionView.register(DevelopCell.self, forCellWithReuseIdentifier: DevelopCell.reuseIdentifier)
         developCollectionView.snp.makeConstraints { make in
             make.top.equalTo(developLabel.snp.bottom).offset(8)
             make.leading.equalTo(view.snp.leading).offset(33)
             make.trailing.equalTo(view.snp.trailing).offset(-33)
-            make.height.equalTo(67)
+            make.height.equalTo(100)
         }
         
         view.addSubview(designLabel)

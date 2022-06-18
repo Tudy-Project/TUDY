@@ -17,7 +17,7 @@ struct FirebaseProject {
         
         var project = project
         let db = Firestore.firestore()
-        let projectRef = db.collection("PROJECT").document()
+        let projectRef = db.collection("PROJECT").document(project.projectId)
         
         project.writeDate = Date().description
         
