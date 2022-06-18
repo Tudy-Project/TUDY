@@ -50,7 +50,7 @@ class MessageCell: UICollectionViewCell {
     
     lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 11)
+        label.font = .caption11
         label.textColor = .DarkGray5
         return label
     }()
