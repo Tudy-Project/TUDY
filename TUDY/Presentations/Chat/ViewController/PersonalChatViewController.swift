@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import KakaoSDKUser
 
 private let reuseIdentifier = "MessageCell"
 
@@ -21,7 +22,7 @@ class PersonalChatViewController: UIViewController {
     
     
 //    private var myUserInfo: User
-    private var otherUserInfo: User!
+    private var otherUserInfo: User?
     private var messages = [Message]()
     
     private lazy var chatinputView: ChatInputAccessoryView = {
@@ -50,21 +51,12 @@ class PersonalChatViewController: UIViewController {
         personalChatCV.delegate = self
         personalChatCV.dataSource = self
         picker.delegate = self
+        chatinputView.messageInputTextView.delegate = self
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
-        
-        guard let id = chatInfo?.participantIDs[0] else { return }
-        getOtherUserInfo(OtherParticipantID: id)
-        
-        print("================")
-        print(chatInfo)
-        print("================")
-        
-        let a = UserInfo.shared
-        
-        if let aname = a.user?.userID {
-            print(aname)
-        }
-        
+
+
+        getOtherUserInfo()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,16 +95,34 @@ extension PersonalChatViewController {
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
     }
     
-    private func getOtherUserInfo(OtherParticipantID otherId: String) {
+    private func getOtherUserID() -> String {
+        let myinfo = UserInfo.shared
+        var otherID: String = ""
+        
+        if let chatInfo = chatInfo {
+            for others in chatInfo.participantIDs {
+                if (myinfo.user?.userID != others) {
+                    otherID = others
+                }
+            }
+        }
+        return otherID
+    }
+    
+    private func getOtherUserInfo() {
         // 언제 가져올 지 알 수 없음
-        FirebaseUser.fetchOtherUser(userID: otherId) { [weak self] user in
+        print("??????????????????????")
+        FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
-            self?.navigationItem.title = self?.otherUserInfo.nickname
+            self?.navigationItem.title = self?.otherUserInfo?.nickname
+        }
+        if otherUserInfo == nil {
+            self.navigationItem.title = "알 수 없는 유저"
         }
     }
 }
 // MARK: - extensions
-extension PersonalChatViewController: UITextViewDelegate {
+extension PersonalChatViewController {
     @objc func invitedButtonClicked() {
         let invitedVC = InvitedViewController()
         invitedVC.modalPresentationStyle = .overFullScreen
@@ -132,6 +142,7 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
         // dummy Data
         cell.userNameLabel.text = "호진"
         cell.textView.text = messages[indexPath.row].content
+        cell.timeLabel.text = Date().chatDate()
         return cell
     }
 }
@@ -147,7 +158,7 @@ extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     
     @objc func handlephoto() {
         let alert = UIAlertController(title: "사진을 골라주세요.", message: "원하시는 버튼을 클릭해주세요.", preferredStyle: .actionSheet)
@@ -190,10 +201,11 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
         inputView.messageInputTextView.text = nil
         
-        
-        let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
-        messages.append(message)
-        personalChatCV.reloadData()
+        if (!message.isEmpty) {
+            let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
+            messages.append(message)
+            personalChatCV.reloadData()
+        }
     }
 }
 

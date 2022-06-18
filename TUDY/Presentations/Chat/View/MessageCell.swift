@@ -10,6 +10,9 @@ import UIKit
 class MessageCell: UICollectionViewCell {
     
     //MARK: - Properties
+    var message: Message? {
+        didSet { configure() }
+    }
     
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
@@ -45,9 +48,12 @@ class MessageCell: UICollectionViewCell {
         return textview
     }()
     
-//    lazy var
-    
-
+    lazy var timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .caption11
+        label.textColor = .DarkGray5
+        return label
+    }()
     
     // MARK: - Lift Cycle
     
@@ -57,7 +63,7 @@ class MessageCell: UICollectionViewCell {
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
-            make.bottom.equalToSuperview().offset(-4)
+            make.top.equalToSuperview()
             make.width.height.equalTo(32)
         }
         addSubview(userNameLabel)
@@ -70,7 +76,6 @@ class MessageCell: UICollectionViewCell {
         bubbleContainer.snp.makeConstraints { make in
             make.top.equalTo(userNameLabel.snp.bottom).offset(4)
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            make.bottom.equalToSuperview().offset(-4)
             make.width.lessThanOrEqualTo(250)
         }
         
@@ -81,9 +86,26 @@ class MessageCell: UICollectionViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
         }
+        
+        addSubview(timeLabel)
+        timeLabel.snp.makeConstraints { make in
+            make.leading.equalTo(bubbleContainer.snp.trailing).offset(5)
+            make.bottom.equalTo(bubbleContainer.snp.bottom)
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Helpers
+    func configure() {
+        guard let message = message else {
+            return
+        }
+        let helper = MessageHelper(message: message)
+        bubbleContainer.backgroundColor = helper.messageBackgroundColor
+        textView.textColor = helper.messageTextColor
+        
     }
 }
