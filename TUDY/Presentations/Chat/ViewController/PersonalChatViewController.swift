@@ -18,6 +18,9 @@ class PersonalChatViewController: UIViewController {
             configureUI()
         }
     }
+    
+    
+//    private var myUserInfo: User
     private var otherUserInfo: User!
     private var messages = [Message]()
     
@@ -48,7 +51,13 @@ class PersonalChatViewController: UIViewController {
         personalChatCV.dataSource = self
         picker.delegate = self
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
-        chatinputView.sendButton.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+        
+        guard let id = chatInfo?.participantIDs[0] else { return }
+        getOtherUserInfo(OtherParticipantID: id)
+        
+        print("================")
+        print(chatInfo)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,9 +96,9 @@ extension PersonalChatViewController {
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
     }
     
-    private func getOtherUserInfo(OtherParticipantID otherparticipantid: String) {
+    private func getOtherUserInfo(OtherParticipantID otherId: String) {
         // 언제 가져올 지 알 수 없음
-        FirebaseUser.fetchOtherUser(userID: otherparticipantid) { [weak self] user in
+        FirebaseUser.fetchOtherUser(userID: otherId) { [weak self] user in
             self?.otherUserInfo = user
             self?.navigationItem.title = self?.otherUserInfo.nickname
         }
@@ -134,7 +143,6 @@ extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
 extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func handlephoto() {
-        print("PHOTO")
         let alert = UIAlertController(title: "사진을 골라주세요.", message: "원하시는 버튼을 클릭해주세요.", preferredStyle: .actionSheet)
         let library = UIAlertAction(title: "사진앨범", style: .default) { (action) in self.openLibrary()
         }
@@ -163,8 +171,8 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-//            채팅 사진을 넣어주면 됨
-            //            imageView.image = image
+            // 채팅 사진을 넣어주면 됨
+            // imageView.image = image
             print(info)
         }
         dismiss(animated: true, completion: nil)
@@ -172,10 +180,6 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
 }
 
 extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
-    @objc func sendMessage() {
-//        print("SENDMESSAGE")
-    }
-    
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
         inputView.messageInputTextView.text = nil
         

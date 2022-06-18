@@ -80,7 +80,6 @@ struct FirebaseUser {
                 snapshot?.documents.forEach({ document in
                     let dict = document.data()
                     let user = User(dict: dict)
-                    print("싱글톤객체에 유저 정보 담기")
                     completion(user)
                 })
             }
@@ -100,14 +99,13 @@ struct FirebaseUser {
                 snapshot?.documents.forEach({ document in
                     let dict = document.data()
                     let user = User(dict: dict)
-                    print("싱글톤객체에 유저 정보 담기")
                     completion(user)
                 })
             }
     }
     
     /// 자신의 User정보가 업데이트 되면 호출되는 함수
-    static private func addUserSnapshotListener() {
+    static func addUserSnapshotListener() {
         let userID = getUserID()
         
         userPath
@@ -122,6 +120,7 @@ struct FirebaseUser {
                     if change.type == .modified {
                         let dict = change.document.data()
                         let user = User(dict: dict)
+                        UserInfo.shared.user = user
                         print("싱글톤 객체에 유저 정보 담기")
                     }
                 })

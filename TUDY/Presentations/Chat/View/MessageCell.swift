@@ -45,6 +45,8 @@ class MessageCell: UICollectionViewCell {
         return textview
     }()
     
+//    lazy var
+    
 
     
     // MARK: - Lift Cycle
