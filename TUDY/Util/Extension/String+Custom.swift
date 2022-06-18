@@ -39,7 +39,7 @@ extension String {
         let hourMinuteFormatter = DateFormatter()
         hourMinuteFormatter.dateFormat = "a h:mm"
         
-        guard let date = dateFormatter.date(from: self) else { fatalError() }
+        guard let date = dateFormatter.date(from: self) else { return "" }
         let cur = Date()
         
         guard let distanceDay = Calendar.current.dateComponents([.day], from: date, to: cur).day else { return "" }
