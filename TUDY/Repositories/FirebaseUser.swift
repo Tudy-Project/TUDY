@@ -115,7 +115,6 @@ struct FirebaseUser {
                     print("[DUBUG] 유저정보 가져오기 실패 \(error.localizedDescription)")
                     return
                 }
-                print("유저 정보가 변경될 때 마다 정보가 담겨짐")
                 snapshot?.documentChanges.forEach({ change in
                         let dict = change.document.data()
                         let user = User(dict: dict)

@@ -22,6 +22,7 @@
 		4AC095D02859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */; };
 		4AC095DB285B1D890003BAFB /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095DA285B1D890003BAFB /* ChatInputAccessoryView.swift */; };
 		4AC095DD285B9B650003BAFB /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095DC285B9B650003BAFB /* MessageCell.swift */; };
+		4ACDF162285D8EE300A2BD01 /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDF161285D8EE300A2BD01 /* MessageHelper.swift */; };
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
@@ -126,6 +127,7 @@
 		4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBottomSheetTableViewCell.swift; sourceTree = "<group>"; };
 		4AC095DA285B1D890003BAFB /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		4AC095DC285B9B650003BAFB /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		4ACDF161285D8EE300A2BD01 /* MessageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
 		4AEEC0B1283496F4004A08F8 /* TUDY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUDY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -650,6 +652,7 @@
 				4AC095CF2859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift */,
 				4AC095DA285B1D890003BAFB /* ChatInputAccessoryView.swift */,
 				4AC095DC285B9B650003BAFB /* MessageCell.swift */,
+				4ACDF161285D8EE300A2BD01 /* MessageHelper.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -873,6 +876,7 @@
 				D893D31B283B2F550057075F /* SignUpError.swift in Sources */,
 				4A6E64F22837260700B954B9 /* SearchViewController.swift in Sources */,
 				FFC79E2B28573BCE00E2A0DC /* FastSearchCell.swift in Sources */,
+				4ACDF162285D8EE300A2BD01 /* MessageHelper.swift in Sources */,
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
 				FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */,
 				D8C0266628599B93004CACFF /* FirebaseRealtimeChat.swift in Sources */,
