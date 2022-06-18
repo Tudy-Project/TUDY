@@ -105,7 +105,7 @@ extension GroupChatListCell {
         }
         
         latestMessageLabel.text = "  \(chatInfo.latestMessage)"
-        latestMessageDateLabel.text = chatInfo.latestMessageDate
+        latestMessageDateLabel.text = chatInfo.latestMessageDate.chatListDate()
         participantsCountButton.setTitle("\(chatInfo.participantIDs.count)", for: .normal)
         
         if FirebaseUser.getUserID() == chatInfo.projectMasterID {
