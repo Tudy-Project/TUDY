@@ -26,9 +26,9 @@ final class ChatCoordinator: ChatCoordinatorProtocol {
     }
     
     func start() {
-        chatListViewController.didSendEventClosure = { event, chatInfo in
+        chatListViewController.didSendEventClosure = { event in
             switch event {
-            case .showChat:
+            case .showChat(let chatInfo):
                 self.pushChatViewController(chatInfo: chatInfo)
             case .showLogin:
                 self.loginDelegate?.prepareLoginCoordinator()
