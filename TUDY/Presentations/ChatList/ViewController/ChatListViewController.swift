@@ -12,10 +12,10 @@ class ChatListViewController: UIViewController {
     
     // MARK: - Properties
     enum Event {
-        case showChat
+        case showChat(chatInfo: ChatInfo)
         case showLogin
     }
-    var didSendEventClosure: ((Event, ChatInfo) -> Void)?
+    var didSendEventClosure: ((Event) -> Void)?
     
     typealias TopTapDataSource = UICollectionViewDiffableDataSource<Int, ChatState>
     typealias TopTapSnapshot = NSDiffableDataSourceSnapshot<Int, ChatState>
@@ -375,7 +375,7 @@ extension ChatListViewController {
     @objc private func showAlert() {
         
         if !isLogin() {
-            didSendEventClosure?(.showLogin, ChatInfo(chatState: .personalChat))
+            didSendEventClosure?(.showLogin)
             return
         }
         
@@ -448,9 +448,9 @@ extension ChatListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if tableView == personalChatListTableView {
-            didSendEventClosure?(.showChat, personalChatInfoList[indexPath.row])
+            didSendEventClosure?(.showChat(chatInfo: personalChatInfoList[indexPath.row]))
         } else {
-            didSendEventClosure?(.showChat, groupChatInfoList[indexPath.row])
+            didSendEventClosure?(.showChat(chatInfo: groupChatInfoList[indexPath.row]))
         }
     }
     
