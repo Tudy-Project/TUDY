@@ -35,15 +35,15 @@ extension String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
         let monthDayFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M월 d일"
+        monthDayFormatter.dateFormat = "M월 d일"
         let hourMinuteFormatter = DateFormatter()
-        dateFormatter.dateFormat = "a h시 m분"
+        hourMinuteFormatter.dateFormat = "a h:mm"
         
-        guard let date = dateFormatter.date(from: self) else { return "" }
+        guard let date = dateFormatter.date(from: self) else { fatalError() }
         let cur = Date()
         
         guard let distanceDay = Calendar.current.dateComponents([.day], from: date, to: cur).day else { return "" }
-        if 0 == distanceDay {
+        if 1 == distanceDay {
             return "어제"
         } else if 1 < distanceDay {
             return monthDayFormatter.string(from: date)
