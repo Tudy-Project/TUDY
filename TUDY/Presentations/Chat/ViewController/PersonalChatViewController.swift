@@ -57,6 +57,13 @@ class PersonalChatViewController: UIViewController {
         
         print("================")
         print(chatInfo)
+        print("================")
+        
+        let a = UserInfo.shared
+        
+        if let aname = a.user?.userID {
+            print(aname)
+        }
         
     }
     

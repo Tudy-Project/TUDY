@@ -117,12 +117,10 @@ struct FirebaseUser {
                 }
                 print("유저 정보가 변경될 때 마다 정보가 담겨짐")
                 snapshot?.documentChanges.forEach({ change in
-                    if change.type == .modified {
                         let dict = change.document.data()
                         let user = User(dict: dict)
                         UserInfo.shared.user = user
                         print("싱글톤 객체에 유저 정보 담기")
-                    }
                 })
             }
     }
