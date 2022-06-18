@@ -11,7 +11,7 @@ final class UserInfo {
     static let shared = UserInfo()
         
     var user: User?
-    
+
     //instance생성 방지
     private init() {}
 }

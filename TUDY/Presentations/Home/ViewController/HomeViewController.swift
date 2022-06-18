@@ -142,7 +142,7 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        FirebaseUser.addUserSnapshotListener()
         configureCollectionView()
         configureUI()
     }
