@@ -179,7 +179,8 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
         inputView.messageInputTextView.text = nil
         
-        let message = Message(content: message, sender: User(), createdDate: "2021-21-21")
+        
+        let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
         messages.append(message)
         personalChatCV.reloadData()
     }
