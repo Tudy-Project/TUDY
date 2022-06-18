@@ -11,7 +11,7 @@ extension String {
 
     func projectDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         guard let date = dateFormatter.date(from: self) else { return "" }
         let cur = Date()
@@ -33,13 +33,13 @@ extension String {
 
     func chatListDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let monthDayFormatter = DateFormatter()
         monthDayFormatter.dateFormat = "M월 d일"
         let hourMinuteFormatter = DateFormatter()
         hourMinuteFormatter.dateFormat = "a h:mm"
         
-        guard let date = dateFormatter.date(from: self) else { fatalError() }
+        guard let date = dateFormatter.date(from: self) else { return "" }
         let cur = Date()
         
         guard let distanceDay = Calendar.current.dateComponents([.day], from: date, to: cur).day else { return "" }

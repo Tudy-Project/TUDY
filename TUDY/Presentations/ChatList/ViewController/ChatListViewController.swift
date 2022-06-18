@@ -43,15 +43,16 @@ class ChatListViewController: UIViewController {
     private var groupChatListDataSource: ChatListDataSource!
     
     private var userChatInfoList: [UserChatInfo] = []
+    
     private var groupChatInfoList: [ChatInfo] = [] {
         didSet {
-            makeGroupChatListSnapshot(groupChatInfoList)
+            makeGroupChatListSnapshot()
         }
     }
     
     private var personalChatInfoList: [ChatInfo] = [] {
         didSet {
-            makePersonalChatListSnapshot(personalChatInfoList)
+            makePersonalChatListSnapshot()
         }
     }
     
@@ -284,17 +285,21 @@ extension ChatListViewController {
     private func configureTableView() {
         personalChatListTableView = UITableView(frame: view.bounds, style: .plain)
         personalChatListTableView.delegate = self
-        personalChatListTableView.register(PersonalChatListCell.self, forCellReuseIdentifier: PersonalChatListCell.reuseIdentifier)
+        personalChatListTableView.register(PersonalChatListCell.self,
+                                           forCellReuseIdentifier: PersonalChatListCell.reuseIdentifier)
         personalChatListTableView.rowHeight = 108
-        personalChatListTableView.separatorColor = .LightGray2
+        personalChatListTableView.separatorColor = .DarkGray3
         personalChatListTableView.separatorInset = .init(top: 0, left: 13, bottom: 0, right: 13)
+        personalChatListTableView.tableFooterView = UIView(frame: .zero)
         
         groupChatListTableView = UITableView(frame: view.bounds, style: .plain)
         groupChatListTableView.delegate = self
-        groupChatListTableView.register(GroupChatListCell.self, forCellReuseIdentifier: GroupChatListCell.reuseIdentifier)
+        groupChatListTableView.register(GroupChatListCell.self,
+                                        forCellReuseIdentifier: GroupChatListCell.reuseIdentifier)
         groupChatListTableView.rowHeight = 108
-        groupChatListTableView.separatorColor = .LightGray2
+        groupChatListTableView.separatorColor = .DarkGray3
         groupChatListTableView.separatorInset = .init(top: 0, left: 13, bottom: 0, right: 13)
+        groupChatListTableView.tableFooterView = UIView(frame: .zero)
         
         configureTableViewDataSource()
         personalChatListTableView.isHidden = true
@@ -342,17 +347,17 @@ extension ChatListViewController {
         return chatListSnapshot
     }
     
-    private func makeGroupChatListSnapshot(_ chatInfos: [ChatInfo]) {
+    private func makeGroupChatListSnapshot() {
         var snapshot = ChatListSnapshot()
         snapshot.appendSections([0])
-        snapshot.appendItems(chatInfos)
+        snapshot.appendItems(groupChatInfoList)
         groupChatListDataSource.apply(snapshot)
     }
     
-    private func makePersonalChatListSnapshot(_ chatInfos: [ChatInfo]) {
+    private func makePersonalChatListSnapshot() {
         var snapshot = ChatListSnapshot()
         snapshot.appendSections([0])
-        snapshot.appendItems((chatInfos))
+        snapshot.appendItems(personalChatInfoList)
         personalChatListDataSource.apply(snapshot)
     }
     
@@ -501,27 +506,27 @@ extension ChatListViewController: UITableViewDelegate {
         notificationAction.image = notificationImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
         notificationAction.backgroundColor = .LightGray1
         
-        // 즐겨찾기
-        let bookmarkAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
-            // DB에 즐겨찾기 설정 업데이트
-            FirebaseUserChatInfo.updateBookMark(chatInfoID: chatInfo.chatInfoID,
-                                                bookMark: !userChatInfo.bookMark) {
-                self?.toggleBookMark(chatInfoID: chatInfo.chatInfoID)
-                switch chatInfo.chatState {
-                case .groupChat:
-                    self?.updateGroupChatListSnapshot(chatInfo)
-                case .personalChat:
-                    self?.updatePersonalChatListSnapshot(chatInfo)
-                }
-                completion(true)
-            }
-        }
+        // 즐겨찾기 [추후 기능]
+//        let bookmarkAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+//            // DB에 즐겨찾기 설정 업데이트
+//            FirebaseUserChatInfo.updateBookMark(chatInfoID: chatInfo.chatInfoID,
+//                                                bookMark: !userChatInfo.bookMark) {
+//                self?.toggleBookMark(chatInfoID: chatInfo.chatInfoID)
+//                switch chatInfo.chatState {
+//                case .groupChat:
+//                    self?.updateGroupChatListSnapshot(chatInfo)
+//                case .personalChat:
+//                    self?.updatePersonalChatListSnapshot(chatInfo)
+//                }
+//                completion(true)
+//            }
+//        }
+//
+//        let bookmarkImage = userChatInfo.bookMark ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin")
+//        bookmarkAction.image = bookmarkImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
+//        bookmarkAction.backgroundColor = .DarkGray5
         
-        let bookmarkImage = userChatInfo.bookMark ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin")
-        bookmarkAction.image = bookmarkImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
-        bookmarkAction.backgroundColor = .DarkGray5
-        
-        return UISwipeActionsConfiguration(actions: [notificationAction, bookmarkAction])
+        return UISwipeActionsConfiguration(actions: [notificationAction])
     }
 }
 

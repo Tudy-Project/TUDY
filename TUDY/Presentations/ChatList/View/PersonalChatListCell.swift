@@ -19,8 +19,8 @@ class PersonalChatListCell: UITableViewCell {
     }
     
     private let titleLabel = UILabel().label(text: "", font: .sub16)
-    private let latestMessageLabel = UILabel().label(text: "", font: .body14, numberOfLines: 2)
-    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption12, numberOfLines: 1)
+    private let latestMessageLabel = UILabel().label(text: "", font: .body14, color: .LightGray2, numberOfLines: 2)
+    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption12, color: .LightGray2, numberOfLines: 1)
     private let notificationCountButton = UIButton().notificationCountButton()
     
     private lazy var profileImageView: UIImageView = {
@@ -59,7 +59,7 @@ extension PersonalChatListCell {
         
         let stackView = UIStackView(arrangedSubviews: [titleLabel, latestMessageLabel])
         stackView.axis = .vertical
-        stackView.spacing = 6
+        stackView.spacing = 12
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
@@ -72,7 +72,7 @@ extension PersonalChatListCell {
         
         addSubview(latestMessageDateLabel)
         latestMessageDateLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.top).offset(30)
+            make.top.equalTo(self.snp.top).offset(32)
             make.trailing.equalTo(self.snp.trailing).offset(-30)
             make.width.lessThanOrEqualTo(60)
         }
@@ -91,7 +91,7 @@ extension PersonalChatListCell {
         }
         
         latestMessageLabel.text = chatInfo.latestMessage
-        latestMessageDateLabel.text = chatInfo.latestMessageDate
+        latestMessageDateLabel.text = chatInfo.latestMessageDate.chatListDate()
         
         addSubViewNotificationCount(count: 99)
         
@@ -104,7 +104,7 @@ extension PersonalChatListCell {
         addSubview(notificationCountButton)
         notificationCountButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-30)
-            make.bottom.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview().offset(-28)
         }
     }
     
