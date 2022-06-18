@@ -92,4 +92,13 @@ struct FirebaseUserChatInfo {
             .updateData(["bookMark" : bookMark])
         completion()
     }
+    
+    static func deleteUserChatInfo(at chatInfoID: String) {
+        let userID = FirebaseUser.getUserID()
+        userChatInfoPath
+            .document(userID)
+            .collection(chatInfoPath)
+            .document(chatInfoID)
+            .delete()
+    }
 }

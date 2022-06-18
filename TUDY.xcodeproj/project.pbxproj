@@ -106,6 +106,7 @@
 		FFC79E2D28581D1C00E2A0DC /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC79E2C28581D1C00E2A0DC /* UserInfo.swift */; };
 		FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFD462492834B049002A2022 /* GoogleService-Info.plist */; };
 		FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD4624B2834BB13002A2022 /* HomeViewController.swift */; };
+		FFE69F3A285C17EE0015B858 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE69F39285C17EE0015B858 /* HeartButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -213,6 +214,7 @@
 		FFC79E2C28581D1C00E2A0DC /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		FFD462492834B049002A2022 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FFD4624B2834BB13002A2022 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = TUDY/Presentations/Home/ViewController/HomeViewController.swift; sourceTree = SOURCE_ROOT; };
+		FFE69F39285C17EE0015B858 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HeartButton.swift; path = ProjectDetail/View/HeartButton.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -341,6 +343,7 @@
 		4A6E650F283E049E00B954B9 /* ProjectDetail */ = {
 			isa = PBXGroup;
 			children = (
+				FFE69F38285C17D10015B858 /* View */,
 				FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */,
 			);
 			path = ProjectDetail;
@@ -706,6 +709,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		FFE69F38285C17D10015B858 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FFE69F39285C17EE0015B858 /* HeartButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -927,6 +938,7 @@
 				D8C7F22F283B726400424AE5 /* CoordinatorType.swift in Sources */,
 				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
+				FFE69F3A285C17EE0015B858 /* HeartButton.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				4AC095DD285B9B650003BAFB /* MessageCell.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,
