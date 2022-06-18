@@ -20,7 +20,7 @@ class GroupChatListCell: UITableViewCell {
     
     private let titleLabel = UILabel().label(text: "", font: .sub16, numberOfLines: 1)
     private let latestMessageLabel = UILabel().label(text: "", font: .body14, color: .LightGray2, numberOfLines: 1)
-    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption11)
+    private let latestMessageDateLabel = UILabel().label(text: "", font: .caption11, color: .LightGray2)
     private let participantsCountButton = UIButton().peopleCountButton()
     private let masterButton = UIButton().button(text: "방장",
                                                  font: .caption11,
@@ -118,7 +118,7 @@ extension GroupChatListCell {
         addSubview(notificationCountButton)
         notificationCountButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-30)
-            make.bottom.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview().offset(-28)
         }
     }
 }

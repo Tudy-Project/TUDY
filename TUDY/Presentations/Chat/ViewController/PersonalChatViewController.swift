@@ -54,7 +54,9 @@ class PersonalChatViewController: UIViewController {
         chatinputView.messageInputTextView.delegate = self
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
+
         getOtherUserInfo()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {

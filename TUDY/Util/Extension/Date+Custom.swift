@@ -11,13 +11,13 @@ extension Date {
     
     func projectDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return dateFormatter.string(from: Date())
     }
     
     func chatListDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return dateFormatter.string(from: Date())
     }
     
