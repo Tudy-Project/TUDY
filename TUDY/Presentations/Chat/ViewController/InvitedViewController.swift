@@ -9,12 +9,9 @@ import UIKit
 
 class InvitedViewController: UIViewController {
     // MARK: - Properties
-
-    private var userChatInfoList: [UserChatInfo] = []
     
     private var groupChatInfoList: [ChatInfo] = []
-    
-    var chatInfo: ChatInfo? 
+    private var chatInfo: ChatInfo?
 
     private lazy var dimmedView: UIView = {
         let view = UIView()
@@ -81,97 +78,18 @@ class InvitedViewController: UIViewController {
         return tableview
     }()
 
-
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureUI()
-        print("viewDidLoad")
+        configureUI()
         configurebottomSheetUI()
-        groupChatListTableView.delegate = self
-        groupChatListTableView.dataSource = self
-        
-
+        configureDelegate()
         fetchGroupChatList()
-
-    }
-    
-    func configureNoChat() {
-        bottomSheetView.addSubview(bottomSheetnogroupchatLabel)
-        bottomSheetView.addSubview(bottomSheetMakeGroupChatButton)
-        
-        bottomSheetnogroupchatLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(120)
-            make.centerX.equalToSuperview()
-        }
-        bottomSheetMakeGroupChatButton.snp.makeConstraints { make in
-            make.top.equalTo(bottomSheetnogroupchatLabel.snp.bottom).offset(15)
-            make.width.equalToSuperview().multipliedBy(0.9)
-            make.centerX.equalToSuperview()
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showBottomSheet()
-    }
-    
-    @objc private func showAlert() {
-
-        let alert = UIAlertController(title: "스터디 이름을 입력해주세요.", message: nil, preferredStyle: .alert)
-        
-        alert.addTextField { textField in
-            textField.borderStyle = .none
-            textField.placeholder = "스터디 이름"
-        }
-        
-        let ok = UIAlertAction(title: "만들기", style: .default) { [weak self] _ in
-            if let text = alert.textFields?[0].text {
-                self?.makeGroupChat(text: text)
-            }
-        }
-        ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        cancel.setValue(UIColor.PointRed, forKey: "titleTextColor")
-        
-        alert.addAction(ok)
-        alert.addAction(cancel)
-        
-        self.present(alert, animated: true)
-    }
-    
-    private func makeGroupChat(text title: String) {
-        let userID = FirebaseUser.getUserID()
-        let chatInfo = ChatInfo(chatState: .groupChat,
-                                chatTitle: title,
-                                projectMasterID: userID,
-                                participantIDs: [userID],
-                                latestMessage: "새로운 채팅방이 생성되었습니다.",
-                                latestMessageDate: Date().chatListDate())
-        FirebaseChat.saveChatInfo(chatInfo)
-        fetchUserChatInfoList()
-    }
-    
-    private func fetchUserChatInfoList() {
-        FirebaseUserChatInfo.fetchUserChatInfos { [weak self] userChatInfos in
-            self?.userChatInfoList = userChatInfos
-        }
-    }
-    
-    private func fetchGroupChatList() {
-        FirebaseChat.fetchChatInfo(chatState: .groupChat) { [weak self] chatInfos in
-            self?.groupChatInfoList = chatInfos
-            if (chatInfos.isEmpty) {
-                self?.configureNoChat()
-            } else {
-                if let button = self?.bottomsheetgroupchatinvitedbutton,
-                    let label = self?.bottomsheetgroupchatListLabel {
-                    self?.bottomsheetStackView.addArrangedSubview(button)
-                    self?.bottomsheetStackView.setCustomSpacing(130, after: label)
-                }
-                self?.configureTableView()
-            }
-        }
     }
 }
 
@@ -218,13 +136,33 @@ extension InvitedViewController {
         }
     }
     
+    func configureNoChat() {
+        bottomSheetView.addSubview(bottomSheetnogroupchatLabel)
+        bottomSheetView.addSubview(bottomSheetMakeGroupChatButton)
+        
+        bottomSheetnogroupchatLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(120)
+            make.centerX.equalToSuperview()
+        }
+        bottomSheetMakeGroupChatButton.snp.makeConstraints { make in
+            make.top.equalTo(bottomSheetnogroupchatLabel.snp.bottom).offset(15)
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
+    func configureDelegate() {
+        groupChatListTableView.delegate = self
+        groupChatListTableView.dataSource = self
+    }
+    
+    
     @objc func bottomsheetgroupchatinvitedbuttonClicked(sender:UITapGestureRecognizer) {
         hideBottomSheetAndGoBack()
-        let items = groupChatListTableView.indexPathForSelectedRow
-        print("items : \(items)")
     }
 }
 
+// MARK: - about BottomSheet
 extension InvitedViewController {
     private func showBottomSheet() {
         bottomSheetView.snp.remakeConstraints { make in
@@ -261,8 +199,63 @@ extension InvitedViewController {
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideBottomSheetAndGoBack()
     }
+    
+    @objc private func showAlert() {
+
+        let alert = UIAlertController(title: "스터디 이름을 입력해주세요.", message: nil, preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.borderStyle = .none
+            textField.placeholder = "스터디 이름"
+        }
+        
+        let ok = UIAlertAction(title: "만들기", style: .default) { [weak self] _ in
+            if let text = alert.textFields?[0].text {
+                self?.makeGroupChat(text: text)
+            }
+        }
+        ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        cancel.setValue(UIColor.PointRed, forKey: "titleTextColor")
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
+    }
 }
 
+// MARK: - about Firebase
+extension InvitedViewController {
+    private func makeGroupChat(text title: String) {
+        let userID = FirebaseUser.getUserID()
+        let chatInfo = ChatInfo(chatState: .groupChat,
+                                chatTitle: title,
+                                projectMasterID: userID,
+                                participantIDs: [userID],
+                                latestMessage: "새로운 채팅방이 생성되었습니다.",
+                                latestMessageDate: Date().chatListDate())
+        FirebaseChat.saveChatInfo(chatInfo)
+    }
+    
+    private func fetchGroupChatList() {
+        FirebaseChat.fetchChatInfo(chatState: .groupChat) { [weak self] chatInfos in
+            self?.groupChatInfoList = chatInfos
+            if (chatInfos.isEmpty) {
+                self?.configureNoChat()
+            } else {
+                if let button = self?.bottomsheetgroupchatinvitedbutton,
+                    let label = self?.bottomsheetgroupchatListLabel {
+                    self?.bottomsheetStackView.addArrangedSubview(button)
+                    self?.bottomsheetStackView.setCustomSpacing(130, after: label)
+                }
+                self?.configureTableView()
+            }
+        }
+    }
+}
+
+// MARK: - about delegate and DataSource
 extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupChatInfoList.count

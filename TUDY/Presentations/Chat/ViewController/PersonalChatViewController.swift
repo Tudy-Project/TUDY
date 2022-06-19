@@ -20,8 +20,6 @@ class PersonalChatViewController: UIViewController {
         }
     }
     
-    
-    
 //    private var myUserInfo: User
     private var otherUserInfo: User?
     private var messages = [Message]()
