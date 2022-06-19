@@ -21,6 +21,7 @@ class PersonalChatViewController: UIViewController {
     }
     
     
+    
 //    private var myUserInfo: User
     private var otherUserInfo: User?
     private var messages = [Message]()
@@ -55,6 +56,11 @@ class PersonalChatViewController: UIViewController {
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         getOtherUserInfo()
+        self.hideKeyboardWhenTappedAround()
+        
+        print("=====================")
+        print("chatInfo : \(chatInfo)")
+        print("=====================")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,6 +74,16 @@ class PersonalChatViewController: UIViewController {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        personalChatCV.endEditing(true)
     }
 }
 
@@ -89,7 +105,12 @@ extension PersonalChatViewController {
     private func configureNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
+        if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem()
+        }
+        
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
     }
     
@@ -109,7 +130,6 @@ extension PersonalChatViewController {
     
     private func getOtherUserInfo() {
         // 언제 가져올 지 알 수 없음
-        print("??????????????????????")
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
             self?.navigationItem.title = self?.otherUserInfo?.nickname

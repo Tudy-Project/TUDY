@@ -9,7 +9,13 @@ import UIKit
 
 class InvitedViewController: UIViewController {
     // MARK: - Properties
+
+    private var userChatInfoList: [UserChatInfo] = []
     
+    private var groupChatInfoList: [ChatInfo] = []
+    
+    var chatInfo: ChatInfo? 
+
     private lazy var dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .DarkGray1
@@ -48,15 +54,17 @@ class InvitedViewController: UIViewController {
         return label
     }()
     
-    private lazy var groupChatList = [
-        ChatInfo(chatState: .groupChat,
-                 chatTitle: "그룹챗 테스트 그룹챗 테스트 그룹챗 테스트 그룹챗 테스트",
-                 participantIDs: ["", "", ""]),
-        ChatInfo(chatState: .groupChat,
-                 chatTitle: "그룹챗 테스트2",
-                 participantIDs: ["", ""])
-    ]
+    private lazy var bottomSheetnogroupchatLabel: UILabel = {
+        let label = UILabel().label(text: "진행중인 스터디 챗이 없어요!", font: .sub20)
+        return label
+    }()
     
+    private lazy var bottomSheetMakeGroupChatButton: UIButton = {
+        let button = UIButton().button(text: "스터디챗 개설하기", font: UIFont.sub16, fontColor: UIColor.white, backgroundColor: UIColor.PointBlue, cornerRadius: 15)
+        button.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
+        return button
+    }()
+
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
     
     private var defaultHeight: CGFloat = 300
@@ -78,15 +86,92 @@ class InvitedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
+        print("viewDidLoad")
         configurebottomSheetUI()
-        configureTableView()
         groupChatListTableView.delegate = self
         groupChatListTableView.dataSource = self
+        
+
+        fetchGroupChatList()
+
+    }
+    
+    func configureNoChat() {
+        bottomSheetView.addSubview(bottomSheetnogroupchatLabel)
+        bottomSheetView.addSubview(bottomSheetMakeGroupChatButton)
+        
+        bottomSheetnogroupchatLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(120)
+            make.centerX.equalToSuperview()
+        }
+        bottomSheetMakeGroupChatButton.snp.makeConstraints { make in
+            make.top.equalTo(bottomSheetnogroupchatLabel.snp.bottom).offset(15)
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.centerX.equalToSuperview()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showBottomSheet()
+    }
+    
+    @objc private func showAlert() {
+
+        let alert = UIAlertController(title: "스터디 이름을 입력해주세요.", message: nil, preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.borderStyle = .none
+            textField.placeholder = "스터디 이름"
+        }
+        
+        let ok = UIAlertAction(title: "만들기", style: .default) { [weak self] _ in
+            if let text = alert.textFields?[0].text {
+                self?.makeGroupChat(text: text)
+            }
+        }
+        ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        cancel.setValue(UIColor.PointRed, forKey: "titleTextColor")
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
+    }
+    
+    private func makeGroupChat(text title: String) {
+        let userID = FirebaseUser.getUserID()
+        let chatInfo = ChatInfo(chatState: .groupChat,
+                                chatTitle: title,
+                                projectMasterID: userID,
+                                participantIDs: [userID],
+                                latestMessage: "새로운 채팅방이 생성되었습니다.",
+                                latestMessageDate: Date().chatListDate())
+        FirebaseChat.saveChatInfo(chatInfo)
+        fetchUserChatInfoList()
+    }
+    
+    private func fetchUserChatInfoList() {
+        FirebaseUserChatInfo.fetchUserChatInfos { [weak self] userChatInfos in
+            self?.userChatInfoList = userChatInfos
+        }
+    }
+    
+    private func fetchGroupChatList() {
+        FirebaseChat.fetchChatInfo(chatState: .groupChat) { [weak self] chatInfos in
+            self?.groupChatInfoList = chatInfos
+            if (chatInfos.isEmpty) {
+                self?.configureNoChat()
+            } else {
+                if let button = self?.bottomsheetgroupchatinvitedbutton,
+                    let label = self?.bottomsheetgroupchatListLabel {
+                    self?.bottomsheetStackView.addArrangedSubview(button)
+                    self?.bottomsheetStackView.setCustomSpacing(130, after: label)
+                }
+                self?.configureTableView()
+            }
+        }
     }
 }
 
@@ -121,8 +206,6 @@ extension InvitedViewController {
         }
     
         bottomsheetStackView.addArrangedSubview(bottomsheetgroupchatListLabel)
-        bottomsheetStackView.addArrangedSubview(bottomsheetgroupchatinvitedbutton)
-        bottomsheetStackView.setCustomSpacing(130, after: bottomsheetgroupchatListLabel)
     }
     
     private func configureTableView() {
@@ -137,7 +220,8 @@ extension InvitedViewController {
     
     @objc func bottomsheetgroupchatinvitedbuttonClicked(sender:UITapGestureRecognizer) {
         hideBottomSheetAndGoBack()
-        print("tap working")
+        let items = groupChatListTableView.indexPathForSelectedRow
+        print("items : \(items)")
     }
 }
 
@@ -181,12 +265,12 @@ extension InvitedViewController {
 
 extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return groupChatInfoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PersonalBottomSheetTableViewCell.reuseIdentifier) as! PersonalBottomSheetTableViewCell
-        let chatinfo: ChatInfo = groupChatList[indexPath.row]
+        let chatinfo: ChatInfo = groupChatInfoList[indexPath.row]
         cell.backgroundColor = .DarkGray3
         cell.titleLabel.text = chatinfo.chatTitle
         cell.participantsCountButton.setTitle("\(chatinfo.participantIDs.count)", for: .normal)
