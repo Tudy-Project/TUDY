@@ -21,7 +21,6 @@ class ChatInputAccessoryView: UIView {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.tintColor = .white
-//        button.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
         return button
     }()
     

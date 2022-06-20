@@ -24,14 +24,28 @@ struct MessageHelper {
     }
     
     var messageTextColor: UIColor {
-        if let userId = UserInfo.shared.user?.userID {
-            if message.sender.userID == userId {
-                return .black
-            } else {
-                return .white
-            }
+        guard let userId = UserInfo.shared.user?.userID else { return UIColor() }
+        
+        if userId == message.sender.userID {
+            return .black
+        } else {
+            return .white
         }
-        return UIColor()
+    }
+    
+    var rightAnchorActive: Bool {
+        guard let userId = UserInfo.shared.user?.userID else { return true }
+            return message.sender.userID == userId
+    }
+    
+    var leftAnchorActive: Bool {
+        guard let userId = UserInfo.shared.user?.userID else { return true }
+            return !(message.sender.userID == userId)
+    }
+    
+    var shouldHideProfileImage: Bool {
+        guard let userId = UserInfo.shared.user?.userID else { return true }
+            return message.sender.userID == userId
     }
     
     init(message: Message) {

@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import KakaoSDKUser
+import Firebase
+import FirebaseDatabase
 
 private let reuseIdentifier = "MessageCell"
 
@@ -56,9 +58,21 @@ class PersonalChatViewController: UIViewController {
         getOtherUserInfo()
         self.hideKeyboardWhenTappedAround()
         
-        print("=====================")
-        print("chatInfo : \(chatInfo)")
-        print("=====================")
+//        print("=====================")
+//        print("chatInfo : \(chatInfo)")
+//        print("=====================")
+        
+        var testmessage: Message?
+        if let user = UserInfo.shared.user {
+        testmessage = Message(content: "THIS IS A TEST 2",
+                                  imageURL: "",
+                                  sender: user,
+                                  createdDate: Date().chatListDate())
+            FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: testmessage ?? Message(dict: [String : Any]()))
+
+        }
+//        print(testmessage)
+        
 
     }
     
@@ -129,10 +143,7 @@ extension PersonalChatViewController {
     
     private func getOtherUserInfo() {
         // 언제 가져올 지 알 수 없음
-<<<<<<< HEAD
-=======
-        print("??????????????????????")
->>>>>>> e304dadf6c170cbd573e786aa61eca1fdab7dd48
+
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
             self?.navigationItem.title = self?.otherUserInfo?.nickname
@@ -220,13 +231,16 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
 
 extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
-        inputView.messageInputTextView.text = nil
         
-        if (!message.isEmpty) {
-            let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
-            messages.append(message)
-            personalChatCV.reloadData()
-        }
+//        if (!message.isEmpty) {
+//            let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
+//            messages.append(message)
+//            personalChatCV.reloadData()
+//        }
+        
+//        MessageCell.message
+        
+        inputView.messageInputTextView.text = nil
     }
 }
 

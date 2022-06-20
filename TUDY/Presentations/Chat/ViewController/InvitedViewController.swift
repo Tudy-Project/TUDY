@@ -11,6 +11,7 @@ class InvitedViewController: UIViewController {
     // MARK: - Properties
     
     private var groupChatInfoList: [ChatInfo] = []
+    private var selectedGroupChatInfoList: [ChatInfo] = []
     private var chatInfo: ChatInfo?
 
     private lazy var dimmedView: UIView = {
@@ -156,8 +157,11 @@ extension InvitedViewController {
         groupChatListTableView.dataSource = self
     }
     
-    
     @objc func bottomsheetgroupchatinvitedbuttonClicked(sender:UITapGestureRecognizer) {
+        
+//        for infoList in selectedGroupChatInfoList {
+//            infoList.participantIDs.append(UserInfo.shared.user?.userID)
+//        }
         hideBottomSheetAndGoBack()
     }
 }
@@ -203,24 +207,21 @@ extension InvitedViewController {
     @objc private func showAlert() {
 
         let alert = UIAlertController(title: "스터디 이름을 입력해주세요.", message: nil, preferredStyle: .alert)
-        
         alert.addTextField { textField in
             textField.borderStyle = .none
             textField.placeholder = "스터디 이름"
         }
-        
         let ok = UIAlertAction(title: "만들기", style: .default) { [weak self] _ in
             if let text = alert.textFields?[0].text {
                 self?.makeGroupChat(text: text)
             }
         }
-        ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
         let cancel = UIAlertAction(title: "취소", style: .cancel)
+        ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
         cancel.setValue(UIColor.PointRed, forKey: "titleTextColor")
         
         alert.addAction(ok)
         alert.addAction(cancel)
-        
         self.present(alert, animated: true)
     }
 }
@@ -273,5 +274,13 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return bottomSheetView.frame.height / 5
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedGroupChatInfoList.append(groupChatInfoList[indexPath.row])
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        selectedGroupChatInfoList.removeAll { $0 == groupChatInfoList[indexPath.row]}
     }
 }
