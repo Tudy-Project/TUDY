@@ -17,19 +17,25 @@ class ProjectConditionsViewController: UIViewController {
         return label
     }()
     
-    private let personnelLabel = UILabel().label(text: "인원", font: .sub14)
-    private let personnelSlider: DoubledSlider = {
-        let slider = DoubledSlider()
+    //인원
+    private let personnelLabel = UILabel().label(text: "인원 : ", font: .sub14)
+    var personnelThumbsLabel = UILabel().label(text: "0 명", font: .sub14)
+    private let personnelSlider: UISlider = {
+        let slider = UISlider()
+        slider.value = 0
         slider.minimumValue = 0
-        slider.maximumValue = 100
+        slider.maximumValue = 8
         return slider
     }()
     
-    private let expectedPeriodLabel = UILabel().label(text: "예상 기간", font: .sub14)
-    private let expectedPeriodSlider: DoubledSlider = {
-        let slider = DoubledSlider()
+    //예상 기간
+    private let expectedPeriodLabel = UILabel().label(text: "예상 기간 : ", font: .sub14)
+    var expectedPeriodThumbsLabel = UILabel().label(text: "0 주", font: .sub14)
+    private let expectedPeriodSlider: UISlider = {
+        let slider = UISlider()
+        slider.value = 0
         slider.minimumValue = 0
-        slider.maximumValue = 100
+        slider.maximumValue = 8
         return slider
     }()
     
@@ -59,11 +65,17 @@ extension ProjectConditionsViewController {
         }
         
         view.addSubview(personnelSlider)
-        personnelSlider.addTarget(self, action: #selector(didChangeSliderValue), for: .valueChanged)
+        personnelSlider.addTarget(self, action: #selector(didChangePersonSliderValue), for: .valueChanged)
         personnelSlider.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(65)
             make.leading.equalToSuperview().offset(19)
             make.trailing.equalToSuperview().offset(-19)
+        }
+        
+        view.addSubview(personnelThumbsLabel)
+        personnelThumbsLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(37)
+            make.leading.equalTo(personnelLabel.snp.trailing).offset(10)
         }
         
         view.addSubview(expectedPeriodLabel)
@@ -73,11 +85,17 @@ extension ProjectConditionsViewController {
         }
         
         view.addSubview(expectedPeriodSlider)
-        expectedPeriodSlider.addTarget(self, action: #selector(didChangeSliderValue), for: .valueChanged)
+        expectedPeriodSlider.addTarget(self, action: #selector(didChangeTimeSliderValue), for: .valueChanged)
         expectedPeriodSlider.snp.makeConstraints { make in
             make.top.equalTo(expectedPeriodLabel.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(19)
             make.trailing.equalToSuperview().offset(-19)
+        }
+        
+        view.addSubview(expectedPeriodThumbsLabel)
+        expectedPeriodThumbsLabel.snp.makeConstraints { make in
+            make.top.equalTo(personnelSlider.snp.bottom).offset(25)
+            make.leading.equalTo(expectedPeriodLabel.snp.trailing).offset(10)
         }
     }
     
@@ -87,8 +105,13 @@ extension ProjectConditionsViewController {
            print("tap working")
        }
     
-    @objc private func didChangeSliderValue() {
-        print(personnelSlider.values.minimum)
-        print(personnelSlider.values.maximum)
+    @objc private func didChangePersonSliderValue(_ sender: UISlider) {
+        let value = Int(sender.value)
+        self.personnelThumbsLabel.text = ("\(String(value))명")
+    }
+    
+    @objc private func didChangeTimeSliderValue(_ sender: UISlider) {
+        let value = Int(sender.value)
+        self.expectedPeriodThumbsLabel.text = ("\(String(value))주")
     }
 }

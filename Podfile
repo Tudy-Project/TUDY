@@ -11,6 +11,7 @@ target 'TUDY' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Firestore'
+  pod 'FirebaseFirestore'
   pod 'GoogleSignIn'
   pod 'KakaoSDKCommon'  # 필수 요소를 담은 공통 모듈
   pod 'KakaoSDKAuth'  # 사용자 인증

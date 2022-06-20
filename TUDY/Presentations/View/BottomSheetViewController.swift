@@ -49,6 +49,7 @@ class BottomSheetViewController: UIViewController {
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
     // BottomSheet 기본 높이 지정을 위한 프로퍼티
     var defaultHeight: CGFloat = 300
+    var defalutHeightDragFixd: Bool = true
     
     private let contentViewController: UIViewController
     
@@ -225,6 +226,10 @@ extension BottomSheetViewController {
         case .began:
             bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
         case .changed:
+            if defalutHeightDragFixd == false {
+                return
+            }
+            
             if bottomSheetPanStartingTopConstant + translation.y > bottomSheetPanMinTopConstant {
                 bottomSheetViewTopConstraint.constant = bottomSheetPanStartingTopConstant + translation.y
             }

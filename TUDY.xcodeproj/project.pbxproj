@@ -90,6 +90,7 @@
 		D8E37952283F22490051CDF1 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37951283F22490051CDF1 /* WelcomeViewController.swift */; };
 		D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37954283F24560051CDF1 /* UILabel+Custom.swift */; };
 		D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */; };
+		D8F2FEBA285DA30A002089DD /* FirebaseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F2FEB9285DA309002089DD /* FirebaseStorage.swift */; };
 		FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE932849F833003BB46D /* PhotoCell.swift */; };
 		FF07DE96284E011B003BB46D /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07DE95284E011B003BB46D /* BottomSheetViewController.swift */; };
 		FF85A4F02850822200DB124E /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF85A4EF2850822200DB124E /* CategoriesViewController.swift */; };
@@ -198,6 +199,7 @@
 		D8E37951283F22490051CDF1 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WelcomeViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/WelcomeViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E37954283F24560051CDF1 /* UILabel+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Custom.swift"; sourceTree = "<group>"; };
 		D8E37956283F27FF0051CDF1 /* UITextField+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Custom.swift"; sourceTree = "<group>"; };
+		D8F2FEB9285DA309002089DD /* FirebaseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorage.swift; sourceTree = "<group>"; };
 		F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUDY.release.xcconfig"; path = "Target Support Files/Pods-TUDY/Pods-TUDY.release.xcconfig"; sourceTree = "<group>"; };
 		FF07DE932849F833003BB46D /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoCell.swift; path = ProjectWrite/View/PhotoCell.swift; sourceTree = SOURCE_ROOT; };
 		FF07DE95284E011B003BB46D /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BottomSheetViewController.swift; path = TUDY/Presentations/View/BottomSheetViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -424,6 +426,7 @@
 				4AC095C828571D2E0003BAFB /* FirebaseProject.swift */,
 				D8034E902857356A008C569F /* FirebaseChat.swift */,
 				D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */,
+				D8F2FEB9285DA309002089DD /* FirebaseStorage.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -928,6 +931,7 @@
 				D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */,
 				D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */,
 				4A6E64FB2837888300B954B9 /* SearchTableViewCell.swift in Sources */,
+				D8F2FEBA285DA30A002089DD /* FirebaseStorage.swift in Sources */,
 				4AC095C5285116150003BAFB /* WorkCell.swift in Sources */,
 				4AB16F0C2844F3F500EB36A6 /* User.swift in Sources */,
 				D87CBB4A28432075003397A5 /* JobCell.swift in Sources */,

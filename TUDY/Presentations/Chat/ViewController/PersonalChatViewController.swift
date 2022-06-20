@@ -59,6 +59,7 @@ class PersonalChatViewController: UIViewController {
         print("=====================")
         print("chatInfo : \(chatInfo)")
         print("=====================")
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,6 +129,10 @@ extension PersonalChatViewController {
     
     private func getOtherUserInfo() {
         // 언제 가져올 지 알 수 없음
+<<<<<<< HEAD
+=======
+        print("??????????????????????")
+>>>>>>> e304dadf6c170cbd573e786aa61eca1fdab7dd48
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
             self?.navigationItem.title = self?.otherUserInfo?.nickname
