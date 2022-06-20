@@ -221,6 +221,10 @@ extension ChatListViewController {
                                 latestMessageDate: Date().chatListDate())
         FirebaseChat.saveChatInfo(chatInfo)
         fetchUserChatInfoList()
+        
+        let index = IndexPath(index: 1)
+        topTapBarCollectionView.selectItem(at: index, animated: true, scrollPosition: .right)
+        didSendEventClosure?(.showChat(chatInfo: chatInfo))
     }
     
     func leaveChat(chatInfo: ChatInfo) {
