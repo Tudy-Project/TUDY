@@ -52,28 +52,12 @@ class PersonalChatViewController: UIViewController {
         personalChatCV.delegate = self
         personalChatCV.dataSource = self
         picker.delegate = self
-        chatinputView.messageInputTextView.delegate = self
+//        chatinputView.messageInputTextView.delegate = self
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         getOtherUserInfo()
+        getAlltheMessage()
         self.hideKeyboardWhenTappedAround()
-        
-//        print("=====================")
-//        print("chatInfo : \(chatInfo)")
-//        print("=====================")
-        
-        var testmessage: Message?
-        if let user = UserInfo.shared.user {
-        testmessage = Message(content: "THIS IS A TEST 2",
-                                  imageURL: "",
-                                  sender: user,
-                                  createdDate: Date().chatListDate())
-            FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: testmessage ?? Message(dict: [String : Any]()))
-
-        }
-//        print(testmessage)
-        
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +72,18 @@ class PersonalChatViewController: UIViewController {
     override var canBecomeFirstResponder: Bool {
         return true
     }
+    
+    func getAlltheMessage() {
+        DispatchQueue.main.async { [self] in
+            FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] msg in
+                for m in msg {
+                    self?.messages.append(m)
+                }
+                personalChatCV.reloadData()
+            }
+        }
+    }
+    
     
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -190,7 +186,7 @@ extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
+extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func handlephoto() {
         let alert = UIAlertController(title: "사진을 골라주세요.", message: "원하시는 버튼을 클릭해주세요.", preferredStyle: .actionSheet)
@@ -229,18 +225,20 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
     }
 }
 
+// 여기서 하는 것이 아니라 MESSAGECELL에서 해야하는건가?
+
 extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
         
-//        if (!message.isEmpty) {
-//            let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
-//            messages.append(message)
-//            personalChatCV.reloadData()
-//        }
-        
-//        MessageCell.message
-        
-        inputView.messageInputTextView.text = nil
+        if (!message.isEmpty) {
+            if let user = UserInfo.shared.user {
+                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatListDate())
+                messages.append(message)
+                FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: message)
+                personalChatCV.reloadData()
+            }
+        }
+        inputView.clearMessage()
     }
 }
 

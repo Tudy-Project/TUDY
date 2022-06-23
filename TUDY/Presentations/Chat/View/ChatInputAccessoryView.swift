@@ -24,7 +24,7 @@ class ChatInputAccessoryView: UIView {
         return button
     }()
     
-    lazy var messageInputTextView: UITextView = {
+    private lazy var messageInputTextView: UITextView = {
         let textview = UITextView()
         textview.font = .sub14
         textview.layer.borderWidth = 1
@@ -92,6 +92,13 @@ extension ChatInputAccessoryView {
     @objc func handleSendMessage() {
         guard let message = messageInputTextView.text else { return }
         delegate?.inputView(self, wantsToSend: message)
+    }
+    
+    
+    // MARK: - Helper
+    func clearMessage() {
+        messageInputTextView.text = nil
+    
     }
 }
 

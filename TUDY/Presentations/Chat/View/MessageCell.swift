@@ -65,7 +65,7 @@ class MessageCell: UICollectionViewCell {
         
         guard let user = UserInfo.shared.user else { return }
  
-        MessageCell.message = Message(content: textView.text,
+        MessageCell.message = Message(content: "textView.text",
                           imageURL: "",
                           sender: user,
                           createdDate: Date().chatListDate())
@@ -74,6 +74,7 @@ class MessageCell: UICollectionViewCell {
             return
         }
 
+        print(message)
         helper = MessageHelper(message: message)
 
         addSubview(profileImageView)
