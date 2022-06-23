@@ -22,7 +22,7 @@ class ProjectWriteViewController: UIViewController {
     
     //카테고리바
     private let categoriesView = OptionSelectionBar.init(title: "관련 직무 카테고리 📌")
-    private let resultSeletedCategoriesLabel = UILabel().label(text: "", font: UIFont.body14, color: .white)
+    private let resultSeletedCategoriesLabel = UILabel().label(text: "", font: UIFont.body14, color: .White, numberOfLines: 0)
     var isHiddenResultCategoriesLabel: Bool = true
     
     private var develops: [String] = []
@@ -37,8 +37,8 @@ class ProjectWriteViewController: UIViewController {
         return stackView
     }()
     
-    private let personnelTitle = UILabel().label(text: "인원", font: UIFont.sub14, color: .white)
-    private let personnelLabel = UILabel().label(text: "0명", font: UIFont.sub14, color: .white)
+    private let personnelTitle = UILabel().label(text: "인원", font: UIFont.sub14, color: .White)
+    private let personnelLabel = UILabel().label(text: "0명", font: UIFont.sub14, color: .White)
     private var peopleCount = 0
     
     private let resultEstimatedDurationStackView: UIStackView = {
@@ -48,8 +48,8 @@ class ProjectWriteViewController: UIViewController {
         return stackView
     }()
     
-    private let estimatedDurationTitle = UILabel().label(text: "예상 기간", font: UIFont.sub14, color: .white)
-    private let estimatedDurationLabel = UILabel().label(text: "0주", font: UIFont.sub14, color: .white)
+    private let estimatedDurationTitle = UILabel().label(text: "예상 기간", font: UIFont.sub14, color: .White)
+    private let estimatedDurationLabel = UILabel().label(text: "0주", font: UIFont.sub14, color: .White)
     private var duration = 0
     
     private var optionState: String = "categoriesBar"
@@ -75,7 +75,7 @@ class ProjectWriteViewController: UIViewController {
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont.body16
-        textField.textColor = .white
+        textField.textColor = .White
         textField.attributedPlaceholder = NSAttributedString(string: titleTextFieldPlaceHolder, attributes:   [NSAttributedString.Key.foregroundColor: UIColor.DarkGray4])
         textField.delegate = self
         return textField
@@ -191,6 +191,7 @@ class ProjectWriteViewController: UIViewController {
         resultSeletedCategoriesLabel.snp.makeConstraints { make in
             make.top.equalTo(categoriesView.snp.bottom)
             make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
         }
         
         contentView.addSubview(grayDivider1)
@@ -514,7 +515,7 @@ extension ProjectWriteViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == contentsTextViewPlaceHolder {
             textView.text = nil
-            textView.textColor = .white
+            textView.textColor = .White
         }
     }
     

@@ -12,7 +12,7 @@ extension UIViewController {
     func navAppear() {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.backgroundColor = .DarkGray1
-        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = .White
         navigationController?.navigationBar.barTintColor = .DarkGray1
         
         let appearance = UINavigationBarAppearance()

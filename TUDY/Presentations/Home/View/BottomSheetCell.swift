@@ -14,7 +14,7 @@ class BottomSheetCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
        let label = UILabel()
-        label.textColor = .white
+        label.textColor = .White
         label.numberOfLines = 2
         label.font = .body16
         return label
@@ -29,7 +29,7 @@ class BottomSheetCell: UICollectionViewCell {
     
     lazy var authorLabel: UILabel = {
        let label = UILabel()
-        label.textColor = .white
+        label.textColor = .White
         label.font = .caption12
         return label
     }()

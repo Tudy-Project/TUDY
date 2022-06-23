@@ -12,7 +12,7 @@ class ResultCell: UICollectionViewCell {
     // MARK: - Properties
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .White
         label.textAlignment = .center
         label.backgroundColor = UIColor.DarkGray5
         label.font = UIFont.systemFont(ofSize: 12)

@@ -32,7 +32,7 @@ class BottomSheetViewController: UIViewController {
     
     private let dragIndicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .White
         view.layer.cornerRadius = 3
         return view
     }()

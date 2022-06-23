@@ -136,8 +136,8 @@ class HomeViewController: UIViewController {
         button.backgroundColor = .DarkGray5
         let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
         button.setImage(image, for: .normal)
-        button.tintColor = .white
-        button.setTitleColor(.white, for: .normal)
+        button.tintColor = .White
+        button.setTitleColor(UIColor.White, for: .normal)
         button.layer.shadowRadius = 10
         button.layer.shadowOpacity = 0.3
         button.layer.cornerRadius = 30
@@ -163,9 +163,9 @@ extension HomeViewController {
     // MARK: - Methods
     
     private func configureNav() {
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.White]
         view.backgroundColor = .DarkGray1
-        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = .White
         navAppear()
         tabAppear()
     }

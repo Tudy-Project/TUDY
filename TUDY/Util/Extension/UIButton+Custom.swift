@@ -36,7 +36,7 @@ extension UIButton {
         let button = UIButton()
         button.titleLabel?.font = UIFont.sub16
         button.setTitle(text, for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.White, for: .normal)
         button.layer.cornerRadius = 3
         button.changeIsEnabledFalse()
         return button

@@ -149,7 +149,7 @@ extension SetSubwayViewController {
             var contentConfiguration = cell.defaultContentConfiguration()
             contentConfiguration.text = identifier.station
             contentConfiguration.textProperties.font = .caption12
-            contentConfiguration.textProperties.color = .white
+            contentConfiguration.textProperties.color = .White
             cell.contentConfiguration = contentConfiguration
             let view: UIView = {
                 let view = UIView()
