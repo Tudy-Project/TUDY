@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MessageCell: UICollectionViewCell {
     
     //MARK: - Properties
-    static var message: Message?
+    var message: Message?
     
     var helper: MessageHelper?
 
@@ -28,7 +29,6 @@ class MessageCell: UICollectionViewCell {
     
     lazy var userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "호진"
         label.textColor = .white
         label.font = UIFont.caption11
         return label
@@ -64,15 +64,13 @@ class MessageCell: UICollectionViewCell {
         super.init(frame: frame)
         
         guard let user = UserInfo.shared.user else { return }
- 
-        MessageCell.message = Message(content: "textView.text",
+        
+        message = Message(content: "textView.text",
                           imageURL: "",
                           sender: user,
                           createdDate: Date().chatListDate())
-        
-        guard let message = MessageCell.message else {
-            return
-        }
+        guard let message = message else { return }
+
 
         print(message)
         helper = MessageHelper(message: message)
@@ -97,6 +95,7 @@ class MessageCell: UICollectionViewCell {
         if (message.sender.userID == sender.userID) {
             bubbleContainer.snp.makeConstraints { make in
                 make.top.equalTo(userNameLabel.snp.bottom).offset(4)
+                make.bottom.equalToSuperview()
                 make.width.lessThanOrEqualTo(250)
                 make.trailing.equalToSuperview().offset(-12)
             }
@@ -112,6 +111,7 @@ class MessageCell: UICollectionViewCell {
             
             bubbleContainer.snp.makeConstraints { make in
                 make.top.equalTo(userNameLabel.snp.bottom).offset(4)
+                make.bottom.equalToSuperview()
                 make.width.lessThanOrEqualTo(250)
                 make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             }
@@ -131,6 +131,7 @@ class MessageCell: UICollectionViewCell {
         
         bubbleContainer.backgroundColor = helper?.messageBackgroundColor
         textView.textColor = helper?.messageTextColor
+        profileImageView.sd_setImage(with: helper?.profileImageUrl)
     }
     
     required init?(coder: NSCoder) {

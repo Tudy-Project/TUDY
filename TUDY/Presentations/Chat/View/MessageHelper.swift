@@ -48,6 +48,11 @@ struct MessageHelper {
             return message.sender.userID == userId
     }
     
+    var profileImageUrl: URL? {
+        guard let user = UserInfo.shared.user else { return nil }
+        return URL(string: user.profileImageURL)
+    }
+    
     init(message: Message) {
         self.message = message
     }

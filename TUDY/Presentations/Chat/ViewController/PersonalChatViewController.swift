@@ -74,10 +74,12 @@ class PersonalChatViewController: UIViewController {
     }
     
     func getAlltheMessage() {
+        self.messages.removeAll()
         DispatchQueue.main.async { [self] in
-            FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] msg in
-                for m in msg {
-                    self?.messages.append(m)
+            FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] message in
+                for msg in message {
+                    print("msg : \(msg)")
+                    self?.messages.append(msg)
                 }
                 personalChatCV.reloadData()
             }
@@ -168,9 +170,13 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
             return UICollectionViewCell()
         }
         // dummy Data
-        cell.userNameLabel.text = "호진"
+        cell.userNameLabel.text = messages[indexPath.row].sender.nickname
         cell.textView.text = messages[indexPath.row].content
-        cell.timeLabel.text = Date().chatDate()
+        cell.timeLabel.text = messages[indexPath.row].createdDate
+//        cell.message = messages[indexPath.row]
+//        if let user = UserInfo.shared.user {
+//            cell.message?.sender = user
+//        }
         return cell
     }
 }
@@ -178,7 +184,17 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
 
 extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let estimatedSizeCell = MessageCell(frame: frame)
+        estimatedSizeCell.message = messages[indexPath.row]
+        estimatedSizeCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(targetSize)
+        
+        return .init(width: view.frame.width, height: estimatedSize.height)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -232,7 +248,7 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
         
         if (!message.isEmpty) {
             if let user = UserInfo.shared.user {
-                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatListDate())
+                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatDate())
                 messages.append(message)
                 FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: message)
                 personalChatCV.reloadData()
