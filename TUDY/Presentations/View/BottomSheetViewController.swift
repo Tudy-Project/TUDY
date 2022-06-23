@@ -128,13 +128,13 @@ extension BottomSheetViewController {
             bottomSheetViewTopConstraint,
         ])
         
-        dragIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            dragIndicatorView.widthAnchor.constraint(equalToConstant: 60),
-            dragIndicatorView.heightAnchor.constraint(equalToConstant: dragIndicatorView.layer.cornerRadius * 2),
-            dragIndicatorView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            dragIndicatorView.bottomAnchor.constraint(equalTo: bottomSheetView.topAnchor, constant: -10)
-        ])
+//        dragIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            dragIndicatorView.widthAnchor.constraint(equalToConstant: 60),
+//            dragIndicatorView.heightAnchor.constraint(equalToConstant: dragIndicatorView.layer.cornerRadius * 2),
+//            dragIndicatorView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            dragIndicatorView.bottomAnchor.constraint(equalTo: bottomSheetView.topAnchor, constant: -10)
+//        ])
         
         contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

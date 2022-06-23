@@ -33,6 +33,7 @@ class ProjectConditionsViewController: UIViewController {
     var expectedPeriodThumbsLabel = UILabel().label(text: "0 주", font: .sub14)
     private let expectedPeriodSlider: UISlider = {
         let slider = UISlider()
+        slider.tintColor = .PointBlue
         slider.value = 0
         slider.minimumValue = 0
         slider.maximumValue = 8
@@ -108,10 +109,14 @@ extension ProjectConditionsViewController {
     @objc private func didChangePersonSliderValue(_ sender: UISlider) {
         let value = Int(sender.value)
         self.personnelThumbsLabel.text = ("\(String(value))명")
+        NotificationCenter.default.post(name: Notification.Name("peopleCount"),
+                                        object: value)
     }
     
     @objc private func didChangeTimeSliderValue(_ sender: UISlider) {
         let value = Int(sender.value)
         self.expectedPeriodThumbsLabel.text = ("\(String(value))주")
+        NotificationCenter.default.post(name: Notification.Name("time"),
+                                        object: value)
     }
 }

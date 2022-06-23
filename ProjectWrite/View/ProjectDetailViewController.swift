@@ -17,6 +17,12 @@ class ProjectDetailViewController: UIViewController {
     
     // MARK: - Properties
     
+    var project: Project? {
+        didSet {
+            configureProject()
+        }
+    }
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -141,6 +147,19 @@ extension ProjectDetailViewController {
 
 // MARK: - Methods
 extension ProjectDetailViewController {
+    
+    private func configureProject() {
+        guard let project = project else { return }
+        detailTitle.text = project.title
+        detailDesc.text = project.content
+        FirebaseUser.fetchOtherUser(userID: project.writerId) { [unowned self] user in
+            authorName.text = user.nickname
+        }
+        uploadDate.text = project.writeDate
+        personnelLabel.text = "\(project.maxPeople)명"
+        estimatedDurationLabel.text = "\(project.endDate)주"
+        heartCount.text = "\(project.favoriteCount)"
+    }
     
     private func configureNavSettings() {
         view.backgroundColor = .DarkGray1

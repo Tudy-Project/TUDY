@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     enum Event {
         case showSearch
         case showProjectWrite
-        case showProjectDetail
+        case showProjectDetail(project: Project)
         case showLogin
     }
     
@@ -86,20 +86,25 @@ class HomeViewController: UIViewController {
         return switchButton
     }()
     
-    private lazy var bottomSheetCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(BottomSheetCell.self, forCellWithReuseIdentifier: BottomSheetCell.identifier)
-        collectionView.backgroundColor = .DarkGray3
-        collectionView.isScrollEnabled = false
-        collectionView.tag = 2
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        return collectionView
-    }()
+//    private lazy var bottomSheetCollectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.scrollDirection = .vertical
+//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        collectionView.register(BottomSheetCell.self, forCellWithReuseIdentifier: BottomSheetCell.identifier)
+//        collectionView.backgroundColor = .DarkGray3
+//        collectionView.isScrollEnabled = false
+//        collectionView.tag = 2
+//        collectionView.delegate = self
+//        collectionView.dataSource = self
+//        return collectionView
+//    }()
     
-    private let collectionViewData = testData()
+    typealias ProjectDataSource = UICollectionViewDiffableDataSource<Int, Project>
+    typealias ProjectSnapshot = NSDiffableDataSourceSnapshot<Int, Project>
+    
+    private var projectCollectionView: UICollectionView!
+    private var projectDataSource: ProjectDataSource!
+    private var projects: [Project] = []
     
     enum BottomSheetViewState {
         case expanded
@@ -145,6 +150,8 @@ class HomeViewController: UIViewController {
         FirebaseUser.addUserSnapshotListener()
         configureCollectionView()
         configureUI()
+        
+        fetchProject()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -280,12 +287,12 @@ extension HomeViewController {
             
             bottomSheetViewTopConstraint.constant = 415.744
             //아래 주석값이 디폴트높이값과 같아야지만 바텀시트의 움직임이 없어짐
-//            (safeAreaHeight + bottomPadding) - defaultHeight
+            //            (safeAreaHeight + bottomPadding) - defaultHeight
             print("safeAreaHeight:\(safeAreaHeight)")
             print("bottomPadding:\(bottomPadding)")
             print("defaultHeight:\(defaultHeight)")
             print("bottomSheetViewTopConstraint.constant: \(bottomSheetViewTopConstraint.constant)")
-            bottomSheetCollectionView.isScrollEnabled = false
+//            bottomSheetCollectionView.isScrollEnabled = false
             bottomSheetView.layer.cornerRadius = 17
             navigationController?.navigationBar.isHidden = false
             
@@ -295,7 +302,7 @@ extension HomeViewController {
             bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
             
             //expanded상태에서는 스크롤 가능하게 설정
-            bottomSheetCollectionView.isScrollEnabled = true
+//            bottomSheetCollectionView.isScrollEnabled = true
             bottomSheetView.layer.cornerRadius = 0
             
             setUpNavBarSearchBar()
@@ -306,7 +313,31 @@ extension HomeViewController {
         }, completion: nil)
     }
     
+    private func collectionViewlayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                               heightDimension: .absolute(146))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.edgeSpacing = .init(leading: .fixed(18), top: .fixed(18), trailing: .fixed(-36), bottom: .fixed(0))
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 36)
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
     private func configureCollectionView() {
+        projectCollectionView = UICollectionView(frame: .zero,
+                                                 collectionViewLayout: collectionViewlayout())
+        projectCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        projectCollectionView.delegate = self
+        configureCollectionViewDataSource()
+
+        
+        
         bottomSheetView.addSubview(FilterStackView)
         FilterStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(19)
@@ -316,10 +347,54 @@ extension HomeViewController {
         FilterStackView.addArrangedSubview(bottomSheetFilterLabel)
         FilterStackView.addArrangedSubview(switchButton)
         
-        bottomSheetView.addSubview(bottomSheetCollectionView)
-        bottomSheetCollectionView.snp.makeConstraints { make in
+//        bottomSheetView.addSubview(bottomSheetCollectionView)
+//        bottomSheetCollectionView.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(56)
+//            make.leading.trailing.bottom.equalToSuperview()
+//        }
+        
+        projectCollectionView.backgroundColor = .DarkGray3
+        bottomSheetView.addSubview(projectCollectionView)
+        projectCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(56)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+    
+    private func configureCollectionViewDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<BottomSheetCell, Project> {
+            [unowned self] cell, indexPath, itemIdentifier in
+            cell.titleLabel.text = projects[indexPath.row].title
+            cell.contentsLabel.text = projects[indexPath.row].content
+            cell.writeDateLabel.text = projects[indexPath.row].writeDate
+            FirebaseUser.fetchOtherUser(userID: projects[indexPath.row].writerId) { user in
+                cell.authorLabel.text = user.nickname
+            }
+        }
+        
+        projectDataSource = ProjectDataSource(collectionView: projectCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
+                                                         for: indexPath,
+                                                         item: itemIdentifier)
+        })
+        
+        makeSnapshot()
+    }
+    
+    private func makeSnapshot() {
+        var snapshot = ProjectSnapshot()
+        snapshot.appendSections([0])
+        snapshot.appendItems(projects)
+        projectDataSource.apply(snapshot)
+    }
+}
+
+// MARK: - API
+extension HomeViewController {
+    func fetchProject() {
+        FirebaseProject.fetchProject { [unowned self] projects in
+            self.projects = projects
+            self.makeSnapshot()
         }
     }
 }
@@ -399,7 +474,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if(collectionView.tag == 1) {
             idx = fastSearchButtonList.count
         } else {
-            idx = collectionViewData.title.count
+            idx = projects.count
         }
         return idx
     }
@@ -443,29 +518,30 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
             
             return  fastSearchCell
-        } else {
-            guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: BottomSheetCell.identifier, for: indexPath) as? BottomSheetCell else {
-                return UICollectionViewCell()
-            }
-            cell.layer.cornerRadius = 5
-            cell.backgroundColor = .DarkGray1
-            cell.titleLabel.text = collectionViewData.title[indexPath.row]
-            cell.contentsLabel.text = collectionViewData.contents[indexPath.row]
-            cell.authorLabel.text = collectionViewData.author[indexPath.row]
-            cell.writeDateLabel.text = collectionViewData.writeDate[indexPath.row]
-            return cell
         }
+//        else {
+//            guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: BottomSheetCell.identifier, for: indexPath) as? BottomSheetCell else {
+//                return UICollectionViewCell()
+//            }
+//            cell.layer.cornerRadius = 5
+//            cell.backgroundColor = .DarkGray1
+//            cell.titleLabel.text = projects[indexPath.row].title
+//            cell.contentsLabel.text = projects[indexPath.row].content
+//            cell.writeDateLabel.text = projects[indexPath.row].writeDate
+//            FirebaseUser.fetchOtherUser(userID: projects[indexPath.row].writerId) { user in
+//                cell.authorLabel.text = user.nickname
+//            }
+//            return cell
+//        }
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.tag == 1 {
             print("선택하면 빠른 검색 \(fastSearchButtonList[indexPath.row])")
         } else {
-            
-//            self.navigationController?.pushViewController(ProjectDetailViewController(), animated: true)
-            didSendEventClosure?(.showProjectDetail)
-            let indexPath = indexPath.row
-            print("선택하면 프로젝트 디테일뷰로 \(indexPath)")
+            let index = indexPath.row
+            didSendEventClosure?(.showProjectDetail(project: projects[index]))
         }
         
     }
@@ -482,45 +558,3 @@ extension UIApplication {
     }
     
 }
-
-#if DEBUG
-import SwiftUI
-
-@available(iOS 13, *)
-struct InfoVCPreview: PreviewProvider {
-    
-    static var previews: some View {
-        // view controller using programmatic UI
-        Group {
-            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone XS"))
-                .previewDisplayName("iPhone XS")
-            HomeViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max")).previewDisplayName("iPhone 12 Pro Max")
-        }
-    }
-}
-#endif
-
-
-#if DEBUG
-import SwiftUI
-
-@available(iOS 13, *)
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        // this variable is used for injecting the current view controller
-        let viewController: UIViewController
-        
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
-    
-    func toPreview() -> some View {
-        // inject self (the current view controller) for the preview
-        Preview(viewController: self)
-    }
-}
-#endif

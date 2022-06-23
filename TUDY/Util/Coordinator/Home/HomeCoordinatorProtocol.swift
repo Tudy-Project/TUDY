@@ -6,13 +6,15 @@
 //
 
 import Foundation
+import UIKit
 
 protocol HomeCoordinatorProtocol: Coordinator {
     
     var homeViewController: HomeViewController { get set }
     
     func pushSearchViewController()
-    func pushProjectWriteViewController()
-    func pushProjectDetailViewController()
+    func showProjectWriteViewController()
+    func registerProject(viewController: UIViewController)
+    func pushProjectDetailViewController(project: Project)
     func showLogin()
 }

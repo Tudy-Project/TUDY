@@ -30,9 +30,9 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
             case .showSearch:
                 self?.pushSearchViewController()
             case .showProjectWrite:
-                self?.pushProjectWriteViewController()
-            case .showProjectDetail:
-                self?.pushProjectDetailViewController()
+                self?.showProjectWriteViewController()
+            case .showProjectDetail(let project):
+                self?.pushProjectDetailViewController(project: project)
             case .showLogin:
                 self?.showLogin()
             }
@@ -53,13 +53,9 @@ extension HomeCoordinator {
         self.navigationController.pushViewController(searchViewController, animated: true)
     }
     
-    func pushProjectWriteViewController() {
-        let projectWriteViewController = ProjectWriteViewController()
-        self.navigationController.pushViewController(projectWriteViewController, animated: true)
-    }
-    
-    func pushProjectDetailViewController() {
+    func pushProjectDetailViewController(project: Project) {
         let projectDetailViewController = ProjectDetailViewController()
+        projectDetailViewController.project = project
         projectDetailViewController.didSendEventClosure = { [weak self] event in
             switch event {
             case .showPersonalChat(let user):
@@ -67,6 +63,26 @@ extension HomeCoordinator {
             }
         }
         self.navigationController.pushViewController(projectDetailViewController, animated: true)
+    }
+    
+    func showProjectWriteViewController() {
+        let projectWriteViewController = ProjectWriteViewController()
+        let projectWriteNavigationController = UINavigationController(rootViewController: projectWriteViewController)
+        projectWriteViewController.navAppear()
+        projectWriteNavigationController.modalPresentationStyle = .fullScreen
+       
+        projectWriteViewController.didSendEventClosure = { [weak self] event in
+            switch event {
+            case .registerProject(let viewController):
+                self?.registerProject(viewController: viewController)
+            }
+        }
+        
+        self.navigationController.present(projectWriteNavigationController, animated: true)
+    }
+    
+    func registerProject(viewController: UIViewController) {
+        viewController.dismiss(animated: true)
     }
     
     func showLogin() {
