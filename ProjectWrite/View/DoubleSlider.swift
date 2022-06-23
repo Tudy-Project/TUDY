@@ -15,10 +15,10 @@ public final class DoubledSlider: UIControl {
     var trackBackgroundColor: UIColor {
         if traitCollection.userInterfaceStyle == .dark {
         // swiftlint:disable force_unwrapping
-            return UIColor.white
+            return UIColor.White
         } else {
         // swiftlint:disable force_unwrapping
-            return UIColor.white
+            return UIColor.White
         }
     }
 

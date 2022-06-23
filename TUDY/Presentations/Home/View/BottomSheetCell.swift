@@ -14,7 +14,7 @@ class BottomSheetCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
        let label = UILabel()
-        label.textColor = .white
+        label.textColor = .White
         label.numberOfLines = 2
         label.font = .body16
         return label
@@ -29,7 +29,7 @@ class BottomSheetCell: UICollectionViewCell {
     
     lazy var authorLabel: UILabel = {
        let label = UILabel()
-        label.textColor = .white
+        label.textColor = .White
         label.font = .caption12
         return label
     }()
@@ -56,6 +56,9 @@ class BottomSheetCell: UICollectionViewCell {
 extension BottomSheetCell {
     
     private func configureUI() {
+        contentView.backgroundColor = .DarkGray2
+        contentView.layer.cornerRadius = 5
+        
         contentView.addSubview(titleLabel)
         contentView.addSubview(contentsLabel)
         contentView.addSubview(authorLabel)
@@ -65,11 +68,13 @@ extension BottomSheetCell {
             make.top.equalToSuperview().offset(23)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-126)
+            make.height.equalTo(40)
         }
         
         contentsLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(21)
             make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
         }
         
         authorLabel.snp.makeConstraints { make in

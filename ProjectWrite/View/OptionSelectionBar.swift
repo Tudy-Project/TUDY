@@ -14,7 +14,7 @@ class OptionSelectionBar: UIView {
     let title: UILabel = {
         let label = UILabel()
         label.font = .sub16
-        label.textColor = .white
+        label.textColor = .White
         return label
     }()
     

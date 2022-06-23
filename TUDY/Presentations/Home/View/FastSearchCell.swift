@@ -16,7 +16,7 @@ class FastSearchCell: UICollectionViewCell {
         let view = UIView()
         view.layer.cornerRadius = 15
         view.clipsToBounds = true
-        view.backgroundColor = .white
+        view.backgroundColor = .White
         return view
     }()
     
@@ -27,7 +27,7 @@ class FastSearchCell: UICollectionViewCell {
     
     lazy var workTitle: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .White
         label.font = UIFont.sub16
         return label
     }()

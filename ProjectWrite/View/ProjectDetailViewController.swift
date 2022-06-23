@@ -17,16 +17,22 @@ class ProjectDetailViewController: UIViewController {
     
     // MARK: - Properties
     
+    var project: Project? {
+        didSet {
+            configureProject()
+        }
+    }
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
     private lazy var detailTitle: UILabel = {
-        let label = UILabel().label(text: testData().title[0] , font: UIFont.sub20, color: .white, numberOfLines: 2)
+        let label = UILabel().label(text: testData().title[0] , font: UIFont.sub20, color: UIColor.White, numberOfLines: 2)
         return label
     }()
     
     private lazy var detailDesc: UILabel = {
-        let label = UILabel().label(text:testData().descLongText[0], font: UIFont.body14, color: .white)
+        let label = UILabel().label(text:testData().descLongText[0], font: UIFont.body14, color: .White)
         let attrString = NSMutableAttributedString(string: label.text ?? "")
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6
@@ -36,7 +42,7 @@ class ProjectDetailViewController: UIViewController {
     }()
     
     private lazy var authorName: UILabel = {
-        let label = UILabel().label(text: testData().author[0], font: UIFont.caption11, color: .white)
+        let label = UILabel().label(text: testData().author[0], font: UIFont.caption11, color: .White)
         return label
     }()
     
@@ -62,7 +68,7 @@ class ProjectDetailViewController: UIViewController {
         return collectionView
     }()
     
-    private let uploadDate = UILabel().label(text: "2022/4/12  14:02", font: UIFont.caption12, color: .white)
+    private let uploadDate = UILabel().label(text: "2022/4/12  14:02", font: UIFont.caption12, color: .White)
     
     private let grayBlock: UIView = {
         let view = UIView()
@@ -77,8 +83,8 @@ class ProjectDetailViewController: UIViewController {
         stackView.distribution = .fill
         return stackView
     }()
-    private let personnelTitle = UILabel().label(text: "인원", font: UIFont.sub14, color: .white)
-    private let personnelLabel = UILabel().label(text: "5명", font: UIFont.sub14, color: .white)
+    private let personnelTitle = UILabel().label(text: "인원", font: UIFont.sub14, color: .White)
+    private let personnelLabel = UILabel().label(text: "5명", font: UIFont.sub14, color: .White)
     
     private let estimatedDurationStackView: UIStackView = {
         let stackView = UIStackView()
@@ -87,8 +93,8 @@ class ProjectDetailViewController: UIViewController {
         return stackView
     }()
     
-    private let estimatedDurationTitle = UILabel().label(text: "예상 기간", font: UIFont.sub14, color: .white)
-    private let estimatedDurationLabel = UILabel().label(text: "6주", font: UIFont.sub14, color: .white)
+    private let estimatedDurationTitle = UILabel().label(text: "예상 기간", font: UIFont.sub14, color: .White)
+    private let estimatedDurationLabel = UILabel().label(text: "6주", font: UIFont.sub14, color: .White)
     
     private let bottomTabView: UIView = {
         let view = UIView(frame: .zero)
@@ -112,7 +118,7 @@ class ProjectDetailViewController: UIViewController {
         return button
     }()
     
-    private let heartCount = UILabel().label(text: "12", font: UIFont.sub14, color: .white)
+    private let heartCount = UILabel().label(text: "12", font: UIFont.sub14, color: .White)
     
     
     // MARK: - Life Cycle
@@ -141,6 +147,19 @@ extension ProjectDetailViewController {
 
 // MARK: - Methods
 extension ProjectDetailViewController {
+    
+    private func configureProject() {
+        guard let project = project else { return }
+        detailTitle.text = project.title
+        detailDesc.text = project.content
+        FirebaseUser.fetchOtherUser(userID: project.writerId) { [unowned self] user in
+            authorName.text = user.nickname
+        }
+        uploadDate.text = project.writeDate
+        personnelLabel.text = "\(project.maxPeople)명"
+        estimatedDurationLabel.text = "\(project.endDate)주"
+        heartCount.text = "\(project.favoriteCount)"
+    }
     
     private func configureNavSettings() {
         view.backgroundColor = .DarkGray1

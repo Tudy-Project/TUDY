@@ -35,17 +35,17 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    private let logoLabel = UILabel().label(text: "TUDY.", font: .title, color: .white)
+    private let logoLabel = UILabel().label(text: "TUDY.", font: .title, color: .White)
     
     private let kakaoLoginButton = UIButton().imageButton(imageName: "kakaoLoginButton")
     private let appleLoginButton = UIButton().imageButton(imageName: "appleLoginButton")
-//    private let appleLoginButton = ASAuthorizationAppleIDButton(type: .continue, style: .white)
+//    private let appleLoginButton = ASAuthorizationAppleIDButton(type: .continue, style: .White)
     
     private let browseWithoutLoginButton: UIButton = {
         let button = UIButton(type: .system)
         let attributedTitle = NSMutableAttributedString(string: "로그인없이 둘러보기",
                               attributes: [NSAttributedString.Key.font : UIFont.caption11,
-                                           NSAttributedString.Key.foregroundColor: UIColor.white,
+                                           NSAttributedString.Key.foregroundColor: UIColor.White,
                                            NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
         button.setAttributedTitle(attributedTitle, for: .normal)
         return button
