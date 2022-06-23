@@ -42,4 +42,36 @@ extension UIViewController {
         tabBarController?.tabBar.isHidden = true
         tabBarController?.tabBar.isTranslucent = true
     }
+    
+    func showToastMessage(text: String) {
+
+        let width: CGFloat = 330
+        let toastMessageLabel = UILabel(frame: CGRect(x: view.frame.size.width/2 - (width / 2),
+                                                      y: view.frame.size.height - 150,
+                                                      width: 330,
+                                                      height: 48))
+        toastMessageLabel.backgroundColor = .DarkGray5.withAlphaComponent(0.9)
+        toastMessageLabel.textAlignment = .center
+        toastMessageLabel.layer.cornerRadius = 10
+        toastMessageLabel.clipsToBounds = true
+        toastMessageLabel.text = text
+        toastMessageLabel.numberOfLines = 0
+        toastMessageLabel.textColor = .White
+        toastMessageLabel.font = .body14
+        view.addSubview(toastMessageLabel)
+        UIView.animate(withDuration: 0.7, delay: 1.0, options: .curveEaseOut) {
+            toastMessageLabel.alpha = 0.0
+        } completion: { _ in
+            toastMessageLabel.removeFromSuperview()
+        }
+    }
+    
+    func hideKeyboard() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

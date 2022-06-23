@@ -256,10 +256,6 @@ extension SetSubwayViewController {
         didSendEventClosure?(.next)
     }
     
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
     @objc private func textFieldDidChange(_ sender: UITextField) {
         guard let text = sender.text else { return }
         filteringSubway(text: text)
