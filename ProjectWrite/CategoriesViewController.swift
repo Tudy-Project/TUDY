@@ -19,22 +19,35 @@ class CategoriesViewController: UIViewController {
     
     private let developLabel = UILabel().label(text: "개발", font: .sub14)
     private let designLabel = UILabel().label(text: "디자인", font: .sub14)
-    private var developFields: [String] = ["프론트엔드", "백엔드", "안드로이드", "iOS"]
-    private var designerFields: [String] = ["UI/UX", "그래픽디자인", "브랜딩", "3D/모션그래픽"]
+    private var developFields: [String] = Jobs.allProgrammersJobs.map { $0.rawValue }
+    private var designerFields: [String] = Jobs.allDesignerJobs.map { $0.rawValue }
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
     
     private var developCollectionView: UICollectionView!
     private var designCollectionView: UICollectionView!
     
-    private var  developFieldsDataSource: DataSource!
+    private var  developDataSource: DataSource!
     private var designDataSource: DataSource!
-    private var selectedDevelopFields: [String] = []
+    
+    private var selectedDevelop: [String] = []
+    private var selectedDesign: [String] = []
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("selectedDevelop"),
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("selectedDesign"),
+                                                  object: nil)
     }
 }
 
@@ -55,13 +68,13 @@ extension CategoriesViewController {
             make.top.equalToSuperview().offset(26)
             make.leading.equalToSuperview().offset(22)
         }
+        
         view.addSubview(developCollectionView)
-        developCollectionView.register(DevelopCell.self, forCellWithReuseIdentifier: DevelopCell.reuseIdentifier)
         developCollectionView.snp.makeConstraints { make in
             make.top.equalTo(developLabel.snp.bottom).offset(8)
             make.leading.equalTo(view.snp.leading).offset(33)
             make.trailing.equalTo(view.snp.trailing).offset(-33)
-            make.height.equalTo(100)
+            make.height.equalTo(70)
         }
         
         view.addSubview(designLabel)
@@ -70,7 +83,13 @@ extension CategoriesViewController {
             make.leading.equalToSuperview().offset(22)
         }
         
-        
+        view.addSubview(designCollectionView)
+        designCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(designLabel.snp.bottom).offset(8)
+            make.leading.equalTo(view.snp.leading).offset(33)
+            make.trailing.equalTo(view.snp.trailing).offset(-33)
+            make.height.equalTo(70)
+        }
     }
     
     // MARK: - CollectionView
@@ -99,6 +118,12 @@ extension CategoriesViewController {
         developCollectionView.backgroundColor = .DarkGray2
         developCollectionView.isScrollEnabled = false
         
+        designCollectionView = UICollectionView(frame: view.bounds,
+                                                   collectionViewLayout: collectionViewLayout(height: 37))
+        designCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        designCollectionView.backgroundColor = .DarkGray2
+        designCollectionView.isScrollEnabled = false
+        
         configureDataSource()
     }
     
@@ -110,8 +135,8 @@ extension CategoriesViewController {
             cell.button.addTarget(self, action: #selector(self?.developButtonTapped(_:)), for: .touchUpInside)
             cell.contentView.backgroundColor = .DarkGray2
             
-            if let selectedDevelopFields = self?.selectedDevelopFields {
-                if selectedDevelopFields.contains(identifier) {
+            if let selectedDevelop = self?.selectedDevelop {
+                if selectedDevelop.contains(identifier) {
                     cell.button.backgroundColor = .DarkGray5
                 } else {
                     cell.button.backgroundColor = .DarkGray2
@@ -119,42 +144,96 @@ extension CategoriesViewController {
             }
         }
         
-        developFieldsDataSource = DataSource(collectionView: developCollectionView) {
+        developDataSource = DataSource(collectionView: developCollectionView) {
             collectionView, indexPath, itemIdentifier in
-            return collectionView.dequeueConfiguredReusableCell(using: developCellRegistration, for: indexPath, item: itemIdentifier)
+            return collectionView.dequeueConfiguredReusableCell(using: developCellRegistration,
+                                                                for: indexPath,
+                                                                item: itemIdentifier)
         }
         
         var developFieldsSnapshot = Snapshot()
         developFieldsSnapshot.appendSections([0])
-        developFieldsSnapshot.appendItems([])
-        developFieldsDataSource.apply(developFieldsSnapshot)
+        developFieldsSnapshot.appendItems(developFields)
+        developDataSource.apply(developFieldsSnapshot)
+        
+        let designCellRegistration =
+        UICollectionView.CellRegistration<DevelopCell, String> {
+            [weak self] cell, indexPath, identifier in
+            cell.button.setTitle(identifier, for: .normal)
+            cell.button.addTarget(self, action: #selector(self?.designButtonTapped(_:)), for: .touchUpInside)
+            cell.contentView.backgroundColor = .DarkGray2
+            
+            if let selectedDesign = self?.selectedDesign {
+                if selectedDesign.contains(identifier) {
+                    cell.button.backgroundColor = .DarkGray5
+                } else {
+                    cell.button.backgroundColor = .DarkGray2
+                }
+            }
+        }
+        
+        designDataSource = DataSource(collectionView: designCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            return collectionView.dequeueConfiguredReusableCell(using: designCellRegistration,
+                                                                for: indexPath,
+                                                                item: itemIdentifier)
+        })
+        
+        var designSnapshot = Snapshot()
+        designSnapshot.appendSections([0])
+        designSnapshot.appendItems(designerFields)
+        designDataSource.apply(designSnapshot)
     }
     
     private func updateDevelopFieldsSnapshotWhenTappedDevelopFields() {
-        var snapshot = developFieldsDataSource.snapshot()
+        var snapshot = developDataSource.snapshot()
         snapshot.reloadItems(developFields)
-        developFieldsDataSource.apply(snapshot)
+        developDataSource.apply(snapshot)
+    }
+    
+    private func updateDesignFieldsSnapshotWhenTappedDesignFields() {
+        var snapshot = designDataSource.snapshot()
+        snapshot.reloadItems(designerFields)
+        designDataSource.apply(snapshot)
     }
     
     // MARK: - Action Methods
     @objc
        func tapInitButton(sender:UITapGestureRecognizer) {
-           print("tap working")
+           selectedDevelop = []
+           selectedDesign = []
+           updateDevelopFieldsSnapshotWhenTappedDevelopFields()
+           updateDesignFieldsSnapshotWhenTappedDesignFields()
+           NotificationCenter.default.post(name: Notification.Name("selectedDevelop"),
+                                           object: selectedDevelop)
+           NotificationCenter.default.post(name: Notification.Name("selectedDesign"),
+                                           object: selectedDesign)
        }
     
     @objc private func developButtonTapped(_ sender: DevelopButton) {
-        print("tapDevelopFieldsButton!!!")
-    }
-    
-    @objc private func developFieldsButtonTapped(_ sender: DevelopButton) {
-        guard let developFieldsName = sender.titleLabel?.text else { return }
-        if selectedDevelopFields.contains(developFieldsName) {
-            guard let index = selectedDevelopFields.firstIndex(of: developFieldsName) else { return }
-            selectedDevelopFields.remove(at: index)
+        guard let developName = sender.titleLabel?.text else { return }
+        if selectedDevelop.contains(developName) {
+            guard let index = selectedDevelop.firstIndex(of: developName) else { return }
+            selectedDevelop.remove(at: index)
         } else {
-            selectedDevelopFields.append(developFieldsName)
+            selectedDevelop.append(developName)
         }
         updateDevelopFieldsSnapshotWhenTappedDevelopFields()
+        
+        NotificationCenter.default.post(name: Notification.Name("selectedDevelop"),
+                                        object: selectedDevelop)
     }
     
+    @objc private func designButtonTapped(_ sender: DevelopButton) {
+        guard let designName = sender.titleLabel?.text else { return }
+        if selectedDesign.contains(designName) {
+            guard let index = selectedDesign.firstIndex(of: designName) else { return }
+            selectedDesign.remove(at: index)
+        } else {
+            selectedDesign.append(designName)
+        }
+        updateDesignFieldsSnapshotWhenTappedDesignFields()
+        
+        NotificationCenter.default.post(name: Notification.Name("selectedDesign"),
+                                        object: selectedDesign)
+    }
 }

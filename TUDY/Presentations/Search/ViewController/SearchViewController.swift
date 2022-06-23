@@ -25,7 +25,7 @@ class SearchViewController: UIViewController {
         searchbar.searchTextField.backgroundColor = UIColor.DarkGray3
         searchbar.searchTextField.layer.cornerRadius = 3
         searchbar.searchTextField.layer.masksToBounds = true
-        searchbar.searchTextField.textColor = .white
+        searchbar.searchTextField.textColor = .White
         searchbar.setImage(UIImage(), for: .search, state: .normal)
         searchbar.setImage(UIImage(named: "icCancel"), for: .clear, state: .normal)
         return searchbar
@@ -37,7 +37,7 @@ class SearchViewController: UIViewController {
         let label = UILabel()
         label.text = "최근 검색어"
         label.font = UIFont.caption11
-        label.textColor = .white
+        label.textColor = .White
         label.font = UIFont.boldSystemFont(ofSize: 20)
         return label
     }()
@@ -55,7 +55,7 @@ class SearchViewController: UIViewController {
         let button = UIButton()
         let attributedTitle = NSMutableAttributedString(string: "전체삭제",
                               attributes: [NSAttributedString.Key.font : UIFont.caption11,
-                                           NSAttributedString.Key.foregroundColor: UIColor.white,
+                                           NSAttributedString.Key.foregroundColor: UIColor.White,
                                            NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue])
         button.setAttributedTitle(attributedTitle, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
@@ -75,7 +75,7 @@ class SearchViewController: UIViewController {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = UIFont.caption11
-        label.textColor = .white
+        label.textColor = .White
         label.font = UIFont.boldSystemFont(ofSize: 20)
         let attrString = NSMutableAttributedString(string: "원하는 직무도\n함께 검색 해보세요!")
         let paragraphStyle = NSMutableParagraphStyle()
@@ -172,7 +172,7 @@ class SearchViewController: UIViewController {
     
     func configureNav() {
         self.navigationItem.titleView = searchbar
-        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.tintColor = .White
         self.navigationController?.navigationBar.topItem?.title = ""
         tabDisappear()
     }

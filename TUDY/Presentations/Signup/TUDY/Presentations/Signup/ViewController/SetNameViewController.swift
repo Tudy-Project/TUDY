@@ -160,10 +160,6 @@ extension SetNameViewController {
         setUser()
         didSendEventClosure?(.next)
     }
-    
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
 }
 
 extension SetNameViewController: UITextFieldDelegate {}
