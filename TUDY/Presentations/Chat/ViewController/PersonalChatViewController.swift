@@ -75,15 +75,12 @@ class PersonalChatViewController: UIViewController {
     
     func getAlltheMessage() {
         self.messages.removeAll()
-        DispatchQueue.main.async { [self] in
             FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] message in
                 for msg in message {
-                    print("msg : \(msg)")
                     self?.messages.append(msg)
                 }
-                personalChatCV.reloadData()
+                self?.personalChatCV.reloadData()
             }
-        }
     }
     
     
