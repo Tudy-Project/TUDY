@@ -85,13 +85,11 @@ class PersonalChatViewController: UIViewController {
     
     
     func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PersonalChatViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
-    }
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-        personalChatCV.endEditing(true)
+        personalChatCV.addGestureRecognizer(tap)
+        
     }
 }
 
@@ -170,6 +168,7 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
         cell.userNameLabel.text = messages[indexPath.row].sender.nickname
         cell.textView.text = messages[indexPath.row].content
         cell.timeLabel.text = messages[indexPath.row].createdDate
+        
 //        cell.message = messages[indexPath.row]
 //        if let user = UserInfo.shared.user {
 //            cell.message?.sender = user
