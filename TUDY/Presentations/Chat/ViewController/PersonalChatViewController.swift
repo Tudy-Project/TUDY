@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import KakaoSDKUser
+import Firebase
+import FirebaseDatabase
 
 private let reuseIdentifier = "MessageCell"
 
@@ -19,7 +21,6 @@ class PersonalChatViewController: UIViewController {
             configureUI()
         }
     }
-    
     
 //    private var myUserInfo: User
     private var otherUserInfo: User?
@@ -51,12 +52,12 @@ class PersonalChatViewController: UIViewController {
         personalChatCV.delegate = self
         personalChatCV.dataSource = self
         picker.delegate = self
-        chatinputView.messageInputTextView.delegate = self
+//        chatinputView.messageInputTextView.delegate = self
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
-
         getOtherUserInfo()
-
+        getAlltheMessage()
+        self.hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +71,30 @@ class PersonalChatViewController: UIViewController {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+    func getAlltheMessage() {
+        self.messages.removeAll()
+        DispatchQueue.main.async { [self] in
+            FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] message in
+                for msg in message {
+                    print("msg : \(msg)")
+                    self?.messages.append(msg)
+                }
+                personalChatCV.reloadData()
+            }
+        }
+    }
+    
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        personalChatCV.endEditing(true)
     }
 }
 
@@ -91,7 +116,12 @@ extension PersonalChatViewController {
     private func configureNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
+        if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "초대", style: .plain, target: self, action: #selector(invitedButtonClicked))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem()
+        }
+        
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
     }
     
@@ -111,7 +141,7 @@ extension PersonalChatViewController {
     
     private func getOtherUserInfo() {
         // 언제 가져올 지 알 수 없음
-        print("??????????????????????")
+
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
             self?.navigationItem.title = self?.otherUserInfo?.nickname
@@ -140,9 +170,13 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
             return UICollectionViewCell()
         }
         // dummy Data
-        cell.userNameLabel.text = "호진"
+        cell.userNameLabel.text = messages[indexPath.row].sender.nickname
         cell.textView.text = messages[indexPath.row].content
-        cell.timeLabel.text = Date().chatDate()
+        cell.timeLabel.text = messages[indexPath.row].createdDate
+//        cell.message = messages[indexPath.row]
+//        if let user = UserInfo.shared.user {
+//            cell.message?.sender = user
+//        }
         return cell
     }
 }
@@ -150,7 +184,17 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
 
 extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let estimatedSizeCell = MessageCell(frame: frame)
+        estimatedSizeCell.message = messages[indexPath.row]
+        estimatedSizeCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(targetSize)
+        
+        return .init(width: view.frame.width, height: estimatedSize.height)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -158,7 +202,7 @@ extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
+extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func handlephoto() {
         let alert = UIAlertController(title: "사진을 골라주세요.", message: "원하시는 버튼을 클릭해주세요.", preferredStyle: .actionSheet)
@@ -197,15 +241,20 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
     }
 }
 
+// 여기서 하는 것이 아니라 MESSAGECELL에서 해야하는건가?
+
 extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
-        inputView.messageInputTextView.text = nil
         
         if (!message.isEmpty) {
-            let message = Message(content: message, imageURL: "", sender: User(), createdDate: "2021-21-21")
-            messages.append(message)
-            personalChatCV.reloadData()
+            if let user = UserInfo.shared.user {
+                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatDate())
+                messages.append(message)
+                FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: message)
+                personalChatCV.reloadData()
+            }
         }
+        inputView.clearMessage()
     }
 }
 

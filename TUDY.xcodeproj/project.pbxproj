@@ -1094,7 +1094,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TUDY/TUDY.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1125,7 +1124,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TUDY/TUDY.entitlements;
 				CODE_SIGN_STYLE = Automatic;

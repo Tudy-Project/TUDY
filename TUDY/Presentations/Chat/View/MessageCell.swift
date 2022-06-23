@@ -6,14 +6,18 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MessageCell: UICollectionViewCell {
     
     //MARK: - Properties
-    var message: Message? {
-        didSet { configure() }
-    }
+    var message: Message?
     
+    var helper: MessageHelper?
+
+    var bubbleLeftAnchor: NSLayoutConstraint!
+    var bubbleRightAnchor: NSLayoutConstraint!
+        
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFill
@@ -25,7 +29,6 @@ class MessageCell: UICollectionViewCell {
     
     lazy var userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "호진"
         label.textColor = .white
         label.font = UIFont.caption11
         return label
@@ -59,6 +62,18 @@ class MessageCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        guard let user = UserInfo.shared.user else { return }
+        
+        message = Message(content: "textView.text",
+                          imageURL: "",
+                          sender: user,
+                          createdDate: Date().chatListDate())
+        guard let message = message else { return }
+
+
+        print(message)
+        helper = MessageHelper(message: message)
 
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
@@ -73,12 +88,39 @@ class MessageCell: UICollectionViewCell {
         }
         
         addSubview(bubbleContainer)
-        bubbleContainer.snp.makeConstraints { make in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(4)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            make.width.lessThanOrEqualTo(250)
+        addSubview(timeLabel)
+//        print("1. DEBUG ! : \(UserInfo.shared.user?.userID)")
+//        print("2. DEBUG ! : \(message.sender.userID)")
+        guard let sender = UserInfo.shared.user else { return }
+        if (message.sender.userID == sender.userID) {
+            bubbleContainer.snp.makeConstraints { make in
+                make.top.equalTo(userNameLabel.snp.bottom).offset(4)
+                make.bottom.equalToSuperview()
+                make.width.lessThanOrEqualTo(250)
+                make.trailing.equalToSuperview().offset(-12)
+            }
+            timeLabel.snp.makeConstraints { make in
+                make.trailing.equalTo(bubbleContainer.snp.leading).offset(-5)
+                make.bottom.equalTo(bubbleContainer.snp.bottom)
+            }
+            profileImageView.isHidden = true
+            userNameLabel.isHidden = true
+        } else {
+            profileImageView.isHidden = false
+            userNameLabel.isHidden = false
+            
+            bubbleContainer.snp.makeConstraints { make in
+                make.top.equalTo(userNameLabel.snp.bottom).offset(4)
+                make.bottom.equalToSuperview()
+                make.width.lessThanOrEqualTo(250)
+                make.leading.equalTo(profileImageView.snp.trailing).offset(12)
+            }
+            timeLabel.snp.makeConstraints { make in
+                make.leading.equalTo(bubbleContainer.snp.leading).offset(-5)
+                make.bottom.equalTo(bubbleContainer.snp.bottom)
+            }
         }
-        
+
         bubbleContainer.addSubview(textView)
         textView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(-4)
@@ -87,25 +129,12 @@ class MessageCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
         
-        addSubview(timeLabel)
-        timeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(bubbleContainer.snp.trailing).offset(5)
-            make.bottom.equalTo(bubbleContainer.snp.bottom)
-        }
+        bubbleContainer.backgroundColor = helper?.messageBackgroundColor
+        textView.textColor = helper?.messageTextColor
+        profileImageView.sd_setImage(with: helper?.profileImageUrl)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Helpers
-    func configure() {
-        guard let message = message else {
-            return
-        }
-        let helper = MessageHelper(message: message)
-        bubbleContainer.backgroundColor = helper.messageBackgroundColor
-        textView.textColor = helper.messageTextColor
-        
     }
 }

@@ -21,11 +21,10 @@ class ChatInputAccessoryView: UIView {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "photo"), for: .normal)
         button.tintColor = .white
-//        button.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
         return button
     }()
     
-    lazy var messageInputTextView: UITextView = {
+    private lazy var messageInputTextView: UITextView = {
         let textview = UITextView()
         textview.font = .sub14
         textview.layer.borderWidth = 1
@@ -93,6 +92,13 @@ extension ChatInputAccessoryView {
     @objc func handleSendMessage() {
         guard let message = messageInputTextView.text else { return }
         delegate?.inputView(self, wantsToSend: message)
+    }
+    
+    
+    // MARK: - Helper
+    func clearMessage() {
+        messageInputTextView.text = nil
+    
     }
 }
 

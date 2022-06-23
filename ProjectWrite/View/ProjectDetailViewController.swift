@@ -127,7 +127,7 @@ class ProjectDetailViewController: UIViewController {
 // MARK: - @objc
 extension ProjectDetailViewController {
     @objc func  didTapChatButton() {
-        didSendEventClosure?(.showPersonalChat(projectWriter: User(userID: "L530aniSzzaXXKwuvY3ZXhJ8wFi2",
+        didSendEventClosure?(.showPersonalChat(projectWriter: User(userID: "8UqY2dXOR2MrpiQBZqrODnWZHek1",
                                                                    signUpDate: "",
                                                                    nickname: "",
                                                                    profileImageURL: "",
