@@ -16,7 +16,8 @@ struct FirebaseUser {
     /// 자신의 UserID 가져오기
     static func getUserID() -> String {
         guard let userID = Auth.auth().currentUser?.uid else {
-            fatalError("[DEBUG] 파이어베이스 유저 데이터 로딩 실패")
+//            fatalError("[DEBUG] 파이어베이스 유저 데이터 로딩 실패")
+            return ""
         }
         return userID
     }
