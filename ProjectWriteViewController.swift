@@ -11,13 +11,22 @@ import PhotosUI
 class ProjectWriteViewController: UIViewController {
     
     // MARK: - Properties
+    enum Event {
+        case registerProject(viewController: UIViewController)
+    }
+    
+    var didSendEventClosure: ((Event) -> Void)?
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
     //카테고리바
     private let categoriesView = OptionSelectionBar.init(title: "관련 직무 카테고리 📌")
-    private let resultSeletedCategoriesLabel = UILabel().label(text: "", font: UIFont.sub14, color: .white)
+    private let resultSeletedCategoriesLabel = UILabel().label(text: "", font: UIFont.body14, color: .white)
     var isHiddenResultCategoriesLabel: Bool = true
+    
+    private var develops: [String] = []
+    private var designs: [String] = []
     
     //프로젝트 조건바
     private let projectConditionsView = OptionSelectionBar.init(title: "프로젝트 조건 💡")
@@ -29,7 +38,8 @@ class ProjectWriteViewController: UIViewController {
     }()
     
     private let personnelTitle = UILabel().label(text: "인원", font: UIFont.sub14, color: .white)
-    private let personnelLabel = UILabel().label(text: "5명", font: UIFont.sub14, color: .white)
+    private let personnelLabel = UILabel().label(text: "0명", font: UIFont.sub14, color: .white)
+    private var peopleCount = 0
     
     private let resultEstimatedDurationStackView: UIStackView = {
         let stackView = UIStackView()
@@ -39,8 +49,8 @@ class ProjectWriteViewController: UIViewController {
     }()
     
     private let estimatedDurationTitle = UILabel().label(text: "예상 기간", font: UIFont.sub14, color: .white)
-    private let estimatedDurationLabel = UILabel().label(text: "1주", font: UIFont.sub14, color: .white)
-    
+    private let estimatedDurationLabel = UILabel().label(text: "0주", font: UIFont.sub14, color: .white)
+    private var duration = 0
     
     private var optionState: String = "categoriesBar"
     private var imageArray = [UIImage]()
@@ -110,10 +120,37 @@ class ProjectWriteViewController: UIViewController {
     
     private let contentsViewPhotoLabel = UILabel().label(text: "(사진 최대 1장)", font: .caption12, color: .LightGray5)
     
+    private let selectWorksMessage = "관련 직무 카테고리를\n선택해주세요 ! 📌"
+    private let titleMessage = "제목을 입력해주세요 ! 💬"
+    private let contentsMessage = "내용을 입력해주세요 ! 💬"
+    
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        hideKeyboard()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changeSelectedDevelop(_:)),
+                                               name: Notification.Name("selectedDevelop"),
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changeSelectedDesign(_:)),
+                                               name: Notification.Name("selectedDesign"),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changePeopleCount(_:)),
+                                               name: Notification.Name("peopleCount"),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changeProjectTime(_:)),
+                                               name: Notification.Name("time"),
+                                               object: nil)
     }
     
     private func configureUI() {
@@ -152,7 +189,7 @@ class ProjectWriteViewController: UIViewController {
         
         contentView.addSubview(resultSeletedCategoriesLabel)
         resultSeletedCategoriesLabel.snp.makeConstraints { make in
-            make.top.equalTo(categoriesView.snp.bottom).offset(12)
+            make.top.equalTo(categoriesView.snp.bottom)
             make.leading.equalToSuperview().offset(30)
         }
         
@@ -269,6 +306,10 @@ class ProjectWriteViewController: UIViewController {
         navigationController?.navigationBar.topItem?.title = ""
         tabDisappear()
         
+        let backButtonImage = UIImage(systemName: "chevron.down")
+        let leftItem = UIBarButtonItem(image: backButtonImage, style: .plain, target: self, action: #selector(back))
+        navigationItem.leftBarButtonItem = leftItem
+        
         let rightItem =
         UIBarButtonItem(title:"등록", style: .plain, target: self, action: #selector(didTapRegisterButton))
         navigationItem.rightBarButtonItem = rightItem
@@ -286,10 +327,55 @@ class ProjectWriteViewController: UIViewController {
         border.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: borderWidth)
         view.addSubview(border)
     }
+    
+    private func showSelectedJob() {
+        let developTexts = develops.map { "개발(\($0))" }
+        let designTexts = designs.map { "디자인(\($0))" }
+        let developText = developTexts.joined(separator: ", ")
+        let designText = designTexts.joined(separator: ", ")
+        if designText == "" {
+            resultSeletedCategoriesLabel.text = developText
+        } else {
+            resultSeletedCategoriesLabel.text = "\(developText), \(designText)"
+        }
+    }
 }
 
 // MARK: - Action methods
 extension ProjectWriteViewController {
+    
+    @objc func back() {
+        didSendEventClosure?(.registerProject(viewController: self))
+    }
+    
+    @objc func changeSelectedDevelop(_ notification: Notification) {
+        if let selectedDevelop = notification.object as? [String] {
+            develops = selectedDevelop
+            showSelectedJob()
+        }
+    }
+    
+    @objc func changeSelectedDesign(_ notification: Notification) {
+        if let selectedDesign = notification.object as? [String] {
+            designs = selectedDesign
+            showSelectedJob()
+        }
+    }
+    
+    @objc func changePeopleCount(_ notification: Notification) {
+        if let count = notification.object as? Int {
+            personnelLabel.text = "\(count)명"
+            peopleCount = count
+        }
+    }
+    
+    @objc func changeProjectTime(_ notifiaction: Notification) {
+        if let time = notifiaction.object as? Int {
+            estimatedDurationLabel.text = "\(time)주"
+            duration = time
+        }
+    }
+    
     @objc func didTapCategoriesBarButton() {
         let bottomSheetVC = BottomSheetViewController(contentViewController: CategoriesViewController())
         bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.346
@@ -312,11 +398,19 @@ extension ProjectWriteViewController {
     
     // MARK: - 등록버튼
     @objc private func didTapRegisterButton() {
-        guard let title = titleTextField.text else { return }
-        guard let contents = contentsTextView.text else { return }
-        
-        self.navigationController?.popViewController(animated: true)
-        FirebaseProject.saveProjectData(Project(projectId: UUID().uuidString, title: title, content: contents, isRecruit: true, writerId: "writer.id", writeDate: Date().toString(), imageUrl: "photoPath", wantedWorks: ["개발자", "디자이너"], endDate: "6주", maxPeople: 8, favoriteCount: 0))
+        view.endEditing(true)
+        if develops.isEmpty && designs.isEmpty {
+            showToastMessage(text: selectWorksMessage)
+            return
+        } else if titleTextField.text == "" {
+            showToastMessage(text: titleMessage)
+            return
+        } else if contentsTextView.text == "내용을 입력해 주세요. (최대 1,200자)" {
+            showToastMessage(text: contentsMessage)
+            return
+        }
+        saveProject()
+        didSendEventClosure?(.registerProject(viewController: self))
     }
     
     @objc private func didTapPhotoButton() {
@@ -341,11 +435,36 @@ extension ProjectWriteViewController {
         contentInset.bottom = keyboardFrame.size.height - photoCollectionView.frame.height + 5
         scrollView.contentInset = contentInset
         scrollView.verticalScrollIndicatorInsets = contentInset
-        print( scrollView.verticalScrollIndicatorInsets)
     }
     //키보드 숨겨질 때
     @objc private func keyboardWillHide(_ notification: Notification) {
         
+    }
+}
+
+// MARK: - API
+extension ProjectWriteViewController {
+    
+    func saveProject() {
+        guard let title = titleTextField.text else { return }
+        guard let contents = contentsTextView.text else { return }
+        let userID = FirebaseUser.getUserID()
+        var works = develops
+        works.append(contentsOf: designs)
+        
+        let project = Project(projectId: UUID().uuidString,
+                              title: title,
+                              content: contents,
+                              isRecruit: true,
+                              writerId: userID,
+                              writeDate: Date().projectDate(),
+                              imageUrl: "",
+                              wantedWorks: works,
+                              endDate: "\(duration)",
+                              maxPeople: peopleCount,
+                              favoriteCount: 0)
+        
+        FirebaseProject.saveProjectData(project)
     }
 }
 
@@ -357,7 +476,6 @@ extension ProjectWriteViewController: UITextFieldDelegate {
         let currentString: NSString = textField.text! as NSString
         
         let newString: NSString =  currentString.replacingCharacters(in: range, with: string) as NSString
-        print(currentString, newString, newString.length, maxLength)
         
         return newString.length <= 30
     }
@@ -422,6 +540,10 @@ extension ProjectWriteViewController: PHPickerViewControllerDelegate {
         for item in itemProviders {
             if item.canLoadObject(ofClass: UIImage.self) {
                 item.loadObject(ofClass: UIImage.self) { image, error in
+                    if let error = error {
+                        print("이미지 로드 에러 \(error.localizedDescription)")
+                        return
+                    }
                     DispatchQueue.main.async { [self] in
                         guard let image = image as? UIImage else { return }
                         imageArray.append(image)
@@ -454,20 +576,3 @@ extension ProjectWriteViewController: UICollectionViewDelegate, UICollectionView
         return CGSize(width: 80, height: 80)
     }
 }
-
-#if DEBUG
-import SwiftUI
-
-@available(iOS 13, *)
-struct ProjectVCPreview: PreviewProvider {
-    
-    static var previews: some View {
-        // view controller using programmatic UI
-        Group {
-            ProjectWriteViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone XS"))
-                .previewDisplayName("iPhone XS")
-            ProjectWriteViewController().toPreview().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro Max")).previewDisplayName("iPhone 12 Pro Max")
-        }
-    }
-}
-#endif
