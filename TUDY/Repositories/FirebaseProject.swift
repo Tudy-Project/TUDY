@@ -34,17 +34,21 @@ struct FirebaseProject {
     
     static func fetchProject(completion: @escaping([Project]) -> Void) {
         var projects: [Project] = []
-        Firestore.firestore().collection("PROJECT").getDocuments { snapshot, error in
-            if let error = error {
-                print("[DEBUG] 프로젝트 정보 가져오기 실패 \(error.localizedDescription)")
-                return
+        Firestore.firestore()
+            .collection("PROJECT")
+            .order(by: "writeDate", descending: true)
+            .addSnapshotListener { snapshot, error in
+                if let error = error {
+                    print("[DEBUG] 프로젝트 정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                projects = []
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let project = Project(dict: dict)
+                    projects.append(project)
+                })
+                completion(projects)
             }
-            snapshot?.documents.forEach({ document in
-                let dict = document.data()
-                let project = Project(dict: dict)
-                projects.append(project)
-            })
-            completion(projects)
-        }
     }
 }

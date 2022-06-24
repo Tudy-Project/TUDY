@@ -120,7 +120,6 @@ struct FirebaseUser {
                         let dict = change.document.data()
                         let user = User(dict: dict)
                         UserInfo.shared.user = user
-                        print("싱글톤 객체에 유저 정보 담기")
                 })
             }
     }
