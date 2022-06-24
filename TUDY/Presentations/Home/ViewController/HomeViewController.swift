@@ -113,7 +113,7 @@ class HomeViewController: UIViewController {
     
     // Bottom Sheet과 safe Area Top 사이의 최소값을 지정하기 위한 프로퍼티
     //기본값을 0으로 해서 드래그하면 네브바 바로 아래까지 딱 붙게 설정
-    var bottomSheetPanMinTopConstant: CGFloat = 0.0
+    var bottomSheetPanMinTopConstant: CGFloat = 15
     // 드래그 하기 전에 Bottom Sheet의 top Constraint value를 저장하기 위한 프로퍼티
     private lazy var bottomSheetPanStartingTopConstant: CGFloat = bottomSheetPanMinTopConstant
     private let bottomSheetView: UIView = {
@@ -128,7 +128,7 @@ class HomeViewController: UIViewController {
     //bottomSheet이 view의 상단에서 떨어진 거리를 설정
     //해당 프로퍼티를 이용하여 bottomSheet의 높이를 조절
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
-    private lazy var defaultHeight: CGFloat = screenSize.height * 0.464
+    private lazy var defaultHeight: CGFloat = 340
     
     
     private lazy var floatingButton: UIButton = {
@@ -229,7 +229,7 @@ extension HomeViewController {
         
         view.addSubview(bottomSheetView)
         bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstant: CGFloat = screenSize.height * 0.464
+        let topConstant: CGFloat = 340
         //top Constraint의 constant 값은 미리 계산해준 topConstant 값으로 지정해줍니다! 계산해준 topConstant 값은 bottomSheet이 처음에 보이지 않도록 하는 것을 목적으로 계산한 값
         //           let topConstant = view.safeAreaInsets.bottom + view.safeAreaLayoutGuide.layoutFrame.height
         bottomSheetViewTopConstraint = bottomSheetView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstant)
@@ -245,7 +245,7 @@ extension HomeViewController {
         // 우리는 드래그 제스쳐가 바로 발생하길 원하기 때문에 딜레이가 없도록 아래와 같이 설정
         viewPan.delaysTouchesBegan = false
         viewPan.delaysTouchesEnded = false
-        view.addGestureRecognizer(viewPan)
+        bottomSheetView.addGestureRecognizer(viewPan)
         
         let leftItem = UIBarButtonItem(customView: logo)
         self.navigationItem.leftBarButtonItem = leftItem
@@ -307,7 +307,7 @@ extension HomeViewController {
             let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
             let bottomPadding: CGFloat = view.safeAreaInsets.bottom
             
-            bottomSheetViewTopConstraint.constant = 415.744
+            bottomSheetViewTopConstraint.constant = 340
             //아래 주석값이 디폴트높이값과 같아야지만 바텀시트의 움직임이 없어짐
             //            (safeAreaHeight + bottomPadding) - defaultHeight
 //            print("safeAreaHeight:\(safeAreaHeight)")
@@ -322,9 +322,6 @@ extension HomeViewController {
             
         } else {
             bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
-            
-            //expanded상태에서는 스크롤 가능하게 설정
-//            bottomSheetCollectionView.isScrollEnabled = true
             bottomSheetView.layer.cornerRadius = 0
             
             setUpNavBarSearchBar()
@@ -343,7 +340,7 @@ extension HomeViewController {
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .absolute(146))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.edgeSpacing = .init(leading: .fixed(18), top: .fixed(18), trailing: .fixed(-36), bottom: .fixed(0))
+        group.edgeSpacing = .init(leading: .fixed(18), top: .fixed(9), trailing: .fixed(-36), bottom: .fixed(9))
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 36)
@@ -362,7 +359,7 @@ extension HomeViewController {
         
         bottomSheetView.addSubview(FilterStackView)
         FilterStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(19)
+            make.top.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-17)
         }
         
@@ -378,7 +375,7 @@ extension HomeViewController {
         projectCollectionView.backgroundColor = .DarkGray3
         bottomSheetView.addSubview(projectCollectionView)
         projectCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(53)
+            make.top.equalToSuperview().offset(56)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -448,13 +445,9 @@ extension HomeViewController {
         let translation = panGestureRecognizer.translation(in: self.view)
         switch panGestureRecognizer.state {
         case .began:
-            print("뷰 드래그 bottomSheetPanStartingTopConstant 기본값 : \(bottomSheetPanStartingTopConstant)")
             bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
-            print("뷰 드래그 시작 후 bottomSheetPanStartingTopConstant 변화값 : \(bottomSheetPanStartingTopConstant)")
         case .changed:
             //네브바와 닿으면 더이상 안올라가게
-            //            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
-            //            print("바텀시트 최대화 시 네브바와의 패딩값: \(bottomSheetPanMinTopConstant)")
             if bottomSheetPanStartingTopConstant + translation.y > bottomSheetPanMinTopConstant {
                 bottomSheetViewTopConstraint.constant = bottomSheetPanStartingTopConstant + translation.y
             }
@@ -474,8 +467,6 @@ extension HomeViewController {
             let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
             
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
-            print("니얼값:\(nearestValue)")
-            print("니얼값 비교 bottomSheetPanMinTopConstant값: \(bottomSheetPanMinTopConstant)")
             if nearestValue == bottomSheetPanMinTopConstant {
                 showBottomSheet(atState: .expanded)
             } else if nearestValue == defaultPadding {
@@ -510,6 +501,21 @@ extension HomeViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview) //스크롤 아래인지 위인지 알아내는 포지션
+        if (actualPosition.y < 0){
+            showBottomSheet(atState: .expanded)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let scrollOffset = scrollView.contentOffset.y
+        
+        if scrollOffset <= 0 {
+            showBottomSheet(atState: .normal)
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var idx: Int = 0
