@@ -51,4 +51,44 @@ struct FirebaseProject {
                 completion(projects)
             }
     }
+    
+    static func fetchProjectByProjectID(projectID: String, completion: @escaping(Project) -> Void) {
+        Firestore.firestore()
+            .collection("PROJECT")
+            .whereField("projectId", isEqualTo: projectID)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("[DEBUG] 프로젝트 정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let project = Project(dict: dict)
+                    completion(project)
+                })
+            }
+    }
+    
+    static func updateProjectHeart(_ project: Project, completion: @escaping(Int) -> Void) {
+        let projectID = project.projectId
+        
+        fetchProjectByProjectID(projectID: projectID) { project in
+            let favoriteCount = Int(project.favoriteCount)
+            Firestore.firestore()
+                .collection("PROJECT")
+                .document(projectID)
+                .updateData(["favoriteCount" : (favoriteCount + 1)])
+            completion(favoriteCount + 1)
+        }
+    }
+    
+    static func updateIsRecruit(_ project: Project, completion: @escaping() -> Void) {
+        let projectID = project.projectId
+        let changedIsRecruit = project.isRecruit ? false : true
+        Firestore.firestore()
+            .collection("PROJECT")
+            .document(projectID)
+            .updateData(["isRecruit" : changedIsRecruit])
+        completion()
+    }
 }

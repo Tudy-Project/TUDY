@@ -120,7 +120,7 @@ class ProjectWriteViewController: UIViewController {
     
     private let contentsViewPhotoLabel = UILabel().label(text: "(사진 최대 1장)", font: .caption12, color: .LightGray5)
     
-    private let selectWorksMessage = "관련 직무 카테고리를\n선택해주세요 ! 📌"
+    private let selectWorksMessage = "관련 직무 카테고리를 선택해주세요 ! 📌"
     private let titleMessage = "제목을 입력해주세요 ! 💬"
     private let contentsMessage = "내용을 입력해주세요 ! 💬"
     

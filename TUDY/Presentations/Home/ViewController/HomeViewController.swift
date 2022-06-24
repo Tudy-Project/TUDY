@@ -74,6 +74,7 @@ class HomeViewController: UIViewController {
         let offColor = UIColor.DarkGray5
         
         switchButton.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        switchButton.addTarget(self, action: #selector(clickedSwitchButton(_:)), for: .valueChanged)
         
         //for on State
         switchButton.onTintColor = onColor
@@ -86,25 +87,21 @@ class HomeViewController: UIViewController {
         return switchButton
     }()
     
-//    private lazy var bottomSheetCollectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.register(BottomSheetCell.self, forCellWithReuseIdentifier: BottomSheetCell.identifier)
-//        collectionView.backgroundColor = .DarkGray3
-//        collectionView.isScrollEnabled = false
-//        collectionView.tag = 2
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//        return collectionView
-//    }()
-    
     typealias ProjectDataSource = UICollectionViewDiffableDataSource<Int, Project>
     typealias ProjectSnapshot = NSDiffableDataSourceSnapshot<Int, Project>
     
     private var projectCollectionView: UICollectionView!
     private var projectDataSource: ProjectDataSource!
-    private var projects: [Project] = []
+    private var projects: [Project] = [] {
+        didSet {
+            isRecruitProjects = projects.filter { $0.isRecruit }
+        }
+    }
+    private lazy var isRecruitProjects: [Project] = [] {
+        didSet {
+            makeSnapshot(switchButton.isOn)
+        }
+    }
     
     enum BottomSheetViewState {
         case expanded
@@ -304,22 +301,11 @@ extension HomeViewController {
     
     private func showBottomSheet(atState: BottomSheetViewState = .normal) {
         if atState == .normal {
-            let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
-            let bottomPadding: CGFloat = view.safeAreaInsets.bottom
-            
             bottomSheetViewTopConstraint.constant = 340
-            //아래 주석값이 디폴트높이값과 같아야지만 바텀시트의 움직임이 없어짐
-            //            (safeAreaHeight + bottomPadding) - defaultHeight
-//            print("safeAreaHeight:\(safeAreaHeight)")
-//            print("bottomPadding:\(bottomPadding)")
-//            print("defaultHeight:\(defaultHeight)")
-//            print("bottomSheetViewTopConstraint.constant: \(bottomSheetViewTopConstraint.constant)")
-//            bottomSheetCollectionView.isScrollEnabled = false
             bottomSheetView.layer.cornerRadius = 17
             navigationController?.navigationBar.isHidden = false
             
             resetUpNavBar()
-            
         } else {
             bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
             bottomSheetView.layer.cornerRadius = 0
@@ -355,8 +341,6 @@ extension HomeViewController {
         projectCollectionView.delegate = self
         configureCollectionViewDataSource()
 
-        
-        
         bottomSheetView.addSubview(FilterStackView)
         FilterStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
@@ -365,12 +349,6 @@ extension HomeViewController {
         
         FilterStackView.addArrangedSubview(bottomSheetFilterLabel)
         FilterStackView.addArrangedSubview(switchButton)
-        
-//        bottomSheetView.addSubview(bottomSheetCollectionView)
-//        bottomSheetCollectionView.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(56)
-//            make.leading.trailing.bottom.equalToSuperview()
-//        }
         
         projectCollectionView.backgroundColor = .DarkGray3
         bottomSheetView.addSubview(projectCollectionView)
@@ -383,9 +361,8 @@ extension HomeViewController {
     private func configureCollectionViewDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<BottomSheetCell, Project> {
             [unowned self] cell, indexPath, itemIdentifier in
-            
-            let project = projects[indexPath.row]
-            
+
+            let project = switchButton.isOn ? isRecruitProjects[indexPath.row] : projects[indexPath.row]
             switch project.isRecruit {
             case true:
                 cell.setRecruitTrue()
@@ -420,10 +397,16 @@ extension HomeViewController {
         makeSnapshot()
     }
     
-    private func makeSnapshot() {
+    private func makeSnapshot(_ isOn: Bool = false) {
         var snapshot = ProjectSnapshot()
         snapshot.appendSections([0])
-        snapshot.appendItems(projects)
+        
+        if isOn {
+            snapshot.appendItems(isRecruitProjects)
+        } else {
+            snapshot.appendItems(projects)
+        }
+        
         projectDataSource.apply(snapshot)
     }
 }
@@ -433,7 +416,6 @@ extension HomeViewController {
     func fetchProject() {
         FirebaseProject.fetchProject { [unowned self] projects in
             self.projects = projects
-            self.makeSnapshot()
         }
     }
 }
@@ -475,9 +457,6 @@ extension HomeViewController {
         default:
             break
         }
-        
-        //        사용자가 위로 드래그할 경우 translation.y의 값은 음수가 되고, 사용자가 아래로 드래그할 경우 translation.y의 값은 양수가 되는 걸 확인할 수 있다. translation.y의 값을 top constraint value와 합하여 Bottom Sheet을 움직여줄 수 있답니다.
-        //        print("유저가 위아래로 \(translation.y)만큼 드래그하였습니다.")
     }
     
     @objc private func didTapProfile() {
@@ -498,6 +477,10 @@ extension HomeViewController {
             didSendEventClosure?(.showLogin)
         }
     }
+    
+    @objc private func clickedSwitchButton(_ sender: UISwitch) {
+        makeSnapshot(sender.isOn)
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
@@ -509,7 +492,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let scrollOffset = scrollView.contentOffset.y
         
         if scrollOffset <= 0 {
@@ -567,20 +550,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             return  fastSearchCell
         }
-//        else {
-//            guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: BottomSheetCell.identifier, for: indexPath) as? BottomSheetCell else {
-//                return UICollectionViewCell()
-//            }
-//            cell.layer.cornerRadius = 5
-//            cell.backgroundColor = .DarkGray1
-//            cell.titleLabel.text = projects[indexPath.row].title
-//            cell.contentsLabel.text = projects[indexPath.row].content
-//            cell.writeDateLabel.text = projects[indexPath.row].writeDate
-//            FirebaseUser.fetchOtherUser(userID: projects[indexPath.row].writerId) { user in
-//                cell.authorLabel.text = user.nickname
-//            }
-//            return cell
-//        }
         return UICollectionViewCell()
     }
     

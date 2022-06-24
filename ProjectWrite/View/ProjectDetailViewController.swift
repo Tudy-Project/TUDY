@@ -105,12 +105,14 @@ class ProjectDetailViewController: UIViewController {
     private lazy var chatButton: UIButton = {
         let button = UIButton()
         button.setTitle("💬 채팅보내기", for: .normal)
-        button.titleLabel?.font = .body16
+        button.titleLabel?.font = .sub16
         button.backgroundColor = .PointBlue
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(didTapChatButton), for: .touchUpInside)
         return button
     }()
+    
+    private var chatButtonEvent = ChatButtonEvent.sendChat
     
     private lazy var heartButton: HeartButton = {
         let button = HeartButton()
@@ -134,15 +136,17 @@ class ProjectDetailViewController: UIViewController {
 // MARK: - @objc
 extension ProjectDetailViewController {
     @objc func  didTapChatButton() {
-        didSendEventClosure?(.showPersonalChat(projectWriter: User(userID: "8UqY2dXOR2MrpiQBZqrODnWZHek1",
-                                                                   signUpDate: "",
-                                                                   nickname: "",
-                                                                   profileImageURL: "",
-                                                                   interestedJob: "",
-                                                                   interestedDetailJobs: [],
-                                                                   subwayStation: "",
-                                                                   subwayLines: [],
-                                                                   likeProjectIDs: [])))
+        
+        switch chatButtonEvent {
+        case .sendChat: // 채팅보내기
+            sendChat()
+        case .changeFinishRecruit: // 모집완료로 변경
+            showAlert(.changeFinishRecruit)
+        case .changeRecruit: // 모집중으로 변경
+            showAlert(.changeRecruit)
+        case .finishRecruit: // 모집이 완료된 게시글입니다.
+            break
+        }
     }
 }
 
@@ -155,11 +159,23 @@ extension ProjectDetailViewController {
         detailDesc.text = project.content
         FirebaseUser.fetchOtherUser(userID: project.writerId) { [unowned self] user in
             authorName.text = user.nickname
-            if user.userID == UserInfo.shared.user?.userID {
-                chatButton.isEnabled = false
-            }
             guard let url = URL(string: user.profileImageURL) else { return }
             authorImage.sd_setImage(with: url)
+        }
+        
+        if project.isRecruit && project.writerId == UserInfo.shared.user?.userID {
+            chatButton.setTitle("모집완료로 변경", for: .normal)
+            chatButton.backgroundColor = .DarkGray4
+            chatButtonEvent = .changeFinishRecruit
+        } else if !project.isRecruit && project.writerId == UserInfo.shared.user?.userID {
+            chatButton.setTitle("모집중으로 변경", for: .normal)
+            chatButton.backgroundColor = .DarkGray4
+            chatButtonEvent = .changeRecruit
+        } else if !project.isRecruit {
+            chatButton.setTitle("모집이 완료된 게시글입니다.", for: .normal)
+            chatButton.backgroundColor = .DarkGray3
+            chatButton.isEnabled = false
+            chatButtonEvent = .finishRecruit
         }
         uploadDate.text = project.writeDate.projectDate()
         personnelLabel.text = "\(project.maxPeople)명"
@@ -292,6 +308,45 @@ extension ProjectDetailViewController {
             make.leading.equalTo(heartButton.snp.trailing).offset(22)
             make.trailing.equalToSuperview().offset(-18)
         }
+    }
+    
+    private func fetchProject(_ projectID: String) {
+        FirebaseProject.fetchProjectByProjectID(projectID: projectID) { [unowned self] project in
+            self.project = project
+        }
+    }
+    
+    private func sendChat() {
+        guard let project = project else { return }
+        FirebaseUser.fetchOtherUser(userID: project.writerId) { [weak self] user in
+            self?.didSendEventClosure?(.showPersonalChat(projectWriter: user))
+        }
+    }
+    
+    private func showAlert(_ event: ChatButtonEvent) {
+        guard let project = project else { return }
+        
+        var message: String!
+        if event == .changeFinishRecruit {
+            message = "프로젝트 모집을 완료하시나요?"
+        } else if event == .changeRecruit {
+            message = "프로젝트를 모집중으로 변경하시나요?"
+        }
+        
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            FirebaseProject.updateIsRecruit(project) {
+                self?.fetchProject(project.projectId)
+            }
+        }
+        ok.setValue(UIColor.PointRed, forKey: "titleTextColor")
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        cancel.setValue(UIColor.PointBlue, forKey: "titleTextColor")
+
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
     }
 }
 
