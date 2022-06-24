@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ProjectDetailViewController: UIViewController {
     
@@ -48,8 +49,8 @@ class ProjectDetailViewController: UIViewController {
     
     lazy var authorImage: UIImageView = {
         let ImageView = UIImageView()
+        ImageView.backgroundColor = .White
         ImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        ImageView.load(url: URL(string: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")!)
         ImageView.contentMode = .scaleAspectFill
         ImageView.layer.cornerRadius = ImageView.frame.width / 2
         ImageView.clipsToBounds = true
@@ -101,7 +102,7 @@ class ProjectDetailViewController: UIViewController {
         return view
     }()
     
-    private lazy var ChatButton: UIButton = {
+    private lazy var chatButton: UIButton = {
         let button = UIButton()
         button.setTitle("💬 채팅보내기", for: .normal)
         button.titleLabel?.font = .body16
@@ -154,8 +155,13 @@ extension ProjectDetailViewController {
         detailDesc.text = project.content
         FirebaseUser.fetchOtherUser(userID: project.writerId) { [unowned self] user in
             authorName.text = user.nickname
+            if user.userID == UserInfo.shared.user?.userID {
+                chatButton.isEnabled = false
+            }
+            guard let url = URL(string: user.profileImageURL) else { return }
+            authorImage.sd_setImage(with: url)
         }
-        uploadDate.text = project.writeDate
+        uploadDate.text = project.writeDate.projectDate()
         personnelLabel.text = "\(project.maxPeople)명"
         estimatedDurationLabel.text = "\(project.endDate)주"
         heartCount.text = "\(project.favoriteCount)"
@@ -279,8 +285,8 @@ extension ProjectDetailViewController {
             make.top.equalTo(heartButton.snp.bottom)
         }
         
-        bottomTabView.addSubview(ChatButton)
-        ChatButton.snp.makeConstraints { make in
+        bottomTabView.addSubview(chatButton)
+        chatButton.snp.makeConstraints { make in
             make.height.equalTo(48)
             make.bottom.equalTo(bottomTabView).offset(-20)
             make.leading.equalTo(heartButton.snp.trailing).offset(22)
@@ -297,28 +303,13 @@ extension ProjectDetailViewController: UICollectionViewDelegate, UICollectionVie
 
 extension ProjectDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return testData().image.count
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
             fatalError()
         }
-        cell.imageView.load(url: URL(string: testData().image[indexPath.row])!)
         return cell
-    }
-}
-
-extension UIImageView {
-    func load(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
-        }
     }
 }
