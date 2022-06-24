@@ -19,6 +19,7 @@ class BottomSheetCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .White
         label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         label.font = .sub16
         return label
     }()

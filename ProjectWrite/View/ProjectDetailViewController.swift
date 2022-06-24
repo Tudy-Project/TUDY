@@ -118,6 +118,7 @@ class ProjectDetailViewController: UIViewController {
         let button = HeartButton()
         button.sizeToFit()
         button.setState(false)
+        button.addTarget(self, action: #selector(heartButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -135,7 +136,7 @@ class ProjectDetailViewController: UIViewController {
 
 // MARK: - @objc
 extension ProjectDetailViewController {
-    @objc func  didTapChatButton() {
+    @objc func didTapChatButton() {
         
         switch chatButtonEvent {
         case .sendChat: // 채팅보내기
@@ -146,6 +147,15 @@ extension ProjectDetailViewController {
             showAlert(.changeRecruit)
         case .finishRecruit: // 모집이 완료된 게시글입니다.
             break
+        }
+    }
+    
+    @objc func heartButtonTapped(_ sender: HeartButton) {
+        guard let project = project else { return }
+        FirebaseUser.updateLikeProjectID(projectID: project.projectId) { [weak self] result in
+            self?.heartButton.setState(result)
+            let update = result ? 1 : -1
+            self?.updateHeartCount(update)
         }
     }
 }
@@ -181,6 +191,12 @@ extension ProjectDetailViewController {
         personnelLabel.text = "\(project.maxPeople)명"
         estimatedDurationLabel.text = "\(project.endDate)주"
         heartCount.text = "\(project.favoriteCount)"
+        
+        FirebaseUser.fetchUser { [unowned self] user in
+            if user.likeProjectIDs.contains(project.projectId) {
+                heartButton.setState(true)
+            }
+        }
     }
     
     private func configureNavSettings() {
@@ -347,6 +363,13 @@ extension ProjectDetailViewController {
         alert.addAction(cancel)
         
         self.present(alert, animated: true)
+    }
+    
+    private func updateHeartCount(_ update: Int) {
+        guard let project = project else { return }
+        FirebaseProject.updateProjectHeart(update, project) { [weak self] result in
+            self?.heartCount.text = "\(result)"
+        }
     }
 }
 

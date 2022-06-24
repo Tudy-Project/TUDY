@@ -69,7 +69,7 @@ struct FirebaseProject {
             }
     }
     
-    static func updateProjectHeart(_ project: Project, completion: @escaping(Int) -> Void) {
+    static func updateProjectHeart(_ update: Int, _ project: Project, completion: @escaping(Int) -> Void) {
         let projectID = project.projectId
         
         fetchProjectByProjectID(projectID: projectID) { project in
@@ -77,8 +77,8 @@ struct FirebaseProject {
             Firestore.firestore()
                 .collection("PROJECT")
                 .document(projectID)
-                .updateData(["favoriteCount" : (favoriteCount + 1)])
-            completion(favoriteCount + 1)
+                .updateData(["favoriteCount" : (favoriteCount + update)])
+            completion(favoriteCount + update)
         }
     }
     

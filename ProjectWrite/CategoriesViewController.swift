@@ -113,13 +113,13 @@ extension CategoriesViewController {
     
     func configureCollectionView() {
         developCollectionView = UICollectionView(frame: view.bounds,
-                                                   collectionViewLayout: collectionViewLayout(height: 37))
+                                                   collectionViewLayout: collectionViewLayout(height: 36))
         developCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         developCollectionView.backgroundColor = .DarkGray2
         developCollectionView.isScrollEnabled = false
         
         designCollectionView = UICollectionView(frame: view.bounds,
-                                                   collectionViewLayout: collectionViewLayout(height: 37))
+                                                   collectionViewLayout: collectionViewLayout(height: 36))
         designCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         designCollectionView.backgroundColor = .DarkGray2
         designCollectionView.isScrollEnabled = false

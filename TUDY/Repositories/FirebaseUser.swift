@@ -123,5 +123,24 @@ struct FirebaseUser {
                 })
             }
     }
+    
+    static func updateLikeProjectID(projectID: String, completion: @escaping (Bool) -> Void) {
+        let userID = getUserID()
+        
+        fetchUser { user in
+            var likeProjectIDs = user.likeProjectIDs
+            var isContain = false
+            if likeProjectIDs.contains(projectID) {
+                guard let index = likeProjectIDs.firstIndex(of: projectID) else { return }
+                likeProjectIDs.remove(at: index)
+                isContain = false
+            } else {
+                likeProjectIDs.append(projectID)
+                isContain = true
+            }
+            userPath.document(userID).updateData(["likeProjectIDs" : likeProjectIDs])
+            completion(isContain)
+        }
+    }
 }
 
