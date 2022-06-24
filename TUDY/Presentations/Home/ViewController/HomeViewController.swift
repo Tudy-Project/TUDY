@@ -69,18 +69,18 @@ class HomeViewController: UIViewController {
     private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14, numberOfLines: 1)
     private lazy var switchButton: UISwitch = {
         let switchButton = UISwitch()
-        switchButton.thumbTintColor = .DarkGray6
-        let onColor = UIColor.systemBlue
+        switchButton.thumbTintColor = .LightGray4
+        let onColor = UIColor.PointBlue
         let offColor = UIColor.DarkGray5
+        
+        switchButton.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         
         //for on State
         switchButton.onTintColor = onColor
         
         //for off State
         switchButton.tintColor = offColor
-        switchButton.layer.cornerRadius = switchButton.frame.height / 2.0
-        //        switchButton.layer.borderWidth = 2
-        //        switchButton.layer.borderColor = UIColor.LightGray1.cgColor
+        switchButton.layer.cornerRadius = 15
         switchButton.backgroundColor = offColor
         switchButton.clipsToBounds = true
         return switchButton
@@ -147,6 +147,7 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setWelcomeTitle()
         FirebaseUser.addUserSnapshotListener()
         configureCollectionView()
         configureUI()
@@ -161,6 +162,27 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController {
     // MARK: - Methods
+    
+    private func setWelcomeTitle() {
+        FirebaseUser.fetchUser { [unowned self] user in
+            switch user.interestedJob {
+            case "개발자":
+                let attributedString = NSMutableAttributedString(string: "반가워요 \(user.nickname)님, 💻\n관심있는 프로젝트가 있나요?")
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 4
+                attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+                welcomeTitle.attributedText = attributedString
+            case "디자이너":
+                let attributedString = NSMutableAttributedString(string: "반가워요 \(user.nickname)님, 🎨\n관심있는 프로젝트가 있나요?")
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 4
+                attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+                welcomeTitle.attributedText = attributedString
+            default:
+                break
+            }
+        }
+    }
     
     private func configureNav() {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.White]
@@ -288,10 +310,10 @@ extension HomeViewController {
             bottomSheetViewTopConstraint.constant = 415.744
             //아래 주석값이 디폴트높이값과 같아야지만 바텀시트의 움직임이 없어짐
             //            (safeAreaHeight + bottomPadding) - defaultHeight
-            print("safeAreaHeight:\(safeAreaHeight)")
-            print("bottomPadding:\(bottomPadding)")
-            print("defaultHeight:\(defaultHeight)")
-            print("bottomSheetViewTopConstraint.constant: \(bottomSheetViewTopConstraint.constant)")
+//            print("safeAreaHeight:\(safeAreaHeight)")
+//            print("bottomPadding:\(bottomPadding)")
+//            print("defaultHeight:\(defaultHeight)")
+//            print("bottomSheetViewTopConstraint.constant: \(bottomSheetViewTopConstraint.constant)")
 //            bottomSheetCollectionView.isScrollEnabled = false
             bottomSheetView.layer.cornerRadius = 17
             navigationController?.navigationBar.isHidden = false
@@ -356,7 +378,7 @@ extension HomeViewController {
         projectCollectionView.backgroundColor = .DarkGray3
         bottomSheetView.addSubview(projectCollectionView)
         projectCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(56)
+            make.top.equalToSuperview().offset(53)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -364,11 +386,31 @@ extension HomeViewController {
     private func configureCollectionViewDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<BottomSheetCell, Project> {
             [unowned self] cell, indexPath, itemIdentifier in
-            cell.titleLabel.text = projects[indexPath.row].title
-            cell.contentsLabel.text = projects[indexPath.row].content
-            cell.writeDateLabel.text = projects[indexPath.row].writeDate
-            FirebaseUser.fetchOtherUser(userID: projects[indexPath.row].writerId) { user in
+            
+            let project = projects[indexPath.row]
+            
+            switch project.isRecruit {
+            case true:
+                cell.setRecruitTrue()
+                cell.titleLabel.text = "             \(project.title)"
+            case false:
+                cell.setRecruitFalse()
+                cell.titleLabel.text = "               \(project.title)"
+            }
+            
+            cell.contentsLabel.text = project.content
+            cell.writeDateLabel.text = project.writeDate.projectDate()
+            if project.imageUrl == "" {
+                cell.configureUIWithNoImage()
+            } else {
+                guard let url = URL(string: project.imageUrl) else { return }
+                cell.projectImageView.sd_setImage(with: url)
+                cell.configureUIWithImage()
+            }
+            FirebaseUser.fetchOtherUser(userID: project.writerId) { user in
                 cell.authorLabel.text = user.nickname
+                guard let url = URL(string: user.profileImageURL) else { return }
+                cell.profileImageView.sd_setImage(with: url)
             }
         }
         
