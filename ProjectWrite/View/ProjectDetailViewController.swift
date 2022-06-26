@@ -62,6 +62,7 @@ class ProjectDetailViewController: UIViewController {
         flowlayout.minimumLineSpacing = 10
         flowlayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
+        collectionView.tag = 1
         collectionView.backgroundColor = .DarkGray1
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         collectionView.delegate = self
@@ -123,6 +124,21 @@ class ProjectDetailViewController: UIViewController {
     }()
     
     private let heartCount = UILabel().label(text: "12", font: UIFont.sub14, color: .White)
+    
+    // 해시태그 collectionView
+    private lazy var hashtagCollectionView: UICollectionView = {
+        let flowlayout = UICollectionViewFlowLayout()
+        flowlayout.minimumLineSpacing = 10
+        flowlayout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
+        collectionView.tag = 2
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .DarkGray1
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(HashtagCell.self, forCellWithReuseIdentifier: HashtagCell.reuseIdentifier)
+        return collectionView
+    }()
     
     
     // MARK: - Life Cycle
@@ -375,19 +391,38 @@ extension ProjectDetailViewController {
 
 extension ProjectDetailViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80, height: 80)
+        if collectionView.tag == 1 {
+            return CGSize(width: 80, height: 80)
+        } else {
+            return CGSize(width: 120, height: 24)
+        }
     }
 }
 
 extension ProjectDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        guard let project = project else { return 0 }
+        if collectionView.tag == 1 {
+            return 0
+        } else {
+            return project.wantedWorks.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
-            fatalError()
+        guard let project = project else { fatalError() }
+        if collectionView.tag == 1 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HashtagCell.reuseIdentifier,
+                                                                for: indexPath) as? HashtagCell else {
+                return UICollectionViewCell()
+            }
+            cell.label.text = "#\(project.wantedWorks[indexPath.row])"
+            return cell
         }
-        return cell
     }
 }
