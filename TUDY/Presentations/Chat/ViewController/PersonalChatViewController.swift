@@ -21,9 +21,8 @@ class PersonalChatViewController: UIViewController {
             configureUI()
         }
     }
-    
-//    private var myUserInfo: User
-    private var otherUserInfo: User?
+
+    var otherUserInfo: User?
     private var messages = [Message]()
     
     private lazy var chatinputView: ChatInputAccessoryView = {
@@ -56,8 +55,9 @@ class PersonalChatViewController: UIViewController {
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         getOtherUserInfo()
-        getAlltheMessage()
+        fetchMessage()
         self.hideKeyboardWhenTappedAround()
+        personalChatCV.keyboardDismissMode = .interactive
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,8 +73,7 @@ class PersonalChatViewController: UIViewController {
         return true
     }
     
-    func getAlltheMessage() {
-        self.messages.removeAll()
+    func fetchMessage() {
             FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] message in
                 for msg in message {
                     self?.messages.append(msg)
@@ -135,7 +134,6 @@ extension PersonalChatViewController {
     }
     
     private func getOtherUserInfo() {
-        // 언제 가져올 지 알 수 없음
 
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
@@ -149,7 +147,8 @@ extension PersonalChatViewController {
 // MARK: - extensions
 extension PersonalChatViewController {
     @objc func invitedButtonClicked() {
-        let invitedVC = InvitedViewController()
+        guard let otheruserinfo = otherUserInfo else { return }
+        let invitedVC = InvitedViewController(User: otheruserinfo)
         invitedVC.modalPresentationStyle = .overFullScreen
         self.present(invitedVC, animated: false, completion: nil)
     }
@@ -167,7 +166,7 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
         // dummy Data
         cell.userNameLabel.text = messages[indexPath.row].sender.nickname
         cell.textView.text = messages[indexPath.row].content
-        cell.timeLabel.text = messages[indexPath.row].createdDate
+        cell.timeLabel.text = messages[indexPath.row].createdDate.chatListDate()
         
 //        cell.message = messages[indexPath.row]
 //        if let user = UserInfo.shared.user {
@@ -245,9 +244,9 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
         if (!message.isEmpty) {
             if let user = UserInfo.shared.user {
                 let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatDate())
-                messages.append(message)
+//                messages.append(message)
                 FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: message)
-                personalChatCV.reloadData()
+//                personalChatCV.reloadData()
             }
         }
         inputView.clearMessage()

@@ -72,7 +72,7 @@ class MessageCell: UICollectionViewCell {
         guard let message = message else { return }
 
 
-        print(message)
+//        print(message)
         helper = MessageHelper(message: message)
 
         addSubview(profileImageView)
@@ -93,6 +93,11 @@ class MessageCell: UICollectionViewCell {
 //        print("2. DEBUG ! : \(message.sender.userID)")
         guard let sender = UserInfo.shared.user else { return }
         if (message.sender.userID == sender.userID) {
+            
+            print("=========같다 즉, 나의 메세지=======")
+            print("message.sender.userID : \(message.sender.userID)")
+            print("sender.userID : \(sender.userID)")
+            
             bubbleContainer.snp.makeConstraints { make in
                 make.top.equalTo(userNameLabel.snp.bottom).offset(4)
                 make.bottom.equalToSuperview()
@@ -103,9 +108,14 @@ class MessageCell: UICollectionViewCell {
                 make.trailing.equalTo(bubbleContainer.snp.leading).offset(-5)
                 make.bottom.equalTo(bubbleContainer.snp.bottom)
             }
+            
             profileImageView.isHidden = true
             userNameLabel.isHidden = true
         } else {
+            print("=========다르다 즉, 너의 메세지=======")
+            print("message.sender.userID : \(message.sender.userID)")
+            print("sender.userID : \(sender.userID)")
+            
             profileImageView.isHidden = false
             userNameLabel.isHidden = false
             
@@ -115,16 +125,20 @@ class MessageCell: UICollectionViewCell {
                 make.width.lessThanOrEqualTo(250)
                 make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             }
+            
             timeLabel.snp.makeConstraints { make in
-                make.leading.equalTo(bubbleContainer.snp.leading).offset(-5)
+                make.leading.equalTo(bubbleContainer.snp.trailing).offset(10)
                 make.bottom.equalTo(bubbleContainer.snp.bottom)
             }
         }
 
         bubbleContainer.addSubview(textView)
         textView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(-4)
+            make.top.equalToSuperview()
+//            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
+//            make.leading.equalToSuperview()
+//            make.trailing.equalToSuperview()
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
         }

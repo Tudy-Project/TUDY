@@ -10,6 +10,7 @@ import UIKit
 class InvitedViewController: UIViewController {
     // MARK: - Properties
     
+    private var otherUser: User
     private var groupChatInfoList: [ChatInfo] = []
     private var selectedGroupChatInfoList: [ChatInfo] = []
     private var chatInfo: ChatInfo?
@@ -80,6 +81,15 @@ class InvitedViewController: UIViewController {
     }()
 
     // MARK: - Life Cycle
+    init(User: User) {
+        self.otherUser = User
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -159,9 +169,10 @@ extension InvitedViewController {
     
     @objc func bottomsheetgroupchatinvitedbuttonClicked(sender:UITapGestureRecognizer) {
         
-//        for infoList in selectedGroupChatInfoList {
-//            infoList.participantIDs.append(UserInfo.shared.user?.userID)
-//        }
+        print("selectedGroupChatInfoList : \(selectedGroupChatInfoList)")
+        
+        FirebaseUserChatInfo.addGroupChat(invitedGroupChatInfoID: selectedGroupChatInfoList, invitedUserID: self.otherUser.userID)
+        
         hideBottomSheetAndGoBack()
     }
 }
@@ -277,7 +288,10 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("===========================================================")
         selectedGroupChatInfoList.append(groupChatInfoList[indexPath.row])
+        print("selectedGroupChatInfoList : \(selectedGroupChatInfoList)")
+        print("===========================================================")
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
