@@ -194,7 +194,7 @@ extension ProjectDetailViewController {
             authorImage.sd_setImage(with: url)
         }
         
-        if UserInfo.shared.user != nil
+        if isLogin()
             && project.isRecruit
             && project.writerId == UserInfo.shared.user?.userID {
             chatButton.setTitle("모집완료로 변경", for: .normal)
