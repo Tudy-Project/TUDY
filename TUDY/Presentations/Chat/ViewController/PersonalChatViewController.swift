@@ -67,6 +67,7 @@ class PersonalChatViewController: UIViewController {
 
 extension PersonalChatViewController {
     
+
     // MARK: - Methods
     func configureDelegate() {
         personalChatCV.delegate = self
@@ -164,20 +165,8 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
         print("collectionView 시작")
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else { return UICollectionViewCell() }
-        // dummy Data
-        
-        
-//        print("Personal CHAT 에서 \(indexPath.row) 번째 messages: \(messages[indexPath.row])")
         cell.message = messages[indexPath.row]
         cell.message?.sender = messages[indexPath.row].sender
-//        cell.userNameLabel.text = messages[indexPath.row].sender.nickname
-//        cell.textView.text = messages[indexPath.row].content
-//        cell.timeLabel.text = messages[indexPath.row].createdDate
-        
-//        cell.message = messages[indexPath.row]
-//        if let user = UserInfo.shared.user {
-//            cell.message?.sender = user
-//        }
         print("collectionView 끝")
 
         return cell
