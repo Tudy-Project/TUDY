@@ -101,4 +101,17 @@ struct FirebaseUserChatInfo {
             .document(chatInfoID)
             .delete()
     }
+    
+    /// 개인 챗에서 스터디챗으로 초대하기
+    static func addGroupChat(invitedGroupChatInfoID groupchatInfo: [ChatInfo], invitedUserID userID: String) {
+        let db = Firestore.firestore()
+        
+        for info in groupchatInfo {
+            if !(info.participantIDs.contains(userID)) {
+                let groupChatRef = db.collection("GroupChat").document(info.chatInfoID)
+                groupChatRef.updateData([
+                    "participantIDs" : FieldValue.arrayUnion(["\(userID)"])])
+            }
+        }
+    }
 }
