@@ -34,6 +34,7 @@ class PersonalChatViewController: UIViewController {
         cv.backgroundColor = .DarkGray1
         cv.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         cv.alwaysBounceVertical = true
+        cv.keyboardDismissMode = .interactive
         return cv
     }()
     
@@ -42,13 +43,13 @@ class PersonalChatViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad 시작")
+//        print("viewDidLoad 시작")
         fetchMessage()
         configureUI()
         configureDelegate()
         getOtherUserInfo()
         hideKeyboardWhenTappedAround()
-        print("viewDidLoad 끝")
+//        print("viewDidLoad 끝")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,8 +86,8 @@ extension PersonalChatViewController {
     private func configureUI() {
         view.backgroundColor = .DarkGray1
         
+        personalChatCV.showsVerticalScrollIndicator = false
         configureNavigationBar()
-        personalChatCV.keyboardDismissMode = .interactive
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
         
         view.addSubview(personalChatCV)
@@ -126,7 +127,11 @@ extension PersonalChatViewController {
             }
             self?.personalChatCV.reloadData()
             guard let messageCount = self?.messages.count else { return }
+            print("여기까지 못오지 ??? : \(messageCount)")
+            self?.personalChatCV.isPagingEnabled = false
             self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: true)
+            self?.personalChatCV.isPagingEnabled = true
+            print("여긴?")
         }
     }
     
@@ -161,12 +166,12 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("collectionView 시작")
+//        print("collectionView 시작")
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else { return UICollectionViewCell() }
         cell.message = messages[indexPath.row]
         cell.message?.sender = messages[indexPath.row].sender
-        print("collectionView 끝")
+//        print("collectionView 끝")
 
         return cell
     }
