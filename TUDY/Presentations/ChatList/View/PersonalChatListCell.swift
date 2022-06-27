@@ -85,7 +85,6 @@ extension PersonalChatListCell {
         let userID = FirebaseUser.getUserID()
         for id in chatInfo.participantIDs where id != userID {
             FirebaseUser.fetchOtherUser(userID: id) { [weak self] user in
-                print(user)
                 self?.setTitle(nickname: user.nickname)
             }
         }

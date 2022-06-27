@@ -69,42 +69,39 @@ class HomeViewController: UIViewController {
     private let bottomSheetFilterLabel = UILabel().label(text: "모집중인 스터디만 보기", font: .body14, numberOfLines: 1)
     private lazy var switchButton: UISwitch = {
         let switchButton = UISwitch()
-        switchButton.thumbTintColor = .DarkGray6
-        let onColor = UIColor.systemBlue
+        switchButton.thumbTintColor = .LightGray4
+        let onColor = UIColor.PointBlue
         let offColor = UIColor.DarkGray5
+        
+        switchButton.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        switchButton.addTarget(self, action: #selector(clickedSwitchButton(_:)), for: .valueChanged)
         
         //for on State
         switchButton.onTintColor = onColor
         
         //for off State
         switchButton.tintColor = offColor
-        switchButton.layer.cornerRadius = switchButton.frame.height / 2.0
-        //        switchButton.layer.borderWidth = 2
-        //        switchButton.layer.borderColor = UIColor.LightGray1.cgColor
+        switchButton.layer.cornerRadius = 15
         switchButton.backgroundColor = offColor
         switchButton.clipsToBounds = true
         return switchButton
     }()
-    
-//    private lazy var bottomSheetCollectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.register(BottomSheetCell.self, forCellWithReuseIdentifier: BottomSheetCell.identifier)
-//        collectionView.backgroundColor = .DarkGray3
-//        collectionView.isScrollEnabled = false
-//        collectionView.tag = 2
-//        collectionView.delegate = self
-//        collectionView.dataSource = self
-//        return collectionView
-//    }()
     
     typealias ProjectDataSource = UICollectionViewDiffableDataSource<Int, Project>
     typealias ProjectSnapshot = NSDiffableDataSourceSnapshot<Int, Project>
     
     private var projectCollectionView: UICollectionView!
     private var projectDataSource: ProjectDataSource!
-    private var projects: [Project] = []
+    private var projects: [Project] = [] {
+        didSet {
+            isRecruitProjects = projects.filter { $0.isRecruit }
+        }
+    }
+    private lazy var isRecruitProjects: [Project] = [] {
+        didSet {
+            makeSnapshot(switchButton.isOn)
+        }
+    }
     
     enum BottomSheetViewState {
         case expanded
@@ -113,7 +110,7 @@ class HomeViewController: UIViewController {
     
     // Bottom Sheet과 safe Area Top 사이의 최소값을 지정하기 위한 프로퍼티
     //기본값을 0으로 해서 드래그하면 네브바 바로 아래까지 딱 붙게 설정
-    var bottomSheetPanMinTopConstant: CGFloat = 0.0
+    var bottomSheetPanMinTopConstant: CGFloat = 15
     // 드래그 하기 전에 Bottom Sheet의 top Constraint value를 저장하기 위한 프로퍼티
     private lazy var bottomSheetPanStartingTopConstant: CGFloat = bottomSheetPanMinTopConstant
     private let bottomSheetView: UIView = {
@@ -128,7 +125,7 @@ class HomeViewController: UIViewController {
     //bottomSheet이 view의 상단에서 떨어진 거리를 설정
     //해당 프로퍼티를 이용하여 bottomSheet의 높이를 조절
     private var bottomSheetViewTopConstraint: NSLayoutConstraint!
-    private lazy var defaultHeight: CGFloat = screenSize.height * 0.464
+    private lazy var defaultHeight: CGFloat = 340
     
     
     private lazy var floatingButton: UIButton = {
@@ -147,6 +144,7 @@ class HomeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setWelcomeTitle()
         FirebaseUser.addUserSnapshotListener()
         configureCollectionView()
         configureUI()
@@ -161,6 +159,27 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController {
     // MARK: - Methods
+    
+    private func setWelcomeTitle() {
+        FirebaseUser.fetchUser { [unowned self] user in
+            switch user.interestedJob {
+            case "개발자":
+                let attributedString = NSMutableAttributedString(string: "반가워요 \(user.nickname)님, 💻\n관심있는 프로젝트가 있나요?")
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 4
+                attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+                welcomeTitle.attributedText = attributedString
+            case "디자이너":
+                let attributedString = NSMutableAttributedString(string: "반가워요 \(user.nickname)님, 🎨\n관심있는 프로젝트가 있나요?")
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 4
+                attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
+                welcomeTitle.attributedText = attributedString
+            default:
+                break
+            }
+        }
+    }
     
     private func configureNav() {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.White]
@@ -207,7 +226,7 @@ extension HomeViewController {
         
         view.addSubview(bottomSheetView)
         bottomSheetView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstant: CGFloat = screenSize.height * 0.464
+        let topConstant: CGFloat = 340
         //top Constraint의 constant 값은 미리 계산해준 topConstant 값으로 지정해줍니다! 계산해준 topConstant 값은 bottomSheet이 처음에 보이지 않도록 하는 것을 목적으로 계산한 값
         //           let topConstant = view.safeAreaInsets.bottom + view.safeAreaLayoutGuide.layoutFrame.height
         bottomSheetViewTopConstraint = bottomSheetView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstant)
@@ -223,7 +242,7 @@ extension HomeViewController {
         // 우리는 드래그 제스쳐가 바로 발생하길 원하기 때문에 딜레이가 없도록 아래와 같이 설정
         viewPan.delaysTouchesBegan = false
         viewPan.delaysTouchesEnded = false
-        view.addGestureRecognizer(viewPan)
+        bottomSheetView.addGestureRecognizer(viewPan)
         
         let leftItem = UIBarButtonItem(customView: logo)
         self.navigationItem.leftBarButtonItem = leftItem
@@ -282,27 +301,13 @@ extension HomeViewController {
     
     private func showBottomSheet(atState: BottomSheetViewState = .normal) {
         if atState == .normal {
-            let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
-            let bottomPadding: CGFloat = view.safeAreaInsets.bottom
-            
-            bottomSheetViewTopConstraint.constant = 415.744
-            //아래 주석값이 디폴트높이값과 같아야지만 바텀시트의 움직임이 없어짐
-            //            (safeAreaHeight + bottomPadding) - defaultHeight
-            print("safeAreaHeight:\(safeAreaHeight)")
-            print("bottomPadding:\(bottomPadding)")
-            print("defaultHeight:\(defaultHeight)")
-            print("bottomSheetViewTopConstraint.constant: \(bottomSheetViewTopConstraint.constant)")
-//            bottomSheetCollectionView.isScrollEnabled = false
+            bottomSheetViewTopConstraint.constant = 340
             bottomSheetView.layer.cornerRadius = 17
             navigationController?.navigationBar.isHidden = false
             
             resetUpNavBar()
-            
         } else {
             bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
-            
-            //expanded상태에서는 스크롤 가능하게 설정
-//            bottomSheetCollectionView.isScrollEnabled = true
             bottomSheetView.layer.cornerRadius = 0
             
             setUpNavBarSearchBar()
@@ -321,7 +326,7 @@ extension HomeViewController {
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .absolute(146))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.edgeSpacing = .init(leading: .fixed(18), top: .fixed(18), trailing: .fixed(-36), bottom: .fixed(0))
+        group.edgeSpacing = .init(leading: .fixed(18), top: .fixed(9), trailing: .fixed(-36), bottom: .fixed(9))
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 36)
@@ -336,22 +341,14 @@ extension HomeViewController {
         projectCollectionView.delegate = self
         configureCollectionViewDataSource()
 
-        
-        
         bottomSheetView.addSubview(FilterStackView)
         FilterStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(19)
+            make.top.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-17)
         }
         
         FilterStackView.addArrangedSubview(bottomSheetFilterLabel)
         FilterStackView.addArrangedSubview(switchButton)
-        
-//        bottomSheetView.addSubview(bottomSheetCollectionView)
-//        bottomSheetCollectionView.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(56)
-//            make.leading.trailing.bottom.equalToSuperview()
-//        }
         
         projectCollectionView.backgroundColor = .DarkGray3
         bottomSheetView.addSubview(projectCollectionView)
@@ -364,11 +361,30 @@ extension HomeViewController {
     private func configureCollectionViewDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<BottomSheetCell, Project> {
             [unowned self] cell, indexPath, itemIdentifier in
-            cell.titleLabel.text = projects[indexPath.row].title
-            cell.contentsLabel.text = projects[indexPath.row].content
-            cell.writeDateLabel.text = projects[indexPath.row].writeDate
-            FirebaseUser.fetchOtherUser(userID: projects[indexPath.row].writerId) { user in
+
+            let project = switchButton.isOn ? isRecruitProjects[indexPath.row] : projects[indexPath.row]
+            switch project.isRecruit {
+            case true:
+                cell.setRecruitTrue()
+                cell.titleLabel.text = "             \(project.title)"
+            case false:
+                cell.setRecruitFalse()
+                cell.titleLabel.text = "               \(project.title)"
+            }
+            
+            cell.contentsLabel.text = project.content
+            cell.writeDateLabel.text = project.writeDate.projectDate()
+            if project.imageUrl == "" {
+                cell.configureUIWithNoImage()
+            } else {
+                guard let url = URL(string: project.imageUrl) else { return }
+                cell.projectImageView.sd_setImage(with: url)
+                cell.configureUIWithImage()
+            }
+            FirebaseUser.fetchOtherUser(userID: project.writerId) { user in
                 cell.authorLabel.text = user.nickname
+                guard let url = URL(string: user.profileImageURL) else { return }
+                cell.profileImageView.sd_setImage(with: url)
             }
         }
         
@@ -381,10 +397,16 @@ extension HomeViewController {
         makeSnapshot()
     }
     
-    private func makeSnapshot() {
+    private func makeSnapshot(_ isOn: Bool = false) {
         var snapshot = ProjectSnapshot()
         snapshot.appendSections([0])
-        snapshot.appendItems(projects)
+        
+        if isOn {
+            snapshot.appendItems(isRecruitProjects)
+        } else {
+            snapshot.appendItems(projects)
+        }
+        
         projectDataSource.apply(snapshot)
     }
 }
@@ -393,8 +415,12 @@ extension HomeViewController {
 extension HomeViewController {
     func fetchProject() {
         FirebaseProject.fetchProject { [unowned self] projects in
+            // 로그아웃 상태에서 로그인 후 에러 발생
+            // 이유: 코디네이터를 새로 만들어서 addSnapshotListener가 이전 뷰컨트롤러로 설정되어 있어서
+            // self로 접근하려고 하면 이전 뷰컨트롤러로 접근이 된다.
+            // 해결하려면 snapshotListener를 제거해주어야한다.
+            
             self.projects = projects
-            self.makeSnapshot()
         }
     }
 }
@@ -406,13 +432,9 @@ extension HomeViewController {
         let translation = panGestureRecognizer.translation(in: self.view)
         switch panGestureRecognizer.state {
         case .began:
-            print("뷰 드래그 bottomSheetPanStartingTopConstant 기본값 : \(bottomSheetPanStartingTopConstant)")
             bottomSheetPanStartingTopConstant = bottomSheetViewTopConstraint.constant
-            print("뷰 드래그 시작 후 bottomSheetPanStartingTopConstant 변화값 : \(bottomSheetPanStartingTopConstant)")
         case .changed:
             //네브바와 닿으면 더이상 안올라가게
-            //            print("현재바텀시트탑위치 + 드래그y값 : \(bottomSheetPanStartingTopConstant + translation.y)")
-            //            print("바텀시트 최대화 시 네브바와의 패딩값: \(bottomSheetPanMinTopConstant)")
             if bottomSheetPanStartingTopConstant + translation.y > bottomSheetPanMinTopConstant {
                 bottomSheetViewTopConstraint.constant = bottomSheetPanStartingTopConstant + translation.y
             }
@@ -432,8 +454,6 @@ extension HomeViewController {
             let defaultPadding = safeAreaHeight+bottomPadding - defaultHeight
             
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inValues: [bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
-            print("니얼값:\(nearestValue)")
-            print("니얼값 비교 bottomSheetPanMinTopConstant값: \(bottomSheetPanMinTopConstant)")
             if nearestValue == bottomSheetPanMinTopConstant {
                 showBottomSheet(atState: .expanded)
             } else if nearestValue == defaultPadding {
@@ -442,9 +462,6 @@ extension HomeViewController {
         default:
             break
         }
-        
-        //        사용자가 위로 드래그할 경우 translation.y의 값은 음수가 되고, 사용자가 아래로 드래그할 경우 translation.y의 값은 양수가 되는 걸 확인할 수 있다. translation.y의 값을 top constraint value와 합하여 Bottom Sheet을 움직여줄 수 있답니다.
-        //        print("유저가 위아래로 \(translation.y)만큼 드래그하였습니다.")
     }
     
     @objc private func didTapProfile() {
@@ -465,9 +482,28 @@ extension HomeViewController {
             didSendEventClosure?(.showLogin)
         }
     }
+    
+    @objc private func clickedSwitchButton(_ sender: UISwitch) {
+        makeSnapshot(sender.isOn)
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview) //스크롤 아래인지 위인지 알아내는 포지션
+        if (actualPosition.y < 0){
+            showBottomSheet(atState: .expanded)
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let scrollOffset = scrollView.contentOffset.y
+        
+        if scrollOffset <= 0 {
+            showBottomSheet(atState: .normal)
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var idx: Int = 0
@@ -519,20 +555,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             return  fastSearchCell
         }
-//        else {
-//            guard let cell = bottomSheetCollectionView.dequeueReusableCell(withReuseIdentifier: BottomSheetCell.identifier, for: indexPath) as? BottomSheetCell else {
-//                return UICollectionViewCell()
-//            }
-//            cell.layer.cornerRadius = 5
-//            cell.backgroundColor = .DarkGray1
-//            cell.titleLabel.text = projects[indexPath.row].title
-//            cell.contentsLabel.text = projects[indexPath.row].content
-//            cell.writeDateLabel.text = projects[indexPath.row].writeDate
-//            FirebaseUser.fetchOtherUser(userID: projects[indexPath.row].writerId) { user in
-//                cell.authorLabel.text = user.nickname
-//            }
-//            return cell
-//        }
         return UICollectionViewCell()
     }
     

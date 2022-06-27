@@ -17,8 +17,8 @@ class DevelopCell: UICollectionViewCell {
         button.isTap = false
         button.backgroundColor = .DarkGray2
         button.titleLabel?.font = .caption12
-        button.setTitleColor(UIColor.LightGray4, for: .normal)
-        button.layer.borderWidth = 2
+        button.setTitleColor(UIColor.White, for: .normal)
+        button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.LightGray4.cgColor
         button.layer.cornerRadius = 15
         return button
