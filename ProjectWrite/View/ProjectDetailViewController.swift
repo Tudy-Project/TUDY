@@ -51,7 +51,7 @@ class ProjectDetailViewController: UIViewController {
     lazy var authorImage: UIImageView = {
         let ImageView = UIImageView()
         ImageView.backgroundColor = .White
-        ImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        ImageView.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
         ImageView.contentMode = .scaleAspectFill
         ImageView.layer.cornerRadius = ImageView.frame.width / 2
         ImageView.clipsToBounds = true
@@ -258,9 +258,17 @@ extension ProjectDetailViewController {
             make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
         
+        contentView.addSubview(hashtagCollectionView)
+        hashtagCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(30)
+            make.width.equalTo(257)
+            make.height.equalTo(27)
+        }
+        
         contentView.addSubview(detailTitle)
         detailTitle.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(23)
+            make.top.equalTo(hashtagCollectionView.snp.bottom).offset(11)
             make.leading.equalToSuperview().offset(30)
             make.width.equalTo(248)
             make.height.equalTo(60)
@@ -277,7 +285,7 @@ extension ProjectDetailViewController {
         authorImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(23)
             make.trailing.equalToSuperview().offset(-40)
-            make.width.height.equalTo(50)
+            make.width.height.equalTo(27)
         }
         
         contentView.addSubview(authorName)

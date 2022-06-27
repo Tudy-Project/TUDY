@@ -26,8 +26,10 @@ class HashtagCell: UICollectionViewCell {
     private func configureUI() {
         addSubview(label)
         label.layer.cornerRadius = 12
+        label.clipsToBounds = true
         label.backgroundColor = .DarkGray3
         label.textColor = .White
+        label.textAlignment = .center
         label.snp.makeConstraints { make in
             make.width.equalTo(120)
             make.height.equalTo(24)
