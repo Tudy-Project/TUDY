@@ -21,16 +21,13 @@ class PersonalChatViewController: UIViewController {
             configureUI()
         }
     }
-
-    var otherUserInfo: User?
+    private var otherUserInfo: User?
     private var messages = [Message]()
-    
     private lazy var chatinputView: ChatInputAccessoryView = {
         let iv = ChatInputAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
         iv.delegate = self
         return iv
     }()
-    
     
     lazy var personalChatCV: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -42,22 +39,16 @@ class PersonalChatViewController: UIViewController {
     
     let picker = UIImagePickerController()
 
-    
-    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        personalChatCV.delegate = self
-        personalChatCV.dataSource = self
-        picker.delegate = self
-//        chatinputView.messageInputTextView.delegate = self
-        chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
-
-        getOtherUserInfo()
+        print("viewDidLoad 시작")
         fetchMessage()
-        self.hideKeyboardWhenTappedAround()
-        personalChatCV.keyboardDismissMode = .interactive
+        configureUI()
+        configureDelegate()
+        getOtherUserInfo()
+        hideKeyboardWhenTappedAround()
+        print("viewDidLoad 끝")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,17 +63,17 @@ class PersonalChatViewController: UIViewController {
     override var canBecomeFirstResponder: Bool {
         return true
     }
+}
+
+extension PersonalChatViewController {
     
-    func fetchMessage() {
-            FirebaseRealtimeChat.fetchChat(chatInfoID: self.chatInfo?.chatInfoID ?? String()) { [weak self] message in
-                for msg in message {
-                    self?.messages.append(msg)
-                }
-                self?.personalChatCV.reloadData()
-            }
+    // MARK: - Methods
+    func configureDelegate() {
+        personalChatCV.delegate = self
+        personalChatCV.dataSource = self
+        picker.delegate = self
     }
-    
-    
+
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PersonalChatViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -90,15 +81,14 @@ class PersonalChatViewController: UIViewController {
         personalChatCV.addGestureRecognizer(tap)
         
     }
-}
-
-extension PersonalChatViewController {
     
-    // MARK: - Methods
     private func configureUI() {
-        configureNavigationBar()
         view.backgroundColor = .DarkGray1
-
+        
+        configureNavigationBar()
+        personalChatCV.keyboardDismissMode = .interactive
+        chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
+        
         view.addSubview(personalChatCV)
         personalChatCV.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -115,8 +105,29 @@ extension PersonalChatViewController {
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem()
         }
-        
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
+    }
+}
+// MARK: - extensions
+extension PersonalChatViewController {
+    @objc func invitedButtonClicked() {
+        guard let otheruserinfo = otherUserInfo else { return }
+        let invitedVC = InvitedViewController(User: otheruserinfo)
+        invitedVC.modalPresentationStyle = .overFullScreen
+        self.present(invitedVC, animated: false, completion: nil)
+    }
+    
+    private func fetchMessage() {
+        guard let chatInfo = self.chatInfo else { return }
+        
+        FirebaseRealtimeChat.fetchChat(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
+            for msg in message {
+                self?.messages.append(msg)
+            }
+            self?.personalChatCV.reloadData()
+            guard let messageCount = self?.messages.count else { return }
+            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: true)
+        }
     }
     
     private func getOtherUserID() -> String {
@@ -134,7 +145,6 @@ extension PersonalChatViewController {
     }
     
     private func getOtherUserInfo() {
-
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
             self?.navigationItem.title = self?.otherUserInfo?.nickname
@@ -144,15 +154,6 @@ extension PersonalChatViewController {
         }
     }
 }
-// MARK: - extensions
-extension PersonalChatViewController {
-    @objc func invitedButtonClicked() {
-        guard let otheruserinfo = otherUserInfo else { return }
-        let invitedVC = InvitedViewController(User: otheruserinfo)
-        invitedVC.modalPresentationStyle = .overFullScreen
-        self.present(invitedVC, animated: false, completion: nil)
-    }
-}
 
 extension PersonalChatViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -160,18 +161,25 @@ extension PersonalChatViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else {
-            return UICollectionViewCell()
-        }
+        print("collectionView 시작")
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else { return UICollectionViewCell() }
         // dummy Data
-        cell.userNameLabel.text = messages[indexPath.row].sender.nickname
-        cell.textView.text = messages[indexPath.row].content
-        cell.timeLabel.text = messages[indexPath.row].createdDate.chatListDate()
+        
+        
+//        print("Personal CHAT 에서 \(indexPath.row) 번째 messages: \(messages[indexPath.row])")
+        cell.message = messages[indexPath.row]
+        cell.message?.sender = messages[indexPath.row].sender
+//        cell.userNameLabel.text = messages[indexPath.row].sender.nickname
+//        cell.textView.text = messages[indexPath.row].content
+//        cell.timeLabel.text = messages[indexPath.row].createdDate
         
 //        cell.message = messages[indexPath.row]
 //        if let user = UserInfo.shared.user {
 //            cell.message?.sender = user
 //        }
+        print("collectionView 끝")
+
         return cell
     }
 }
@@ -189,8 +197,8 @@ extension PersonalChatViewController: UICollectionViewDelegateFlowLayout {
         let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(targetSize)
         
         return .init(width: view.frame.width, height: estimatedSize.height)
-        
     }
+
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: 16, left: 0, bottom: 16, right: 0)
@@ -237,17 +245,17 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
 }
 
 // 여기서 하는 것이 아니라 MESSAGECELL에서 해야하는건가?
-
 extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
         
+        guard let chatinfo = self.chatInfo else { return }
+        guard let user = UserInfo.shared.user else { return }
+        
         if (!message.isEmpty) {
-            if let user = UserInfo.shared.user {
                 let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatDate())
-//                messages.append(message)
-                FirebaseRealtimeChat.saveChat(chatInfoID: chatInfo?.chatInfoID ?? String(), message: message)
-//                personalChatCV.reloadData()
-            }
+                messages.append(message)
+                FirebaseRealtimeChat.saveChat(chatInfoID: chatinfo.chatInfoID, message: message)
+                personalChatCV.reloadData()
         }
         inputView.clearMessage()
     }

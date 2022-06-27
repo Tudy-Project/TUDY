@@ -11,12 +11,15 @@ import SDWebImage
 class MessageCell: UICollectionViewCell {
     
     //MARK: - Properties
-    var message: Message?
-    
-    var helper: MessageHelper?
+    var message: Message? {
+        didSet { configure() }
+    }
 
     var bubbleLeftAnchor: NSLayoutConstraint!
     var bubbleRightAnchor: NSLayoutConstraint!
+    var timeLeftAnchor: NSLayoutConstraint!
+    var timeRightAnchor: NSLayoutConstraint!
+    
         
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
@@ -62,18 +65,6 @@ class MessageCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        guard let user = UserInfo.shared.user else { return }
-        
-        message = Message(content: "textView.text",
-                          imageURL: "",
-                          sender: user,
-                          createdDate: Date().chatListDate())
-        guard let message = message else { return }
-
-
-//        print(message)
-        helper = MessageHelper(message: message)
 
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
@@ -89,66 +80,62 @@ class MessageCell: UICollectionViewCell {
         
         addSubview(bubbleContainer)
         addSubview(timeLabel)
-//        print("1. DEBUG ! : \(UserInfo.shared.user?.userID)")
-//        print("2. DEBUG ! : \(message.sender.userID)")
-        guard let sender = UserInfo.shared.user else { return }
-        if (message.sender.userID == sender.userID) {
-            
-            print("=========같다 즉, 나의 메세지=======")
-            print("message.sender.userID : \(message.sender.userID)")
-            print("sender.userID : \(sender.userID)")
-            
-            bubbleContainer.snp.makeConstraints { make in
-                make.top.equalTo(userNameLabel.snp.bottom).offset(4)
-                make.bottom.equalToSuperview()
-                make.width.lessThanOrEqualTo(250)
-                make.trailing.equalToSuperview().offset(-12)
-            }
-            timeLabel.snp.makeConstraints { make in
-                make.trailing.equalTo(bubbleContainer.snp.leading).offset(-5)
-                make.bottom.equalTo(bubbleContainer.snp.bottom)
-            }
-            
-            profileImageView.isHidden = true
-            userNameLabel.isHidden = true
-        } else {
-            print("=========다르다 즉, 너의 메세지=======")
-            print("message.sender.userID : \(message.sender.userID)")
-            print("sender.userID : \(sender.userID)")
-            
-            profileImageView.isHidden = false
-            userNameLabel.isHidden = false
-            
-            bubbleContainer.snp.makeConstraints { make in
-                make.top.equalTo(userNameLabel.snp.bottom).offset(4)
-                make.bottom.equalToSuperview()
-                make.width.lessThanOrEqualTo(250)
-                make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            }
-            
-            timeLabel.snp.makeConstraints { make in
-                make.leading.equalTo(bubbleContainer.snp.trailing).offset(10)
-                make.bottom.equalTo(bubbleContainer.snp.bottom)
-            }
+
+        bubbleContainer.snp.makeConstraints { make in
+            make.top.equalTo(userNameLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview()
+            make.width.lessThanOrEqualTo(250)
         }
+            
+        bubbleLeftAnchor = bubbleContainer.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 12)
+        bubbleLeftAnchor.isActive = false
+        
+        bubbleRightAnchor = bubbleContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -12)
+        bubbleRightAnchor.isActive = false
+        
+        timeLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(bubbleContainer.snp.bottom)
+        }
+        
+        timeLeftAnchor = timeLabel.leftAnchor.constraint(equalTo: bubbleContainer.rightAnchor, constant: 10)
+        timeLeftAnchor.isActive = false
+        
+        timeRightAnchor = timeLabel.rightAnchor.constraint(equalTo: bubbleContainer.leftAnchor, constant: -5)
+        timeRightAnchor.isActive = false
 
         bubbleContainer.addSubview(textView)
         textView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-//            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-//            make.leading.equalToSuperview()
-//            make.trailing.equalToSuperview()
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
         }
-        
-        bubbleContainer.backgroundColor = helper?.messageBackgroundColor
-        textView.textColor = helper?.messageTextColor
-        profileImageView.sd_setImage(with: helper?.profileImageUrl)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+
+        print("전 message : \(message)")
+        guard let message = message else { return }
+        print("후 message : \(message)")
+        let helper = MessageHelper(message: message)
+        textView.text = message.content
+        timeLabel.text = message.createdDate
+        bubbleLeftAnchor.isActive = helper.leftAnchorActive
+        bubbleRightAnchor.isActive = helper.rightAnchorActive
+        timeLeftAnchor.isActive = helper.leftAnchorActive
+        timeRightAnchor.isActive = helper.rightAnchorActive
+        print("helper.leftAnchorActive : \(helper.leftAnchorActive)")
+        print("helper.rightAnchorActive : \(helper.rightAnchorActive)")
+
+        bubbleContainer.backgroundColor = helper.messageBackgroundColor
+        textView.textColor = helper.messageTextColor
+        profileImageView.isHidden = helper.shouldHideProfileImage
+        userNameLabel.isHidden = helper.shouldHideProfileImage
+
+        profileImageView.sd_setImage(with: helper.profileImageUrl)
     }
 }
