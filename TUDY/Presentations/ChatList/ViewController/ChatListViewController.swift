@@ -215,7 +215,7 @@ extension ChatListViewController {
         let projectWriterID = projectWriter.userID
         let chatInfo = ChatInfo(chatState: .personalChat,
                                 chatTitle: "",
-                                projectMasterID: "",
+                                projectMasterID: projectWriterID,
                                 participantIDs: [userID, projectWriterID],
                                 latestMessage: "새로운 채팅방이 생성되었습니다.",
                                 latestMessageDate: Date().chatListDate())
