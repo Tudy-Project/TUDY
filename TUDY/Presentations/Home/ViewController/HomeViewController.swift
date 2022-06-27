@@ -415,6 +415,11 @@ extension HomeViewController {
 extension HomeViewController {
     func fetchProject() {
         FirebaseProject.fetchProject { [unowned self] projects in
+            // 로그아웃 상태에서 로그인 후 에러 발생
+            // 이유: 코디네이터를 새로 만들어서 addSnapshotListener가 이전 뷰컨트롤러로 설정되어 있어서
+            // self로 접근하려고 하면 이전 뷰컨트롤러로 접근이 된다.
+            // 해결하려면 snapshotListener를 제거해주어야한다.
+            
             self.projects = projects
         }
     }

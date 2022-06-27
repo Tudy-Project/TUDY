@@ -12,6 +12,7 @@ class ProjectDetailViewController: UIViewController {
     
     enum Event {
         case showPersonalChat(projectWriter: User)
+        case showLogin
     }
     
     var didSendEventClosure: ((Event) -> Void)?
@@ -167,6 +168,10 @@ extension ProjectDetailViewController {
     }
     
     @objc func heartButtonTapped(_ sender: HeartButton) {
+        if !isLogin() {
+            didSendEventClosure?(.showLogin)
+            return
+        }
         guard let project = project else { return }
         FirebaseUser.updateLikeProjectID(projectID: project.projectId) { [weak self] result in
             self?.heartButton.setState(result)
@@ -189,11 +194,15 @@ extension ProjectDetailViewController {
             authorImage.sd_setImage(with: url)
         }
         
-        if project.isRecruit && project.writerId == UserInfo.shared.user?.userID {
+        if UserInfo.shared.user != nil
+            && project.isRecruit
+            && project.writerId == UserInfo.shared.user?.userID {
             chatButton.setTitle("모집완료로 변경", for: .normal)
             chatButton.backgroundColor = .DarkGray4
             chatButtonEvent = .changeFinishRecruit
-        } else if !project.isRecruit && project.writerId == UserInfo.shared.user?.userID {
+        } else if UserInfo.shared.user != nil
+                    && !project.isRecruit
+                    && project.writerId == UserInfo.shared.user?.userID {
             chatButton.setTitle("모집중으로 변경", for: .normal)
             chatButton.backgroundColor = .DarkGray4
             chatButtonEvent = .changeRecruit
@@ -349,6 +358,10 @@ extension ProjectDetailViewController {
     }
     
     private func sendChat() {
+        if !isLogin() {
+            didSendEventClosure?(.showLogin)
+            return
+        }
         guard let project = project else { return }
         FirebaseUser.fetchOtherUser(userID: project.writerId) { [weak self] user in
             self?.didSendEventClosure?(.showPersonalChat(projectWriter: user))
@@ -426,3 +439,5 @@ extension ProjectDetailViewController: UICollectionViewDataSource {
         }
     }
 }
+
+extension ProjectDetailViewController: LoginCheck {}

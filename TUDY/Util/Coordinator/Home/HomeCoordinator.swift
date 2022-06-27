@@ -60,6 +60,8 @@ extension HomeCoordinator {
             switch event {
             case .showPersonalChat(let user):
                 self?.homeDelegate?.showPersonalChat(with: user)
+            case .showLogin:
+                self?.showLogin()
             }
         }
         self.navigationController.pushViewController(projectDetailViewController, animated: true)
