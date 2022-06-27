@@ -113,13 +113,13 @@ extension CategoriesViewController {
     
     func configureCollectionView() {
         developCollectionView = UICollectionView(frame: view.bounds,
-                                                   collectionViewLayout: collectionViewLayout(height: 37))
+                                                   collectionViewLayout: collectionViewLayout(height: 36))
         developCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         developCollectionView.backgroundColor = .DarkGray2
         developCollectionView.isScrollEnabled = false
         
         designCollectionView = UICollectionView(frame: view.bounds,
-                                                   collectionViewLayout: collectionViewLayout(height: 37))
+                                                   collectionViewLayout: collectionViewLayout(height: 36))
         designCollectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         designCollectionView.backgroundColor = .DarkGray2
         designCollectionView.isScrollEnabled = false
@@ -138,8 +138,10 @@ extension CategoriesViewController {
             if let selectedDevelop = self?.selectedDevelop {
                 if selectedDevelop.contains(identifier) {
                     cell.button.backgroundColor = .DarkGray5
+                    cell.button.layer.borderColor = UIColor.DarkGray5.cgColor
                 } else {
                     cell.button.backgroundColor = .DarkGray2
+                    cell.button.layer.borderColor = UIColor.LightGray4.cgColor
                 }
             }
         }
@@ -166,8 +168,10 @@ extension CategoriesViewController {
             if let selectedDesign = self?.selectedDesign {
                 if selectedDesign.contains(identifier) {
                     cell.button.backgroundColor = .DarkGray5
+                    cell.button.layer.borderColor = UIColor.DarkGray5.cgColor
                 } else {
                     cell.button.backgroundColor = .DarkGray2
+                    cell.button.layer.borderColor = UIColor.LightGray4.cgColor
                 }
             }
         }

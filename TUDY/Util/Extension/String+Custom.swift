@@ -11,7 +11,7 @@ extension String {
 
     func projectDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss zzzz"
         
         guard let date = dateFormatter.date(from: self) else { return "" }
         let cur = Date()
@@ -26,7 +26,7 @@ extension String {
             return "\(distanceHour)시간 전"
         }
         
-        guard let distanceMinute = Calendar.current.dateComponents([.hour], from: date, to: cur).hour else { return "" }
+        guard let distanceMinute = Calendar.current.dateComponents([.minute], from: date, to: cur).minute else { return "" }
         
         return "\(distanceMinute)분 전"
     }

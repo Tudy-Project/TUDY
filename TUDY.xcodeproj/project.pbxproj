@@ -66,6 +66,8 @@
 		D893D31B283B2F550057075F /* SignUpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D893D31A283B2F550057075F /* SignUpError.swift */; };
 		D89615E42849E55300C86130 /* ChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E32849E55300C86130 /* ChatInfo.swift */; };
 		D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89615E62849E79500C86130 /* PersonalChatListCell.swift */; };
+		D8A5AEC628659D94003373D5 /* ChatButtonEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A5AEC528659D93003373D5 /* ChatButtonEvent.swift */; };
+		D8A5AEC82865BE6F003373D5 /* HashtagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A5AEC72865BE6F003373D5 /* HashtagCell.swift */; };
 		D8C0266228595C1F004CACFF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0266128595C1F004CACFF /* Message.swift */; };
 		D8C0266628599B93004CACFF /* FirebaseRealtimeChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */; };
 		D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */; };
@@ -175,6 +177,8 @@
 		D893D31A283B2F550057075F /* SignUpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpError.swift; sourceTree = "<group>"; };
 		D89615E32849E55300C86130 /* ChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInfo.swift; sourceTree = "<group>"; };
 		D89615E62849E79500C86130 /* PersonalChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalChatListCell.swift; sourceTree = "<group>"; };
+		D8A5AEC528659D93003373D5 /* ChatButtonEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatButtonEvent.swift; path = ProjectDetail/ChatButtonEvent.swift; sourceTree = SOURCE_ROOT; };
+		D8A5AEC72865BE6F003373D5 /* HashtagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HashtagCell.swift; path = ProjectDetail/View/HashtagCell.swift; sourceTree = SOURCE_ROOT; };
 		D8C0266128595C1F004CACFF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRealtimeChat.swift; sourceTree = "<group>"; };
 		D8C53A7F284B595D000E7170 /* LoginCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinatorDelegate.swift; sourceTree = "<group>"; };
@@ -347,6 +351,7 @@
 		4A6E650F283E049E00B954B9 /* ProjectDetail */ = {
 			isa = PBXGroup;
 			children = (
+				D8A5AEC528659D93003373D5 /* ChatButtonEvent.swift */,
 				FFE69F38285C17D10015B858 /* View */,
 				FFAF4A0C2844D20200269EB3 /* ProjectDetailViewController.swift */,
 			);
@@ -719,6 +724,7 @@
 			isa = PBXGroup;
 			children = (
 				FFE69F39285C17EE0015B858 /* HeartButton.swift */,
+				D8A5AEC72865BE6F003373D5 /* HashtagCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -882,6 +888,7 @@
 				4ACDF162285D8EE300A2BD01 /* MessageHelper.swift in Sources */,
 				D8E37950283F22340051CDF1 /* SetSubwayViewController.swift in Sources */,
 				FF07DE942849F833003BB46D /* PhotoCell.swift in Sources */,
+				D8A5AEC82865BE6F003373D5 /* HashtagCell.swift in Sources */,
 				D8C0266628599B93004CACFF /* FirebaseRealtimeChat.swift in Sources */,
 				D8C7F22B283B6A3500424AE5 /* TabCoordinatorProtocol.swift in Sources */,
 				4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */,
@@ -926,6 +933,7 @@
 				D85ED4D9283E691E00D0A006 /* PrivateChatListCoordinator.swift in Sources */,
 				D8C0266228595C1F004CACFF /* Message.swift in Sources */,
 				4AB9498F2850399E00594C83 /* ResultCell.swift in Sources */,
+				D8A5AEC628659D94003373D5 /* ChatButtonEvent.swift in Sources */,
 				D8E37955283F24560051CDF1 /* UILabel+Custom.swift in Sources */,
 				D87CBB562843C42E003397A5 /* Subway.swift in Sources */,
 				D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */,

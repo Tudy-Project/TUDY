@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ProjectDetailViewController: UIViewController {
     
     enum Event {
         case showPersonalChat(projectWriter: User)
+        case showLogin
     }
     
     var didSendEventClosure: ((Event) -> Void)?
@@ -48,8 +50,8 @@ class ProjectDetailViewController: UIViewController {
     
     lazy var authorImage: UIImageView = {
         let ImageView = UIImageView()
-        ImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        ImageView.load(url: URL(string: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")!)
+        ImageView.backgroundColor = .White
+        ImageView.frame = CGRect(x: 0, y: 0, width: 27, height: 27)
         ImageView.contentMode = .scaleAspectFill
         ImageView.layer.cornerRadius = ImageView.frame.width / 2
         ImageView.clipsToBounds = true
@@ -61,6 +63,7 @@ class ProjectDetailViewController: UIViewController {
         flowlayout.minimumLineSpacing = 10
         flowlayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
+        collectionView.tag = 1
         collectionView.backgroundColor = .DarkGray1
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         collectionView.delegate = self
@@ -101,24 +104,42 @@ class ProjectDetailViewController: UIViewController {
         return view
     }()
     
-    private lazy var ChatButton: UIButton = {
+    private lazy var chatButton: UIButton = {
         let button = UIButton()
         button.setTitle("💬 채팅보내기", for: .normal)
-        button.titleLabel?.font = .body16
+        button.titleLabel?.font = .sub16
         button.backgroundColor = .PointBlue
         button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(didTapChatButton), for: .touchUpInside)
         return button
     }()
     
+    private var chatButtonEvent = ChatButtonEvent.sendChat
+    
     private lazy var heartButton: HeartButton = {
         let button = HeartButton()
         button.sizeToFit()
         button.setState(false)
+        button.addTarget(self, action: #selector(heartButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
     private let heartCount = UILabel().label(text: "12", font: UIFont.sub14, color: .White)
+    
+    // 해시태그 collectionView
+    private lazy var hashtagCollectionView: UICollectionView = {
+        let flowlayout = UICollectionViewFlowLayout()
+        flowlayout.minimumLineSpacing = 10
+        flowlayout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout:  flowlayout)
+        collectionView.tag = 2
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .DarkGray1
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(HashtagCell.self, forCellWithReuseIdentifier: HashtagCell.reuseIdentifier)
+        return collectionView
+    }()
     
     
     // MARK: - Life Cycle
@@ -132,16 +153,31 @@ class ProjectDetailViewController: UIViewController {
 
 // MARK: - @objc
 extension ProjectDetailViewController {
-    @objc func  didTapChatButton() {
-        didSendEventClosure?(.showPersonalChat(projectWriter: User(userID: "8UqY2dXOR2MrpiQBZqrODnWZHek1",
-                                                                   signUpDate: "",
-                                                                   nickname: "",
-                                                                   profileImageURL: "",
-                                                                   interestedJob: "",
-                                                                   interestedDetailJobs: [],
-                                                                   subwayStation: "",
-                                                                   subwayLines: [],
-                                                                   likeProjectIDs: [])))
+    @objc func didTapChatButton() {
+        
+        switch chatButtonEvent {
+        case .sendChat: // 채팅보내기
+            sendChat()
+        case .changeFinishRecruit: // 모집완료로 변경
+            showAlert(.changeFinishRecruit)
+        case .changeRecruit: // 모집중으로 변경
+            showAlert(.changeRecruit)
+        case .finishRecruit: // 모집이 완료된 게시글입니다.
+            break
+        }
+    }
+    
+    @objc func heartButtonTapped(_ sender: HeartButton) {
+        if !isLogin() {
+            didSendEventClosure?(.showLogin)
+            return
+        }
+        guard let project = project else { return }
+        FirebaseUser.updateLikeProjectID(projectID: project.projectId) { [weak self] result in
+            self?.heartButton.setState(result)
+            let update = result ? 1 : -1
+            self?.updateHeartCount(update)
+        }
     }
 }
 
@@ -154,11 +190,38 @@ extension ProjectDetailViewController {
         detailDesc.text = project.content
         FirebaseUser.fetchOtherUser(userID: project.writerId) { [unowned self] user in
             authorName.text = user.nickname
+            guard let url = URL(string: user.profileImageURL) else { return }
+            authorImage.sd_setImage(with: url)
         }
-        uploadDate.text = project.writeDate
+        
+        if isLogin()
+            && project.isRecruit
+            && project.writerId == UserInfo.shared.user?.userID {
+            chatButton.setTitle("모집완료로 변경", for: .normal)
+            chatButton.backgroundColor = .DarkGray4
+            chatButtonEvent = .changeFinishRecruit
+        } else if UserInfo.shared.user != nil
+                    && !project.isRecruit
+                    && project.writerId == UserInfo.shared.user?.userID {
+            chatButton.setTitle("모집중으로 변경", for: .normal)
+            chatButton.backgroundColor = .DarkGray4
+            chatButtonEvent = .changeRecruit
+        } else if !project.isRecruit {
+            chatButton.setTitle("모집이 완료된 게시글입니다.", for: .normal)
+            chatButton.backgroundColor = .DarkGray3
+            chatButton.isEnabled = false
+            chatButtonEvent = .finishRecruit
+        }
+        uploadDate.text = project.writeDate.projectDate()
         personnelLabel.text = "\(project.maxPeople)명"
         estimatedDurationLabel.text = "\(project.endDate)주"
         heartCount.text = "\(project.favoriteCount)"
+        
+        FirebaseUser.fetchUser { [unowned self] user in
+            if user.likeProjectIDs.contains(project.projectId) {
+                heartButton.setState(true)
+            }
+        }
     }
     
     private func configureNavSettings() {
@@ -195,9 +258,17 @@ extension ProjectDetailViewController {
             make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
         
+        contentView.addSubview(hashtagCollectionView)
+        hashtagCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(30)
+            make.width.equalTo(257)
+            make.height.equalTo(27)
+        }
+        
         contentView.addSubview(detailTitle)
         detailTitle.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(23)
+            make.top.equalTo(hashtagCollectionView.snp.bottom).offset(11)
             make.leading.equalToSuperview().offset(30)
             make.width.equalTo(248)
             make.height.equalTo(60)
@@ -214,7 +285,7 @@ extension ProjectDetailViewController {
         authorImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(23)
             make.trailing.equalToSuperview().offset(-40)
-            make.width.height.equalTo(50)
+            make.width.height.equalTo(27)
         }
         
         contentView.addSubview(authorName)
@@ -279,46 +350,102 @@ extension ProjectDetailViewController {
             make.top.equalTo(heartButton.snp.bottom)
         }
         
-        bottomTabView.addSubview(ChatButton)
-        ChatButton.snp.makeConstraints { make in
+        bottomTabView.addSubview(chatButton)
+        chatButton.snp.makeConstraints { make in
             make.height.equalTo(48)
             make.bottom.equalTo(bottomTabView).offset(-20)
             make.leading.equalTo(heartButton.snp.trailing).offset(22)
             make.trailing.equalToSuperview().offset(-18)
         }
     }
+    
+    private func fetchProject(_ projectID: String) {
+        FirebaseProject.fetchProjectByProjectID(projectID: projectID) { [unowned self] project in
+            self.project = project
+        }
+    }
+    
+    private func sendChat() {
+        if !isLogin() {
+            didSendEventClosure?(.showLogin)
+            return
+        }
+        guard let project = project else { return }
+        FirebaseUser.fetchOtherUser(userID: project.writerId) { [weak self] user in
+            self?.didSendEventClosure?(.showPersonalChat(projectWriter: user))
+        }
+    }
+    
+    private func showAlert(_ event: ChatButtonEvent) {
+        guard let project = project else { return }
+        
+        var message: String!
+        if event == .changeFinishRecruit {
+            message = "프로젝트 모집을 완료하시나요?"
+        } else if event == .changeRecruit {
+            message = "프로젝트를 모집중으로 변경하시나요?"
+        }
+        
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            FirebaseProject.updateIsRecruit(project) {
+                self?.fetchProject(project.projectId)
+            }
+        }
+        ok.setValue(UIColor.PointRed, forKey: "titleTextColor")
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        cancel.setValue(UIColor.PointBlue, forKey: "titleTextColor")
+
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
+    }
+    
+    private func updateHeartCount(_ update: Int) {
+        guard let project = project else { return }
+        FirebaseProject.updateProjectHeart(update, project) { [weak self] result in
+            self?.heartCount.text = "\(result)"
+        }
+    }
 }
 
 extension ProjectDetailViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80, height: 80)
+        if collectionView.tag == 1 {
+            return CGSize(width: 80, height: 80)
+        } else {
+            return CGSize(width: 120, height: 24)
+        }
     }
 }
 
 extension ProjectDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return testData().image.count
+        guard let project = project else { return 0 }
+        if collectionView.tag == 1 {
+            return 0
+        } else {
+            return project.wantedWorks.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
-            fatalError()
+        guard let project = project else { fatalError() }
+        if collectionView.tag == 1 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HashtagCell.reuseIdentifier,
+                                                                for: indexPath) as? HashtagCell else {
+                return UICollectionViewCell()
+            }
+            cell.label.text = "#\(project.wantedWorks[indexPath.row])"
+            return cell
         }
-        cell.imageView.load(url: URL(string: testData().image[indexPath.row])!)
-        return cell
     }
 }
 
-extension UIImageView {
-    func load(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
-        }
-    }
-}
+extension ProjectDetailViewController: LoginCheck {}

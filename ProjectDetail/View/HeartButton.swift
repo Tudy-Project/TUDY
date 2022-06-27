@@ -37,6 +37,7 @@ class HeartButton: UIButton {
     }
     
     @objc fileprivate func onBtnClicked(_ sender: UIButton) {
+        if !isLogin() { return }
         self.isActivated.toggle()
         //animation 처리
         animate()
@@ -59,3 +60,5 @@ class HeartButton: UIButton {
         })
     }
 }
+
+extension HeartButton: LoginCheck {}
