@@ -58,6 +58,7 @@ class ProjectDetailViewController: UIViewController {
         return ImageView
     }()
     
+    private var imageURLs: [URL] = []
     private lazy var photoCollectionView: UICollectionView = {
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.minimumLineSpacing = 10
@@ -190,8 +191,11 @@ extension ProjectDetailViewController {
         detailDesc.text = project.content
         FirebaseUser.fetchOtherUser(userID: project.writerId) { [unowned self] user in
             authorName.text = user.nickname
-            guard let url = URL(string: user.profileImageURL) else { return }
-            authorImage.sd_setImage(with: url)
+            if let url = URL(string: user.profileImageURL) {
+                authorImage.sd_setImage(with: url)
+            } else {
+                authorImage.image = UIImage(named: "defaultProfile")
+            }
         }
         
         if isLogin()
@@ -222,6 +226,12 @@ extension ProjectDetailViewController {
                 heartButton.setState(true)
             }
         }
+        
+        if let projectImageUrl = URL(string: project.imageUrl) {
+            imageURLs.append(projectImageUrl)
+            photoCollectionView.reloadData()
+        }
+        
     }
     
     private func configureNavSettings() {
@@ -237,20 +247,19 @@ extension ProjectDetailViewController {
     
     private func configureUI() {
         
-        view.addSubview(scrollView)
         view.addSubview(bottomTabView)
+        bottomTabView.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(68)
+            make.width.equalToSuperview()
+        }
+        
+        view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(bottomTabView.snp.top)
             make.leading.equalTo(view.safeAreaLayoutGuide)
             make.trailing.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        
-        bottomTabView.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(68)
-            make.width.equalToSuperview()
         }
         
         scrollView.addSubview(contentView)
@@ -410,6 +419,7 @@ extension ProjectDetailViewController {
     }
 }
 
+// MARK: - CollectionView
 extension ProjectDetailViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView.tag == 1 {
@@ -424,7 +434,7 @@ extension ProjectDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let project = project else { return 0 }
         if collectionView.tag == 1 {
-            return 0
+            return imageURLs.count
         } else {
             return project.wantedWorks.count
         }
@@ -436,6 +446,7 @@ extension ProjectDetailViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
                 return UICollectionViewCell()
             }
+            cell.imageView.sd_setImage(with: imageURLs[indexPath.row])
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HashtagCell.reuseIdentifier,
