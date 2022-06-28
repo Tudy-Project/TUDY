@@ -9,21 +9,9 @@ import Foundation
 
 extension Date {
     
-    func projectDate() -> String {
+    func date() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return dateFormatter.string(from: Date())
-    }
-    
-    func chatListDate() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return dateFormatter.string(from: Date())
-    }
-    
-    func chatDate() -> String {
-        let chatDateFormatter = DateFormatter()
-        chatDateFormatter.dateFormat = "a h:mm"
-        return chatDateFormatter.string(from: self)
+        return dateFormatter.string(from: self)
     }
 }

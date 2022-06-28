@@ -241,7 +241,7 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
         guard let user = UserInfo.shared.user else { return }
         
         if (!message.isEmpty) {
-                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().chatDate())
+                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
                 messages.append(message)
                 FirebaseRealtimeChat.saveChat(chatInfoID: chatinfo.chatInfoID, message: message)
                 personalChatCV.reloadData()

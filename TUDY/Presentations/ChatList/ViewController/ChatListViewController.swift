@@ -205,7 +205,7 @@ extension ChatListViewController {
                                 projectMasterID: userID,
                                 participantIDs: [userID],
                                 latestMessage: "새로운 채팅방이 생성되었습니다.",
-                                latestMessageDate: Date().chatListDate())
+                                latestMessageDate: Date().date())
         FirebaseChat.saveChatInfo(chatInfo)
         fetchUserChatInfoList()
     }
@@ -218,12 +218,12 @@ extension ChatListViewController {
                                 projectMasterID: "",
                                 participantIDs: [userID, projectWriterID],
                                 latestMessage: "새로운 채팅방이 생성되었습니다.",
-                                latestMessageDate: Date().chatListDate())
+                                latestMessageDate: Date().date())
         FirebaseChat.saveChatInfo(chatInfo)
         fetchUserChatInfoList()
         
         let index = IndexPath(index: 1)
-        topTapBarCollectionView.selectItem(at: index, animated: true, scrollPosition: .right)
+//        topTapBarCollectionView.selectItem(at: index, animated: true, scrollPosition: .right)
         didSendEventClosure?(.showChat(chatInfo: chatInfo))
     }
     
