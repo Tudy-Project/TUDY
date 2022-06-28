@@ -494,9 +494,11 @@ extension HomeViewController {
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview) //스크롤 아래인지 위인지 알아내는 포지션
-        if (actualPosition.y < 0){
-            showBottomSheet(atState: .expanded)
+        if scrollView == projectCollectionView {
+            let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview) //스크롤 아래인지 위인지 알아내는 포지션
+            if (actualPosition.y < 0){
+                showBottomSheet(atState: .expanded)
+            }
         }
     }
     
