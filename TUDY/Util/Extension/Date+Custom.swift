@@ -14,4 +14,10 @@ extension Date {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return dateFormatter.string(from: self)
     }
+    
+    func dateInChat() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH시 mm분"
+        return dateFormatter.string(from: self)
+    }
 }

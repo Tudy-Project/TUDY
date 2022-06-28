@@ -43,18 +43,21 @@ class PersonalChatViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("viewDidLoad 시작")
         fetchMessage()
         configureUI()
         configureDelegate()
         getOtherUserInfo()
         hideKeyboardWhenTappedAround()
-//        print("viewDidLoad 끝")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navAppear()
         tabDisappear()
+//        self.addKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+//        self.removeKeyboardNotifications()
     }
     
     override var inputAccessoryView: UIView? {
@@ -93,7 +96,7 @@ extension PersonalChatViewController {
         view.addSubview(personalChatCV)
         personalChatCV.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -125,13 +128,23 @@ extension PersonalChatViewController {
             for msg in message {
                 self?.messages.append(msg)
             }
+            self?.messages = (self?.messages.sorted(by: {$0.createdDate < $1.createdDate}))!
+            
             self?.personalChatCV.reloadData()
+            
             guard let messageCount = self?.messages.count else { return }
-            print("여기까지 못오지 ??? : \(messageCount)")
-            self?.personalChatCV.isPagingEnabled = false
-            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: true)
-            self?.personalChatCV.isPagingEnabled = true
-            print("여긴?")
+            self?.personalChatCV.layoutIfNeeded()
+            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
+        }
+        
+        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) {[weak self] message in
+            
+            self?.messages.append(message)
+            self?.personalChatCV.reloadData()
+            
+            guard let messageCount = self?.messages.count else { return }
+            self?.personalChatCV.layoutIfNeeded()
+            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
         }
     }
     
@@ -160,18 +173,58 @@ extension PersonalChatViewController {
     }
 }
 
+//extension PersonalChatViewController {
+//    func addKeyboardNotifications(){
+//        // 키보드가 나타날 때 앱에게 알리는 메서드 추가
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification , object: nil)
+//        // 키보드가 사라질 때 앱에게 알리는 메서드 추가
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+//
+//    // 노티피케이션을 제거하는 메서드
+//    func removeKeyboardNotifications(){
+//        // 키보드가 나타날 때 앱에게 알리는 메서드 제거
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification , object: nil)
+//        // 키보드가 사라질 때 앱에게 알리는 메서드 제거
+//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+//    }
+//    // 키보드가 나타났다는 알림을 받으면 실행할 메서드
+//    @objc func keyboardWillShow(_ noti: NSNotification){
+//        // 키보드의 높이만큼 화면을 올려준다.
+//        Swift.print("===============keyboardWillShow================")
+//        Swift.print(" 전  self.view.frame.origin.y: \(self.view.frame.origin.y)")
+//        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+//            let keyboardRectangle = keyboardFrame.cgRectValue
+//            let keyboardHeight = keyboardRectangle.height
+//            self.view.frame.origin.y -= (keyboardHeight + (self.inputAccessoryView?.frame.origin.y)!)
+//        }
+//        Swift.print(" 후  self.view.frame.origin.y: \(self.view.frame.origin.y)")
+//    }
+//
+//    // 키보드가 사라졌다는 알림을 받으면 실행할 메서드
+//    @objc func keyboardWillHide(_ noti: NSNotification){
+//        // 키보드의 높이만큼 화면을 내려준다.
+//        Swift.print("===============keyboardWillHide================")
+//        Swift.print(" 전  self.view.frame.origin.y: \(self.view.frame.origin.y)")
+//        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+//            let keyboardRectangle = keyboardFrame.cgRectValue
+//            let keyboardHeight = keyboardRectangle.height
+//            self.view.frame.origin.y += (keyboardHeight + (self.inputAccessoryView?.frame.origin.y)!)
+//        }
+//        Swift.print(" 후  self.view.frame.origin.y: \(self.view.frame.origin.y)")
+//    }
+//}
+
 extension PersonalChatViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        print("collectionView 시작")
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else { return UICollectionViewCell() }
         cell.message = messages[indexPath.row]
         cell.message?.sender = messages[indexPath.row].sender
-//        print("collectionView 끝")
 
         return cell
     }
@@ -250,6 +303,11 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
                 FirebaseRealtimeChat.saveChat(chatInfoID: chatinfo.chatInfoID, message: message)
                 personalChatCV.reloadData()
         }
+        self.personalChatCV.isPagingEnabled = true
+        print("hey")
+        self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
+        print("what")
+        self.personalChatCV.isPagingEnabled = false
         inputView.clearMessage()
     }
 }
