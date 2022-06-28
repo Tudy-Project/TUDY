@@ -117,25 +117,27 @@ class MessageCell: UICollectionViewCell {
     }
     
     func configure() {
-
-//        print("전 message : \(message)")
         guard let message = message else { return }
-//        print("후 message : \(message)")
+
         let helper = MessageHelper(message: message)
+        
         textView.text = message.content
-        timeLabel.text = message.createdDate
+        timeLabel.text = message.createdDate.chatListDate()
+        
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive
         timeLeftAnchor.isActive = helper.leftAnchorActive
         timeRightAnchor.isActive = helper.rightAnchorActive
-//        print("helper.leftAnchorActive : \(helper.leftAnchorActive)")
-//        print("helper.rightAnchorActive : \(helper.rightAnchorActive)")
 
         bubbleContainer.backgroundColor = helper.messageBackgroundColor
         textView.textColor = helper.messageTextColor
         profileImageView.isHidden = helper.shouldHideProfileImage
         userNameLabel.isHidden = helper.shouldHideProfileImage
 
-        profileImageView.sd_setImage(with: helper.profileImageUrl)
+        if ((helper.profileImageUrl) != nil) {
+            profileImageView.sd_setImage(with: helper.profileImageUrl)
+        } else {
+            profileImageView.image = UIImage(named: "defaultProfile")
+        }
     }
 }
