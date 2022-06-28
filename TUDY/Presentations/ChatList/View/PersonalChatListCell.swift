@@ -86,6 +86,12 @@ extension PersonalChatListCell {
         for id in chatInfo.participantIDs where id != userID {
             FirebaseUser.fetchOtherUser(userID: id) { [weak self] user in
                 self?.setTitle(nickname: user.nickname)
+                
+                if let url = URL(string: user.profileImageURL) {
+                    self?.profileImageView.sd_setImage(with: url)
+                } else {
+                    self?.profileImageView.image = UIImage(named: "defaultProfile")
+                }
             }
         }
         
@@ -93,9 +99,6 @@ extension PersonalChatListCell {
         latestMessageDateLabel.text = chatInfo.latestMessageDate.chatListDate()
         
         addSubViewNotificationCount(count: 99)
-        
-//        guard let url = URL(string: user.profileImageUrl) else { return }
-//        profileImageView.sd_setImage(with: url)
     }
     
     private func addSubViewNotificationCount(count: Int) {

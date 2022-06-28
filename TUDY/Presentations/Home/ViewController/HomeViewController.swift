@@ -383,8 +383,11 @@ extension HomeViewController {
             }
             FirebaseUser.fetchOtherUser(userID: project.writerId) { user in
                 cell.authorLabel.text = user.nickname
-                guard let url = URL(string: user.profileImageURL) else { return }
-                cell.profileImageView.sd_setImage(with: url)
+                if let url = URL(string: user.profileImageURL) {
+                    cell.profileImageView.sd_setImage(with: url)
+                } else {
+                    cell.profileImageView.image = UIImage(named: "defaultProfile")
+                }
             }
         }
         
