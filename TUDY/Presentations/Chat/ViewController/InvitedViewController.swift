@@ -168,12 +168,10 @@ extension InvitedViewController {
     }
     
     @objc func bottomsheetgroupchatinvitedbuttonClicked(sender:UITapGestureRecognizer) {
-        
-        print("selectedGroupChatInfoList : \(selectedGroupChatInfoList)")
-        
+//        print("selectedGroupChatInfoList : \(selectedGroupChatInfoList)")
         FirebaseUserChatInfo.addGroupChat(invitedGroupChatInfoID: selectedGroupChatInfoList, invitedUserID: self.otherUser.userID)
-        
         hideBottomSheetAndGoBack()
+        
     }
 }
 
