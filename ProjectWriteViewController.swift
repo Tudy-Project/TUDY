@@ -5,8 +5,9 @@
 //
 
 import UIKit
+
+import SDWebImage
 import SnapKit
-import PhotosUI
 
 class ProjectWriteViewController: UIViewController {
     
@@ -52,6 +53,7 @@ class ProjectWriteViewController: UIViewController {
     private let estimatedDurationLabel = UILabel().label(text: "0주", font: UIFont.sub14, color: .White)
     private var duration = 0
     
+    private let picker = UIImagePickerController()
     private var optionState: String = "categoriesBar"
     private var imageArray = [UIImage]()
     private var itemProviders: [NSItemProvider] = []
@@ -130,6 +132,7 @@ class ProjectWriteViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         hideKeyboard()
+        picker.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -288,12 +291,12 @@ class ProjectWriteViewController: UIViewController {
         contentView.addSubview(photoCollectionView)
         photoCollectionView.dataSource = self
         photoCollectionView.delegate = self
-        //생각해볼 에러... 포토컬렉션뷰를 툴바에 맞추면 생각할게 많아진다...
+        
         photoCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(contentsTextView.snp.bottom).offset(30)
-            make.height.equalTo(80)
+            make.bottom.equalTo(contentsViewPhotoToolbar.snp.top).offset(-30)
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
+            make.height.equalTo(80)
         }
     }
     
@@ -338,6 +341,20 @@ class ProjectWriteViewController: UIViewController {
             resultSeletedCategoriesLabel.text = developText
         } else {
             resultSeletedCategoriesLabel.text = "\(developText), \(designText)"
+        }
+    }
+    
+    private func openLibrary() {
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true, completion: nil)
+    }
+    
+    private func openCamera(){
+        if(UIImagePickerController .isSourceTypeAvailable(.camera)){
+            picker.sourceType = .camera
+            present(picker, animated: false, completion: nil)
+        } else {
+            print("Camera not available")
         }
     }
 }
@@ -415,12 +432,14 @@ extension ProjectWriteViewController {
     }
     
     @objc private func didTapPhotoButton() {
-        var config = PHPickerConfiguration()
-        config.selectionLimit = 1
-        config.filter = .images
-        let picker = PHPickerViewController(configuration: config)
-        picker.delegate = self
-        present(picker,animated: true, completion: nil)
+        let alert = UIAlertController(title: "사진을 골라주세요.", message: "원하시는 버튼을 클릭해주세요.", preferredStyle: .actionSheet)
+        let library = UIAlertAction(title: "사진앨범", style: .default) { [weak self] (action) in self?.openLibrary() }
+        let camera = UIAlertAction(title: "카메라", style: .default) { [weak self] (action) in self?.openCamera() }
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        alert.addAction(camera)
+        alert.addAction(library)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
     }
     
     //키보드 보일 때
@@ -453,19 +472,26 @@ extension ProjectWriteViewController {
         var works = develops
         works.append(contentsOf: designs)
         
-        let project = Project(projectId: UUID().uuidString,
+        var project = Project(projectId: UUID().uuidString,
                               title: title,
                               content: contents,
                               isRecruit: true,
                               writerId: userID,
-                              writeDate: Date().projectDate(),
+                              writeDate: Date().date(),
                               imageUrl: "",
                               wantedWorks: works,
                               endDate: "\(duration)",
                               maxPeople: peopleCount,
                               favoriteCount: 0)
         
-        FirebaseProject.saveProjectData(project)
+        if !imageArray.isEmpty {
+            FirebaseStorage.saveImage(image: imageArray[0]) { url in
+                project.imageUrl = url
+                FirebaseProject.saveProjectData(project)
+            }
+        } else {
+            FirebaseProject.saveProjectData(project)
+        }
     }
 }
 
@@ -531,30 +557,30 @@ extension ProjectWriteViewController: UITextViewDelegate {
 }
 
 // MARK: -  PHPickerViewController 대리 관리자
-extension ProjectWriteViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        //PHPicker 닫기
-        picker.dismiss(animated: true, completion: nil)
-        
-        //선택한 사진 배열에 저장
-        itemProviders = results.map(\.itemProvider)
-        for item in itemProviders {
-            if item.canLoadObject(ofClass: UIImage.self) {
-                item.loadObject(ofClass: UIImage.self) { image, error in
-                    if let error = error {
-                        print("이미지 로드 에러 \(error.localizedDescription)")
-                        return
-                    }
-                    DispatchQueue.main.async { [self] in
-                        guard let image = image as? UIImage else { return }
-                        imageArray.append(image)
-                        self.photoCollectionView.reloadData()
-                    }
-                }
-            }
-        }
-    }
-}
+//extension ProjectWriteViewController: PHPickerViewControllerDelegate {
+//    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+//        //PHPicker 닫기
+//        picker.dismiss(animated: true, completion: nil)
+//        
+//        //선택한 사진 배열에 저장
+//        itemProviders = results.map(\.itemProvider)
+//        for item in itemProviders {
+//            if item.canLoadObject(ofClass: UIImage.self) {
+//                item.loadObject(ofClass: UIImage.self) { image, error in
+//                    if let error = error {
+//                        print("이미지 로드 에러 \(error.localizedDescription)")
+//                        return
+//                    }
+//                    DispatchQueue.main.async { [self] in
+//                        guard let image = image as? UIImage else { return }
+//                        imageArray.append(image)
+//                        self.photoCollectionView.reloadData()
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 // MARK: - 사진 컬렉션뷰 관련
 extension ProjectWriteViewController: UICollectionViewDataSource {
@@ -563,10 +589,8 @@ extension ProjectWriteViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {
-            fatalError()
-        }
-        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier,
+                                                            for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
         cell.imageView.image = imageArray[indexPath.row]
         return cell
     }
@@ -575,5 +599,21 @@ extension ProjectWriteViewController: UICollectionViewDataSource {
 extension ProjectWriteViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 80)
+    }
+}
+
+// MARK: - ImagePickerDelegate
+extension ProjectWriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
+            imageArray = [image]
+            print("이미지 저장 성공")
+            photoCollectionView.reloadData()
+        } else {
+            print("이미지 저장 실패")
+        }
+        print(imageArray)
+        dismiss(animated: true, completion: nil)
     }
 }

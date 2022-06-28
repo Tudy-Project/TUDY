@@ -57,6 +57,8 @@ class BottomSheetCell: UICollectionViewCell {
     lazy var projectImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .White
+        imageView.frame = CGRect(x: 0, y: 0, width: 87, height: 87)
+        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -124,7 +126,7 @@ extension BottomSheetCell {
             make.top.equalToSuperview().offset(23)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-126)
-            make.height.equalTo(40)
+            make.height.lessThanOrEqualTo(44)
         }
         
         contentView.addSubview(contentsLabel)
@@ -136,10 +138,10 @@ extension BottomSheetCell {
         
         contentView.addSubview(projectImageView)
         projectImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(-20)
+            make.top.equalTo(contentView.snp.top).offset(30)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-20)
             make.width.equalTo(87)
             make.height.equalTo(87)
-            make.centerY.equalTo(contentView.snp.centerY)
         }
         
         contentView.addSubview(profileImageView)
@@ -152,7 +154,7 @@ extension BottomSheetCell {
         
         contentView.addSubview(authorLabel)
         authorLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(contentsLabel.snp.bottom).offset(9)
+            make.top.equalTo(contentsLabel.snp.bottom).offset(9)
             make.leading.equalTo(profileImageView.snp.trailing).offset(8)
         }
         
