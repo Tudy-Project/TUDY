@@ -136,16 +136,19 @@ extension PersonalChatViewController {
             self?.personalChatCV.layoutIfNeeded()
             self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
         }
-        
-        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) {[weak self] message in
-            
-            self?.messages.append(message)
-            self?.personalChatCV.reloadData()
-            
-            guard let messageCount = self?.messages.count else { return }
-            self?.personalChatCV.layoutIfNeeded()
-            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
-        }
+    
+        /// oberve를 넣어야하는 이슈가 생김 
+//        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
+//
+//            print("======================2====================")
+//            self?.messages.append(message)
+//
+//            self?.personalChatCV.reloadData()
+//
+//            guard let messageCount = self?.messages.count else { return }
+//            self?.personalChatCV.layoutIfNeeded()
+//            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
+//        }
     }
     
     private func getOtherUserID() -> String {

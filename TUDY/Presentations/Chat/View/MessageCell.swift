@@ -122,7 +122,7 @@ class MessageCell: UICollectionViewCell {
         let helper = MessageHelper(message: message)
         
         textView.text = message.content
-        timeLabel.text = message.createdDate
+        timeLabel.text = message.createdDate.chatListDate()
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive
@@ -134,6 +134,10 @@ class MessageCell: UICollectionViewCell {
         profileImageView.isHidden = helper.shouldHideProfileImage
         userNameLabel.isHidden = helper.shouldHideProfileImage
 
-        profileImageView.sd_setImage(with: helper.profileImageUrl)
+        if ((helper.profileImageUrl) != nil) {
+            profileImageView.sd_setImage(with: helper.profileImageUrl)
+        } else {
+            profileImageView.image = UIImage(named: "defaultProfile")
+        }
     }
 }

@@ -48,6 +48,9 @@ struct FirebaseRealtimeChat {
         ref.child(path).observe(.childAdded) { snapshot in
             guard let dict = snapshot.value as? [String: Any] else { return}
             let message = Message(dict: dict)
+            print("=========================================")
+            print("message : \(message)")
+            print("=========================================")
             completion(message)
         }
     }
