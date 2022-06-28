@@ -75,16 +75,17 @@ extension TabCoordinator {
         tabBarController.tabBar.tintColor = .White
         tabBarController.tabBar.unselectedItemTintColor = .White
         
+        let homeCoordinator = HomeCoordinator(navigationController)
+        let chatCoordinator = ChatCoordinator(navigationController)
+        
         switch page {
         case .home:
-            let homeCoordinator = HomeCoordinator(navigationController)
             homeCoordinator.finishDelegate = self
             homeCoordinator.loginDelegate = self
             homeCoordinator.homeDelegate = self
             self.childCoordinators.append(homeCoordinator)
             homeCoordinator.start()
         case .chat:
-            let chatCoordinator = ChatCoordinator(navigationController)
             chatCoordinator.finishDelegate = self
             chatCoordinator.loginDelegate = self
             self.childCoordinators.append(chatCoordinator)

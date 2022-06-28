@@ -458,7 +458,7 @@ extension ProjectWriteViewController {
                               content: contents,
                               isRecruit: true,
                               writerId: userID,
-                              writeDate: Date().projectDate(),
+                              writeDate: Date().date(),
                               imageUrl: "",
                               wantedWorks: works,
                               endDate: "\(duration)",
