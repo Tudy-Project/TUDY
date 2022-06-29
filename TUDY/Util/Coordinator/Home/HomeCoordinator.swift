@@ -62,6 +62,11 @@ extension HomeCoordinator {
                 self?.homeDelegate?.showPersonalChat(with: user)
             case .showLogin:
                 self?.showLogin()
+            case .showModifyProject(let project):
+                self?.showModifyProject(project: project)
+            case .showDeClaration:
+                // 신고하기 화면?
+                break
             }
         }
         self.navigationController.pushViewController(projectDetailViewController, animated: true)
@@ -77,6 +82,8 @@ extension HomeCoordinator {
             switch event {
             case .registerProject(let viewController):
                 self?.registerProject(viewController: viewController)
+            case .updateProject(let viewController):
+                self?.updateProject(viewController: viewController)
             }
         }
         
@@ -87,8 +94,31 @@ extension HomeCoordinator {
         viewController.dismiss(animated: true)
     }
     
+    func updateProject(viewController: UIViewController) {
+        viewController.dismiss(animated: true)
+        navigationController.popViewController(animated: true)
+    }
+    
     func showLogin() {
         self.loginDelegate?.prepareLoginCoordinator()
+    }
+    
+    func showModifyProject(project: Project) {
+        let projectWriteViewController = ProjectWriteViewController()
+        let projectWriteNavigationController = UINavigationController(rootViewController: projectWriteViewController)
+        projectWriteViewController.navAppear()
+        projectWriteNavigationController.modalPresentationStyle = .fullScreen
+        
+        projectWriteViewController.didSendEventClosure = { [weak self] event in
+            switch event {
+            case .registerProject(let viewController):
+                self?.registerProject(viewController: viewController)
+            case .updateProject(let viewController):
+                self?.updateProject(viewController: viewController)
+            }
+        }
+        projectWriteViewController.project = project
+        self.navigationController.present(projectWriteNavigationController, animated: true)
     }
 }
 

@@ -38,15 +38,16 @@ class CategoriesViewController: UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(setDetailJobs(_:)),
+                                               name: Notification.Name("setDetailJob"),
+                                               object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self,
-                                                  name: Notification.Name("selectedDevelop"),
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: Notification.Name("selectedDesign"),
+                                                  name: Notification.Name("setDetailJob"),
                                                   object: nil)
     }
 }
@@ -201,8 +202,7 @@ extension CategoriesViewController {
     }
     
     // MARK: - Action Methods
-    @objc
-       func tapInitButton(sender:UITapGestureRecognizer) {
+    @objc func tapInitButton(sender:UITapGestureRecognizer) {
            selectedDevelop = []
            selectedDesign = []
            updateDevelopFieldsSnapshotWhenTappedDevelopFields()
@@ -239,5 +239,14 @@ extension CategoriesViewController {
         
         NotificationCenter.default.post(name: Notification.Name("selectedDesign"),
                                         object: selectedDesign)
+    }
+    
+    @objc private func setDetailJobs(_ notification: Notification) {
+        if let job = notification.object as? ([String], [String]) {
+            selectedDevelop = job.0
+            selectedDesign = job.1
+            updateDevelopFieldsSnapshotWhenTappedDevelopFields()
+            updateDesignFieldsSnapshotWhenTappedDesignFields()
+        }
     }
 }

@@ -15,6 +15,8 @@ protocol HomeCoordinatorProtocol: Coordinator {
     func pushSearchViewController()
     func showProjectWriteViewController()
     func registerProject(viewController: UIViewController)
+    func updateProject(viewController: UIViewController)
     func pushProjectDetailViewController(project: Project)
     func showLogin()
+    func showModifyProject(project: Project)
 }

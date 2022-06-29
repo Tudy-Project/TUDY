@@ -13,6 +13,8 @@ class ProjectDetailViewController: UIViewController {
     enum Event {
         case showPersonalChat(projectWriter: User)
         case showLogin
+        case showModifyProject(project: Project)
+        case showDeClaration
     }
     
     var didSendEventClosure: ((Event) -> Void)?
@@ -184,6 +186,23 @@ extension ProjectDetailViewController {
             self?.updateHeartCount(update)
         }
     }
+    
+    @objc func moreVerticalButtonTapped() {
+        guard let project = project else { return }
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let modify = UIAlertAction(title: "수정하기", style: .default) { [weak self] (action) in self?.modifyButtonTapped() }
+        let declaration = UIAlertAction(title: "신고하기", style: .default) { [weak self] (action) in self?.declarationButtonTapped() }
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        if FirebaseUser.getUserID() == project.writerId {
+            alert.addAction(modify)
+        } else {
+            alert.addAction(declaration)
+        }
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 // MARK: - Methods
@@ -232,7 +251,7 @@ extension ProjectDetailViewController {
         }
         
         if let projectImageUrl = URL(string: project.imageUrl) {
-            imageURLs.append(projectImageUrl)
+            imageURLs = [projectImageUrl]
             photoCollectionView.reloadData()
         }
         
@@ -245,8 +264,12 @@ extension ProjectDetailViewController {
         //네비게이션바 왼쪽 타이틀
         navigationController?.navigationBar.topItem?.backButtonTitle = ""
         
-        let moreVertical = UIBarButtonItem(image: UIImage(named: "more_vertical"), style: UIBarButtonItem.Style.plain, target: self, action: nil)
-        navigationItem.rightBarButtonItems = [moreVertical]
+        if !(FirebaseUser.getUserID() == "") {
+            let moreVertical = UIBarButtonItem(image: UIImage(named: "more_vertical"),
+                                               style: UIBarButtonItem.Style.plain,
+                                               target: self, action: #selector(moreVerticalButtonTapped))
+            navigationItem.rightBarButtonItems = [moreVertical]
+        }
     }
     
     private func configureUI() {
@@ -420,6 +443,15 @@ extension ProjectDetailViewController {
         FirebaseProject.updateProjectHeart(update, project) { [weak self] result in
             self?.heartCount.text = "\(result)"
         }
+    }
+    
+    private func modifyButtonTapped() {
+        guard let project = project else { return }
+        didSendEventClosure?(.showModifyProject(project: project))
+    }
+    
+    private func declarationButtonTapped() {
+        didSendEventClosure?(.showDeClaration)
     }
 }
 
