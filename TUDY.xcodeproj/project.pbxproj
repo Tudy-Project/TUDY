@@ -14,6 +14,8 @@
 		4AB16F0E2844F40000EB36A6 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F0D2844F40000EB36A6 /* Project.swift */; };
 		4AB16F112844F42C00EB36A6 /* FirebaseUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB16F102844F42C00EB36A6 /* FirebaseUser.swift */; };
 		4AB9498F2850399E00594C83 /* ResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB9498E2850399E00594C83 /* ResultCell.swift */; };
+		4ABDB4EA286C231C009200C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BD283496F5004A08F8 /* Assets.xcassets */; };
+		4ABDB4EC286C247E009200C5 /* FirestoreChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABDB4EB286C247E009200C5 /* FirestoreChat.swift */; };
 		4AC095C5285116150003BAFB /* WorkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C4285116150003BAFB /* WorkCell.swift */; };
 		4AC095C72856EE7F0003BAFB /* UIViewController+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */; };
 		4AC095C928571D2E0003BAFB /* FirebaseProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC095C828571D2E0003BAFB /* FirebaseProject.swift */; };
@@ -26,7 +28,6 @@
 		4AEEC0B5283496F4004A08F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B4283496F4004A08F8 /* AppDelegate.swift */; };
 		4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B6283496F4004A08F8 /* SceneDelegate.swift */; };
 		4AEEC0B9283496F4004A08F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEEC0B8283496F4004A08F8 /* LoginViewController.swift */; };
-		4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BD283496F5004A08F8 /* Assets.xcassets */; };
 		4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4AEEC0BF283496F5004A08F8 /* LaunchScreen.storyboard */; };
 		C9E470D126B6F269FBE14B40 /* Pods_TUDY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931A605D7A28873B84F77FF5 /* Pods_TUDY.framework */; };
 		D8034E8B28572AC3008C569F /* GroupChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8034E8A28572AC3008C569F /* GroupChatViewController.swift */; };
@@ -122,6 +123,7 @@
 		4AB16F0D2844F40000EB36A6 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		4AB16F102844F42C00EB36A6 /* FirebaseUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUser.swift; sourceTree = "<group>"; };
 		4AB9498E2850399E00594C83 /* ResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCell.swift; sourceTree = "<group>"; };
+		4ABDB4EB286C247E009200C5 /* FirestoreChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreChat.swift; sourceTree = "<group>"; };
 		4AC095C4285116150003BAFB /* WorkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkCell.swift; sourceTree = "<group>"; };
 		4AC095C62856EE7E0003BAFB /* UIViewController+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Custom.swift"; sourceTree = "<group>"; };
 		4AC095C828571D2E0003BAFB /* FirebaseProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseProject.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 				D8034E902857356A008C569F /* FirebaseChat.swift */,
 				D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */,
 				D8F2FEB9285DA309002089DD /* FirebaseStorage.swift */,
+				4ABDB4EB286C247E009200C5 /* FirestoreChat.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -792,8 +795,8 @@
 			files = (
 				4AEEC0C1283496F5004A08F8 /* LaunchScreen.storyboard in Resources */,
 				FFD4624A2834B049002A2022 /* GoogleService-Info.plist in Resources */,
+				4ABDB4EA286C231C009200C5 /* Assets.xcassets in Resources */,
 				D85ED4E1283F15C400D0A006 /* AppleSDGothicNeoEB.ttf in Resources */,
-				4AEEC0BE283496F5004A08F8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,6 +910,7 @@
 				4A2C0C34283E20A700C6199F /* UIFont+Custom.swift in Sources */,
 				D85ED4D3283E68FC00D0A006 /* GroupChatListCoordinatorProtocol.swift in Sources */,
 				4AEEC0B7283496F4004A08F8 /* SceneDelegate.swift in Sources */,
+				4ABDB4EC286C247E009200C5 /* FirestoreChat.swift in Sources */,
 				D8C7F221283B582B00424AE5 /* CoordinatorProtocol.swift in Sources */,
 				D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */,
 				D89615E72849E79500C86130 /* PersonalChatListCell.swift in Sources */,
@@ -1102,13 +1106,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 74589077B94509E407622A13 /* Pods-TUDY.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TUDY/TUDY.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8SYX92TN9K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TUDY/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "귀하의 카메라에 접근하려고 합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "귀하의 사진첩에 접근하려고 합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;
@@ -1132,13 +1140,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F764B3ABE9ED77DEDB3D0101 /* Pods-TUDY.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TUDY/TUDY.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8SYX92TN9K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TUDY/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "귀하의 카메라에 접근하려고 합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "귀하의 사진첩에 접근하려고 합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = LaunchScreen;

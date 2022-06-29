@@ -39,6 +39,7 @@ class PersonalChatViewController: UIViewController {
     }()
     
     let picker = UIImagePickerController()
+    var listener: ListenerRegistration?
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -123,19 +124,46 @@ extension PersonalChatViewController {
     
     private func fetchMessage() {
         guard let chatInfo = self.chatInfo else { return }
-        
-        FirebaseRealtimeChat.fetchChat(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
+
+        FirestoreChat.observeChat(chatInfo: chatInfo) { [weak self] message in
             for msg in message {
                 self?.messages.append(msg)
             }
-            self?.messages = (self?.messages.sorted(by: {$0.createdDate < $1.createdDate}))!
-            
+            guard let msg = self?.messages else { return }
+
             self?.personalChatCV.reloadData()
-            
+
             guard let messageCount = self?.messages.count else { return }
             self?.personalChatCV.layoutIfNeeded()
             self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
         }
+//        FirebaseRealtimeChat.fetchChat(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
+//            for msg in message {
+//                self?.messages.append(msg)
+//            }
+//            guard let msg = self?.messages else { return }
+//
+//            self?.personalChatCV.reloadData()
+//
+//            guard let messageCount = self?.messages.count else { return }
+//            self?.personalChatCV.layoutIfNeeded()
+//            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
+//        }
+    
+        /// oberve를 넣어야하는 이슈가 생김
+//        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
+//
+//            print("======================2====================")
+//            self?.messages.append(message)
+//
+////            self?.messages = (msg.sorted(by: {$0.createdDate < $1.createdDate}))
+//
+//            self?.personalChatCV.reloadData()
+//
+//            guard let messageCount = self?.messages.count else { return }
+//            self?.personalChatCV.layoutIfNeeded()
+//            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
+//        }
     
         /// oberve를 넣어야하는 이슈가 생김 
 //        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
@@ -303,13 +331,11 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
         if (!message.isEmpty) {
                 let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
                 messages.append(message)
-                FirebaseRealtimeChat.saveChat(chatInfoID: chatinfo.chatInfoID, message: message)
+                FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
                 personalChatCV.reloadData()
         }
         self.personalChatCV.isPagingEnabled = true
-        print("hey")
         self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
-        print("what")
         self.personalChatCV.isPagingEnabled = false
         inputView.clearMessage()
     }
