@@ -10,61 +10,72 @@ import Foundation
 
 import Firebase
 import FirebaseFirestore
+import UIKit
 
 struct FirestoreChat {
     
-    // 채팅보낼 시, 채팅 메세지 저장 (개인, 단체)
-    static func saveChat(_ chatInfo: ChatInfo, message: Message) {
+    /// 채팅보낼 시, 채팅 메세지 저장 (개인, 단체)
+    /// Collection(MESSAGE) -> document(chatInfo) -> Collection(Message에 대한 UUID) -> dcument(메세지 보낸 시간) -> DATA
+    static func saveChat(chatInfo: ChatInfo, message: Message) {
         
         let collectionListener = Firestore.firestore().collection("Message")
         
-        guard let dict = message.asDictionary else {
+        guard let dictionary = message.asDictionary else {
             print("DEBUG: chat decode error")
             return
         }
         
-        collectionListener.document(chatInfo.chatInfoID).setData(dictionary) { error in
+        collectionListener.document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID).document(message.createdDate).setData(dictionary) { error in
             if let error = error {
                 print("DEBUG: 파이어베이스 채팅 저장 오류\(error.localizedDescription)")
                 return
             }
-            if let completion = completion {
-                completion()
+        }
+    }
+
+    // 채팅메세지 가져오기
+    static func fetchChat(chatInfo: ChatInfo, completion: @escaping ([Message]) -> Void) {
+        
+        var messages : [Message] = []
+        
+        let messageRef = Firestore.firestore().collection("Message").document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID)
+        
+        messageRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("DEBUG: 채팅 메세지 가져오기 실패 \(error.localizedDescription)")
+                return
             }
+            snapshot?.documents.forEach({ document in
+                let dict = document.data()
+                let message = Message(dict: dict)
+                messages.append(message)
+            })
+            completion(messages)
         }
-        
-        // 채팅 개설 후 참여자 유저 정보에 채팅 정보 추가
-        FirebaseUserChatInfo.updateUserChatInfoID(chatInfo: chatInfo)
     }
     
-    static func saveChat(chatInfoID path: String, message: Message) {
-        guard let dict = message.asDictionary else {
-            print("DEBUG: chat decode error")
-            return
-        }
+    // 채팅메시지 observe하기
+    static func observeChat(chatInfo: ChatInfo, completion: @escaping ([Message]) -> Void) {
+        var messages : [Message] = []
         
-        ref.child(path).childByAutoId().updateChildValues(dict)
-//        ref.child(path).child(message.messageID).updateChildValues(dict)
+        let messageRef = Firestore.firestore().collection("Message").document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID)
+        
+        messageRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("DEBUG: 채팅 메세지 가져오기 실패 \(error.localizedDescription)")
+                return
+            }
+            snapshot?.documents.forEach({ document in
+                let dict = document.data()
+                let message = Message(dict: dict)
+                messages.append(message)
+            })
+            completion(messages)
+        }
+
     }
     
     
-    
-//    static func collectionPath(_ chatState: ChatState) -> String {
-//        switch chatState {
-//        case .personalChat:
-//            return "/PersonalChat"
-//        case .groupChat:
-//            return "/GroupChat"
-//        }
-//    }
-    
-    // 자신의 채팅정보 가져오기
-//    static func fetchChatInfo(chatState: ChatState, completion: @escaping ([ChatInfo]) -> Void) {
-//        let collectionPath = collectionPath(chatState)
-//        let uid = FirebaseUser.getUserID()
-//
-//        Firestore.firestore()
-//            .collection(collectionPath)
 //            .whereField("participantIDs", arrayContains: uid)
 //            .addSnapshotListener({ snapshot, error in
 //                if let error = error {
@@ -80,7 +91,35 @@ struct FirestoreChat {
 //                chatInfos.sort { $0.latestMessageDate > $1.latestMessageDate }
 //                completion(chatInfos)
 //            })
+
+    
+    
+//    static func fetchChat(chatInfoID path: String, completion: @escaping ([Message]) -> Void) {
+//        var messages: [Message] = []
+//        ref.child(path).getData { error, snapshot in
+//            if let error = error {
+//                print("DEBUG: 채팅 가져오기 실패 \(error.localizedDescription)")
+//                return
+//            }
+//            guard let snapshot = snapshot.value as? [String: Any] else { return }
+//            snapshot.forEach { key, value in
+//                guard let dict = value as? [String: Any] else { return}
+//                let message = Message(dict: dict)
+//                messages.append(message)
+//            }
+//            completion(messages)
+//        }
 //    }
+//    static func collectionPath(_ chatState: ChatState) -> String {
+//        switch chatState {
+//        case .personalChat:
+//            return "/PersonalChat"
+//        case .groupChat:
+//            return "/GroupChat"
+//        }
+//    }
+    
+
     
 
     
