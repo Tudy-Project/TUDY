@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>귀하의 카메라에 접근하려고 합니다.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>귀하의 사진첩에 접근하려고 합니다.</string>
+	<key>CFBundleIcons</key>
+	<dict/>
+	<key>CFBundleIcons~ipad</key>
+	<dict/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
