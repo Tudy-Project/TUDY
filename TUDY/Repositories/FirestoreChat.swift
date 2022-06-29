@@ -54,13 +54,13 @@ struct FirestoreChat {
         }
     }
     
-    // 채팅메시지 observe하기
+    /// 채팅메시지 observe하기
     static func observeChat(chatInfo: ChatInfo, completion: @escaping ([Message]) -> Void) {
-        var messages : [Message] = []
-        
+
         let messageRef = Firestore.firestore().collection("Message").document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID)
         
-        messageRef.getDocuments { snapshot, error in
+        messageRef.addSnapshotListener { snapshot, error in
+            var messages : [Message] = []
             if let error = error {
                 print("DEBUG: 채팅 메세지 가져오기 실패 \(error.localizedDescription)")
                 return

@@ -123,6 +123,7 @@ class MessageCell: UICollectionViewCell {
         
         textView.text = message.content
         timeLabel.text = message.createdDate.chatListDate()
+        userNameLabel.text = message.sender.nickname
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive

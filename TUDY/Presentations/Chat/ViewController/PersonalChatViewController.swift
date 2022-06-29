@@ -137,6 +137,11 @@ extension PersonalChatViewController {
             self?.personalChatCV.layoutIfNeeded()
             self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
         }
+    
+        
+        
+        
+        
 //        FirebaseRealtimeChat.fetchChat(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
 //            for msg in message {
 //                self?.messages.append(msg)
