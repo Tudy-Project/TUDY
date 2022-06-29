@@ -19,5 +19,6 @@ extension UIFont {
     static var body14: UIFont { UIFont.systemFont(ofSize: 14, weight: .medium) }
     static var caption12: UIFont { UIFont.systemFont(ofSize: 12, weight: .medium) }
     static var caption11: UIFont { UIFont.systemFont(ofSize: 11, weight: .medium) }
+    static var caption10: UIFont { UIFont.systemFont(ofSize: 10, weight: .medium) }
     static var caption8: UIFont { UIFont.systemFont(ofSize: 8, weight: .medium) }
 }

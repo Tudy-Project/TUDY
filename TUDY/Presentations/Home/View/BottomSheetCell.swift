@@ -182,9 +182,10 @@ extension BottomSheetCell {
         recruitButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(24)
             make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(56)
+            make.width.equalTo(47)
             make.height.equalTo(17)
         }
+        recruitButton.titleLabel?.font = .caption10
         recruitButton.setTitle("모집완료", for: .normal)
         recruitButton.backgroundColor = .DarkGray5
     }

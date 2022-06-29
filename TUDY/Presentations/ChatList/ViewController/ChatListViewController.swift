@@ -213,18 +213,26 @@ extension ChatListViewController {
     func makePersonalChat(with projectWriter: User) {
         let userID = FirebaseUser.getUserID()
         let projectWriterID = projectWriter.userID
-        let chatInfo = ChatInfo(chatState: .personalChat,
-                                chatTitle: "",
-                                projectMasterID: projectWriterID,
-                                participantIDs: [userID, projectWriterID],
-                                latestMessage: "새로운 채팅방이 생성되었습니다.",
-                                latestMessageDate: Date().date())
-        FirebaseChat.saveChatInfo(chatInfo)
-        fetchUserChatInfoList()
         
-        let index = IndexPath(index: 1)
-//        topTapBarCollectionView.selectItem(at: index, animated: true, scrollPosition: .right)
-        didSendEventClosure?(.showChat(chatInfo: chatInfo))
+        FirebaseChat.fetchChatInfo(chatState: .personalChat) { [unowned self] chatList in
+            for chat in chatList {
+                if chat.participantIDs.contains(userID) && chat.participantIDs.contains(projectWriterID) {
+                    self.didSendEventClosure?(.showChat(chatInfo: chat))
+                    return
+                }
+            }
+            
+            let chatInfo = ChatInfo(chatState: .personalChat,
+                                    chatTitle: "",
+                                    projectMasterID: projectWriterID,
+                                    participantIDs: [userID, projectWriterID],
+                                    latestMessage: "새로운 채팅방이 생성되었습니다.",
+                                    latestMessageDate: Date().date())
+            FirebaseChat.saveChatInfo(chatInfo)
+            fetchUserChatInfoList()
+            
+            didSendEventClosure?(.showChat(chatInfo: chatInfo))
+        }
     }
     
     func leaveChat(chatInfo: ChatInfo) {
@@ -398,7 +406,7 @@ extension ChatListViewController {
         let ok = UIAlertAction(title: "만들기", style: .default) { [weak self] _ in
             if let text = alert.textFields?[0].text {
                 self?.makeGroupChat(text: text)
-//                self?.fetchGroupChatList()
+                //                self?.fetchGroupChatList()
             }
         }
         ok.setValue(UIColor.PointBlue, forKey: "titleTextColor")
@@ -511,24 +519,24 @@ extension ChatListViewController: UITableViewDelegate {
         notificationAction.backgroundColor = .LightGray1
         
         // 즐겨찾기 [추후 기능]
-//        let bookmarkAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
-//            // DB에 즐겨찾기 설정 업데이트
-//            FirebaseUserChatInfo.updateBookMark(chatInfoID: chatInfo.chatInfoID,
-//                                                bookMark: !userChatInfo.bookMark) {
-//                self?.toggleBookMark(chatInfoID: chatInfo.chatInfoID)
-//                switch chatInfo.chatState {
-//                case .groupChat:
-//                    self?.updateGroupChatListSnapshot(chatInfo)
-//                case .personalChat:
-//                    self?.updatePersonalChatListSnapshot(chatInfo)
-//                }
-//                completion(true)
-//            }
-//        }
-//
-//        let bookmarkImage = userChatInfo.bookMark ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin")
-//        bookmarkAction.image = bookmarkImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
-//        bookmarkAction.backgroundColor = .DarkGray5
+        //        let bookmarkAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+        //            // DB에 즐겨찾기 설정 업데이트
+        //            FirebaseUserChatInfo.updateBookMark(chatInfoID: chatInfo.chatInfoID,
+        //                                                bookMark: !userChatInfo.bookMark) {
+        //                self?.toggleBookMark(chatInfoID: chatInfo.chatInfoID)
+        //                switch chatInfo.chatState {
+        //                case .groupChat:
+        //                    self?.updateGroupChatListSnapshot(chatInfo)
+        //                case .personalChat:
+        //                    self?.updatePersonalChatListSnapshot(chatInfo)
+        //                }
+        //                completion(true)
+        //            }
+        //        }
+        //
+        //        let bookmarkImage = userChatInfo.bookMark ? UIImage(systemName: "pin.fill") : UIImage(systemName: "pin")
+        //        bookmarkAction.image = bookmarkImage?.withTintColor(.White, renderingMode: .alwaysOriginal)
+        //        bookmarkAction.backgroundColor = .DarkGray5
         
         return UISwipeActionsConfiguration(actions: [notificationAction])
     }
