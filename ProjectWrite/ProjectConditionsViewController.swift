@@ -44,6 +44,17 @@ class ProjectConditionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(setProjectCondition(_:)),
+                                               name: Notification.Name("setProjectCondition"),
+                                               object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("setProjectCondition"),
+                                                  object: nil)
     }
 }
 
@@ -101,8 +112,7 @@ extension ProjectConditionsViewController {
     }
     
     // MARK: - Action Methods
-    @objc
-       func tapInitButton(sender:UITapGestureRecognizer) {
+    @objc func tapInitButton(sender:UITapGestureRecognizer) {
            print("tap working")
        }
     
@@ -118,5 +128,15 @@ extension ProjectConditionsViewController {
         self.expectedPeriodThumbsLabel.text = ("\(String(value))주")
         NotificationCenter.default.post(name: Notification.Name("time"),
                                         object: value)
+    }
+    
+    @objc func setProjectCondition(_ notification: Notification) {
+        if let condition = notification.object as? (Int, Int) {
+            personnelSlider.value = Float(condition.0)
+            expectedPeriodSlider.value = Float(condition.1)
+            
+            personnelThumbsLabel.text = ("\(condition.0)명")
+            expectedPeriodThumbsLabel.text = ("\(condition.1)주")
+        }
     }
 }

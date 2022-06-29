@@ -14,6 +14,7 @@ class ProjectWriteViewController: UIViewController {
     // MARK: - Properties
     enum Event {
         case registerProject(viewController: UIViewController)
+        case updateProject(viewController: UIViewController)
     }
     
     var didSendEventClosure: ((Event) -> Void)?
@@ -55,6 +56,7 @@ class ProjectWriteViewController: UIViewController {
     
     private let picker = UIImagePickerController()
     private var optionState: String = "categoriesBar"
+    private var imageURLs: [URL] = []
     private var imageArray = [UIImage]()
     private var itemProviders: [NSItemProvider] = []
     private let photoCollectionView: UICollectionView = {
@@ -126,6 +128,13 @@ class ProjectWriteViewController: UIViewController {
     private let titleMessage = "제목을 입력해주세요 ! 💬"
     private let contentsMessage = "내용을 입력해주세요 ! 💬"
     
+    // MARK: - 수정 view properties
+    var isUpdate = false
+    var project: Project? {
+        didSet {
+            configureProjectWrite()
+        }
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -155,6 +164,24 @@ class ProjectWriteViewController: UIViewController {
                                                name: Notification.Name("time"),
                                                object: nil)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("selectedDevelop"),
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("selectedDesign"),
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("peopleCount"),
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name("time"),
+                                                  object: nil)
+    }
+    
+    // MARK: - Methods
     
     private func configureUI() {
         setNavigationBar()
@@ -300,23 +327,44 @@ class ProjectWriteViewController: UIViewController {
         }
     }
     
-    private func setNavigationBar() {
-        view.backgroundColor = .DarkGray1
-        navigationController?.navigationBar.backgroundColor = .DarkGray2
-        title = "게시글 작성"
-        //        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+    private func attributeTitleView(_ title: String) -> UIView {
+        let label: UILabel = UILabel()
+        let boldText: NSMutableAttributedString =
+        NSMutableAttributedString(string: title, attributes: [
+            .foregroundColor: UIColor.White,
+            .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+        ])
         
-        //back button 이름 제거
-        navigationController?.navigationBar.topItem?.title = ""
+        let naviTitle: NSMutableAttributedString = boldText
+        label.attributedText = naviTitle
+        
+        return label
+    }
+
+    private func setNavigationBar() {
+        if let _ = project {
+            navigationItem.titleView = attributeTitleView("게시글 수정")
+            
+            let rightItem =
+            UIBarButtonItem(title:"수정", style: .plain, target: self, action: #selector(didTapRegisterButton))
+            navigationItem.rightBarButtonItem = rightItem
+            navigationItem.rightBarButtonItem?.tintColor = .PointBlue
+        } else {
+            navigationItem.titleView = attributeTitleView("게시글 작성")
+            
+            let rightItem =
+            UIBarButtonItem(title:"등록", style: .plain, target: self, action: #selector(didTapRegisterButton))
+            navigationItem.rightBarButtonItem = rightItem
+            navigationItem.rightBarButtonItem?.tintColor = .PointBlue
+        }
+        
+        navigationController?.navigationBar.barTintColor = .DarkGray2
+        navigationController?.navigationBar.tintColor = .White
         tabDisappear()
         
         let backButtonImage = UIImage(systemName: "chevron.down")
         let leftItem = UIBarButtonItem(image: backButtonImage, style: .plain, target: self, action: #selector(back))
         navigationItem.leftBarButtonItem = leftItem
-        
-        let rightItem =
-        UIBarButtonItem(title:"등록", style: .plain, target: self, action: #selector(didTapRegisterButton))
-        navigationItem.rightBarButtonItem = rightItem
     }
     
     private func addKeyboardNotification() {
@@ -356,6 +404,43 @@ class ProjectWriteViewController: UIViewController {
         } else {
             print("Camera not available")
         }
+    }
+    
+    private func configureProjectWrite() {
+        guard let project = project else { return }
+        
+        titleTextField.text = project.title
+        contentsTextView.text = project.content
+        contentsTextView.textColor = .White
+        personnelLabel.text = "\(project.maxPeople)명"
+        estimatedDurationLabel.text = "\(project.endDate)주"
+        
+        peopleCount = project.maxPeople
+        guard let endDate = Int(project.endDate) else { return }
+        duration = endDate
+        for work in project.wantedWorks {
+            if Jobs.allProgrammersJobs.map ({ $0.rawValue }).contains(work) {
+                develops.append(work)
+            } else if Jobs.allDesignerJobs.map ({ $0.rawValue }).contains(work) {
+                designs.append(work)
+            }
+        }
+        showSelectedJob()
+        
+        if let url = URL(string: project.imageUrl) {
+            imageURLs = [url]
+            photoCollectionView.reloadData()
+        }
+    }
+    
+    private func sendPeopleCount() {
+        NotificationCenter.default.post(name: Notification.Name("setDetailJob"),
+                                        object: (develops, designs))
+    }
+    
+    private func sendProjectCondition() {
+        NotificationCenter.default.post(name: Notification.Name("setProjectCondition"),
+                                        object: (peopleCount, duration))
     }
 }
 
@@ -398,20 +483,19 @@ extension ProjectWriteViewController {
         let bottomSheetVC = BottomSheetViewController(contentViewController: CategoriesViewController())
         bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.346
         bottomSheetVC.defalutHeightDragFixd = false
-        //카테고리바 누르면 카테고리 결과바 나오게 설정
         self.isHiddenResultCategoriesLabel = false
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         self.present(bottomSheetVC, animated: false, completion: nil)
+        sendPeopleCount()
     }
     
     @objc func didTapProjectConditionsBarButton() {
-        NotificationCenter.default.post(name: NSNotification.Name("forChangeCoditions"), object: nil)
-        
         let bottomSheetVC = BottomSheetViewController(contentViewController: ProjectConditionsViewController())
         bottomSheetVC.defaultHeight = UIScreen.main.bounds.size.height * 0.275
         bottomSheetVC.defalutHeightDragFixd = false
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         self.present(bottomSheetVC, animated: false, completion: nil)
+        sendProjectCondition()
     }
     
     // MARK: - 등록버튼
@@ -427,8 +511,13 @@ extension ProjectWriteViewController {
             showToastMessage(text: contentsMessage)
             return
         }
-        saveProject()
-        didSendEventClosure?(.registerProject(viewController: self))
+        if let _ = project {
+            updateProject()
+            didSendEventClosure?(.updateProject(viewController: self))
+        } else {
+            saveProject()
+            didSendEventClosure?(.registerProject(viewController: self))
+        }
     }
     
     @objc private func didTapPhotoButton() {
@@ -491,6 +580,47 @@ extension ProjectWriteViewController {
             }
         } else {
             FirebaseProject.saveProjectData(project)
+        }
+    }
+    
+    func updateProject() {
+        guard let title = titleTextField.text else { return }
+        guard let contents = contentsTextView.text else { return }
+        let userID = FirebaseUser.getUserID()
+        var works = develops
+        works.append(contentsOf: designs)
+        
+        guard let project = project else { return }
+        var updateProject = Project(projectId: project.projectId,
+                              title: title,
+                              content: contents,
+                              isRecruit: true,
+                              writerId: userID,
+                              writeDate: project.writeDate,
+                              imageUrl: "",
+                              wantedWorks: works,
+                              endDate: "\(duration)",
+                              maxPeople: peopleCount,
+                              favoriteCount: 0)
+        
+        FirebaseProject.fetchProjectByProjectID(projectID: project.projectId) { [weak self] project in
+            updateProject.favoriteCount = project.favoriteCount
+            updateProject.isRecruit = project.isRecruit
+            self?.update(updateProject: updateProject)
+        }
+    }
+    
+    private func update(updateProject: Project) {
+        guard let project = project else { return }
+        var updateProject = updateProject
+        if imageArray.isEmpty {
+            updateProject.imageUrl = project.imageUrl
+            FirebaseProject.saveProjectData(updateProject)
+        } else {
+            FirebaseStorage.saveImage(image: imageArray[0]) { url in
+                updateProject.imageUrl = url
+                FirebaseProject.saveProjectData(updateProject)
+            }
         }
     }
 }
@@ -585,13 +715,18 @@ extension ProjectWriteViewController: UITextViewDelegate {
 // MARK: - 사진 컬렉션뷰 관련
 extension ProjectWriteViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+        return imageURLs.isEmpty ? imageArray.count : imageURLs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier,
                                                             for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
-        cell.imageView.image = imageArray[indexPath.row]
+        if imageURLs.isEmpty {
+            cell.imageView.image = imageArray[indexPath.row]
+        } else {
+            cell.imageView.sd_setImage(with: imageURLs[0])
+            imageURLs = []
+        }
         return cell
     }
 }
@@ -613,7 +748,6 @@ extension ProjectWriteViewController: UIImagePickerControllerDelegate, UINavigat
         } else {
             print("이미지 저장 실패")
         }
-        print(imageArray)
         dismiss(animated: true, completion: nil)
     }
 }

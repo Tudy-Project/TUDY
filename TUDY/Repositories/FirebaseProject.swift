@@ -19,7 +19,9 @@ struct FirebaseProject {
         let db = Firestore.firestore()
         let projectRef = db.collection("PROJECT").document(project.projectId)
         
-        project.writeDate = Date().description
+        if project.writeDate == "" {
+            project.writeDate = Date().description
+        }
         
         guard let dictionary = project.asDictionary else {
             print("[DEBUG] 프로젝트 Firebase 디버그 오류")
