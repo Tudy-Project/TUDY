@@ -71,6 +71,22 @@ class BottomSheetCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        contentsLabel.text = nil
+        authorLabel.text = nil
+        writeDateLabel.text = nil
+        profileImageView.image = nil
+        projectImageView.image = nil
+        recruitButton.snp.removeConstraints()
+        titleLabel.snp.removeConstraints()
+        contentsLabel.snp.removeConstraints()
+        projectImageView.snp.removeConstraints()
+        
+        layoutIfNeeded()
+    }
 }
 
 // MARK: - Methods
@@ -182,10 +198,9 @@ extension BottomSheetCell {
         recruitButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(24)
             make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(47)
+            make.width.equalTo(56)
             make.height.equalTo(17)
         }
-        recruitButton.titleLabel?.font = .caption10
         recruitButton.setTitle("모집완료", for: .normal)
         recruitButton.backgroundColor = .DarkGray5
     }
