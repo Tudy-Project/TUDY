@@ -369,7 +369,7 @@ extension HomeViewController {
                 cell.titleLabel.text = "             \(project.title)"
             case false:
                 cell.setRecruitFalse()
-                cell.titleLabel.text = "             \(project.title)"
+                cell.titleLabel.text = "               \(project.title)"
             }
             
             cell.contentsLabel.text = project.content
