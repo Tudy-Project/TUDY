@@ -125,63 +125,16 @@ extension PersonalChatViewController {
     private func fetchMessage() {
         guard let chatInfo = self.chatInfo else { return }
 
-        FirestoreChat.observeChat(chatInfo: chatInfo) { [weak self] message in
-            for msg in message {
-                self?.messages.append(msg)
+        FirestoreChat.observeChat(chatInfo: chatInfo) { [unowned self] message in
+            if (self.messages.isEmpty) {
+                self.messages = message
+            } else {
+                self.messages.append(message[message.count - 1])
             }
-            guard let msg = self?.messages else { return }
-
-            self?.personalChatCV.reloadData()
-
-            guard let messageCount = self?.messages.count else { return }
-            self?.personalChatCV.layoutIfNeeded()
-            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
+            self.personalChatCV.reloadData()
+            self.personalChatCV.layoutIfNeeded()
+            self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: false)
         }
-    
-        
-        
-        
-        
-//        FirebaseRealtimeChat.fetchChat(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
-//            for msg in message {
-//                self?.messages.append(msg)
-//            }
-//            guard let msg = self?.messages else { return }
-//
-//            self?.personalChatCV.reloadData()
-//
-//            guard let messageCount = self?.messages.count else { return }
-//            self?.personalChatCV.layoutIfNeeded()
-//            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
-//        }
-    
-        /// oberve를 넣어야하는 이슈가 생김
-//        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
-//
-//            print("======================2====================")
-//            self?.messages.append(message)
-//
-////            self?.messages = (msg.sorted(by: {$0.createdDate < $1.createdDate}))
-//
-//            self?.personalChatCV.reloadData()
-//
-//            guard let messageCount = self?.messages.count else { return }
-//            self?.personalChatCV.layoutIfNeeded()
-//            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
-//        }
-    
-        /// oberve를 넣어야하는 이슈가 생김 
-//        FirebaseRealtimeChat.observe(chatInfoID: chatInfo.chatInfoID) { [weak self] message in
-//
-//            print("======================2====================")
-//            self?.messages.append(message)
-//
-//            self?.personalChatCV.reloadData()
-//
-//            guard let messageCount = self?.messages.count else { return }
-//            self?.personalChatCV.layoutIfNeeded()
-//            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
-//        }
     }
     
     private func getOtherUserID() -> String {
@@ -208,48 +161,6 @@ extension PersonalChatViewController {
         }
     }
 }
-
-//extension PersonalChatViewController {
-//    func addKeyboardNotifications(){
-//        // 키보드가 나타날 때 앱에게 알리는 메서드 추가
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification , object: nil)
-//        // 키보드가 사라질 때 앱에게 알리는 메서드 추가
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//
-//    // 노티피케이션을 제거하는 메서드
-//    func removeKeyboardNotifications(){
-//        // 키보드가 나타날 때 앱에게 알리는 메서드 제거
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification , object: nil)
-//        // 키보드가 사라질 때 앱에게 알리는 메서드 제거
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//    // 키보드가 나타났다는 알림을 받으면 실행할 메서드
-//    @objc func keyboardWillShow(_ noti: NSNotification){
-//        // 키보드의 높이만큼 화면을 올려준다.
-//        Swift.print("===============keyboardWillShow================")
-//        Swift.print(" 전  self.view.frame.origin.y: \(self.view.frame.origin.y)")
-//        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-//            let keyboardRectangle = keyboardFrame.cgRectValue
-//            let keyboardHeight = keyboardRectangle.height
-//            self.view.frame.origin.y -= (keyboardHeight + (self.inputAccessoryView?.frame.origin.y)!)
-//        }
-//        Swift.print(" 후  self.view.frame.origin.y: \(self.view.frame.origin.y)")
-//    }
-//
-//    // 키보드가 사라졌다는 알림을 받으면 실행할 메서드
-//    @objc func keyboardWillHide(_ noti: NSNotification){
-//        // 키보드의 높이만큼 화면을 내려준다.
-//        Swift.print("===============keyboardWillHide================")
-//        Swift.print(" 전  self.view.frame.origin.y: \(self.view.frame.origin.y)")
-//        if let keyboardFrame: NSValue = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-//            let keyboardRectangle = keyboardFrame.cgRectValue
-//            let keyboardHeight = keyboardRectangle.height
-//            self.view.frame.origin.y += (keyboardHeight + (self.inputAccessoryView?.frame.origin.y)!)
-//        }
-//        Swift.print(" 후  self.view.frame.origin.y: \(self.view.frame.origin.y)")
-//    }
-//}
 
 extension PersonalChatViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -329,13 +240,13 @@ extension PersonalChatViewController: UIImagePickerControllerDelegate, UINavigat
 // 여기서 하는 것이 아니라 MESSAGECELL에서 해야하는건가?
 extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
     func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String) {
-        
+        print(#function)
+
         guard let chatinfo = self.chatInfo else { return }
         guard let user = UserInfo.shared.user else { return }
         
         if (!message.isEmpty) {
                 let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
-                messages.append(message)
                 FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
                 personalChatCV.reloadData()
         }

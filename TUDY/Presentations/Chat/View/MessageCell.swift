@@ -66,6 +66,14 @@ class MessageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+        
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
@@ -110,13 +118,7 @@ class MessageCell: UICollectionViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure() {
+        
         guard let message = message else { return }
 
         let helper = MessageHelper(message: message)

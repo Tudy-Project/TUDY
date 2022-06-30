@@ -56,6 +56,7 @@ struct FirestoreChat {
     
     /// 채팅메시지 observe하기
     static func observeChat(chatInfo: ChatInfo, completion: @escaping ([Message]) -> Void) {
+        print(#function)
 
         let messageRef = Firestore.firestore().collection("Message").document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID)
         
