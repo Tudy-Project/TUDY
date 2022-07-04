@@ -16,6 +16,7 @@ class HomeViewController: UIViewController {
         case showProjectWrite
         case showProjectDetail(project: Project)
         case showLogin
+        case showFastSearch(work: String)
     }
     
     var didSendEventClosure: ((Event) -> Void)?
@@ -564,10 +565,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let index = indexPath.row
         if collectionView.tag == 1 {
-            print("선택하면 빠른 검색 \(fastSearchButtonList[indexPath.row])")
+            didSendEventClosure?(.showFastSearch(work: fastSearchButtonList[index]))
         } else {
-            let index = indexPath.row
             didSendEventClosure?(.showProjectDetail(project: projects[index]))
         }
         

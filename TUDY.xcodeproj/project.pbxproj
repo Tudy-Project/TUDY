@@ -86,6 +86,7 @@
 		D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */; };
 		D8C7F241283B99C100424AE5 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F240283B99C100424AE5 /* ChatListViewController.swift */; };
 		D8CA051528450E62006E59DC /* SubwayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA051428450E62006E59DC /* SubwayData.swift */; };
+		D8DD5C53286ED1E600B863D9 /* FastSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DD5C52286ED1E600B863D9 /* FastSearchViewController.swift */; };
 		D8E13EB12848ED3C00D8C9BF /* ChatState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E13EB02848ED3C00D8C9BF /* ChatState.swift */; };
 		D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794B283F22160051CDF1 /* SetNameViewController.swift */; };
 		D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */; };
@@ -198,6 +199,7 @@
 		D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F240283B99C100424AE5 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
 		D8CA051428450E62006E59DC /* SubwayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayData.swift; sourceTree = "<group>"; };
+		D8DD5C52286ED1E600B863D9 /* FastSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastSearchViewController.swift; sourceTree = "<group>"; };
 		D8E13EB02848ED3C00D8C9BF /* ChatState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatState.swift; sourceTree = "<group>"; };
 		D8E3794B283F22160051CDF1 /* SetNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetNameViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetNameViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetInterestedJobViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetInterestedJobViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -375,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				FFD4624B2834BB13002A2022 /* HomeViewController.swift */,
+				D8DD5C52286ED1E600B863D9 /* FastSearchViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -929,6 +932,7 @@
 				FF07DE96284E011B003BB46D /* BottomSheetViewController.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */,
+				D8DD5C53286ED1E600B863D9 /* FastSearchViewController.swift in Sources */,
 				FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */,
 				FFBECD232850D8550092B524 /* DevelopCell.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,

@@ -35,6 +35,8 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
                 self?.pushProjectDetailViewController(project: project)
             case .showLogin:
                 self?.showLogin()
+            case .showFastSearch(let work):
+                self?.pushFastSearchViewController(work: work)
             }
         }
         self.navigationController.pushViewController(self.homeViewController, animated: true)
@@ -119,6 +121,18 @@ extension HomeCoordinator {
         }
         projectWriteViewController.project = project
         self.navigationController.present(projectWriteNavigationController, animated: true)
+    }
+    
+    func pushFastSearchViewController(work: String) {
+        let fastSearchViewController = FastSearchViewController()
+        fastSearchViewController.didSendEventClosure = { [weak self] event in
+            switch event {
+            case .showProjectDetail(let project):
+                self?.pushProjectDetailViewController(project: project)
+            }
+        }
+        fastSearchViewController.work = work
+        navigationController.pushViewController(fastSearchViewController, animated: true)
     }
 }
 
