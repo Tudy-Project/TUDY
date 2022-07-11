@@ -13,9 +13,7 @@ class MessageCell: UICollectionViewCell {
     //MARK: - Properties
     var message: Message? {
         didSet {
-            
             configure()
-            
         }
     }
 
@@ -24,7 +22,6 @@ class MessageCell: UICollectionViewCell {
     var timeLeftAnchor: NSLayoutConstraint!
     var timeRightAnchor: NSLayoutConstraint!
     
-        
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFill
@@ -120,6 +117,12 @@ class MessageCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
         
+        addSubview(dayTimeLabel)
+        dayTimeLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.6)
+            make.centerX.equalToSuperview()
+        }
     }
     
 //    override func prepareForReuse() {
@@ -150,6 +153,7 @@ class MessageCell: UICollectionViewCell {
         textView.text = message.content
         timeLabel.text = message.createdDate.chatDate()
         userNameLabel.text = message.sender.nickname
+//        dayTimeLabel.text = 
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive
