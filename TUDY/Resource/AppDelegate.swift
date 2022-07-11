@@ -8,11 +8,10 @@
 import UIKit
 
 import FirebaseCore
+import FirebaseAuth
 import KakaoSDKAuth
 import KakaoSDKCommon
 import FirebaseMessaging
-
-
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -77,6 +76,12 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("AppDelegate - 파이어베이스 토큰을 받았다.")
         print("AppDelegate - Firebase registration token: \(String(describing: fcmToken))")
+        
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
+        
+        if let _ = Auth.auth().currentUser, let fcmToken = fcmToken {
+            FirebaseFCMToken.saveFCMToken(token: fcmToken)
+        }
     }
     
 }
