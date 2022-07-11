@@ -57,6 +57,14 @@ extension ChatCoordinator {
     func makePersonalChatViewController(with projectWriter: User) {
         chatListViewController.makePersonalChat(with: projectWriter)
     }
+    
+    func moveGroupChatViewController(chatInfo: ChatInfo) {
+        navigationController.popViewController(animated: true)
+        
+        let groupChatViewController = GroupChatViewController()
+        groupChatViewController.chatInfo = chatInfo
+        navigationController.pushViewController(groupChatViewController, animated: true)
+    }
 }
 
 // MARK: - CoordinatorFinishDelegate

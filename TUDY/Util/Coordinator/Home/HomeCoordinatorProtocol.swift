@@ -13,10 +13,14 @@ protocol HomeCoordinatorProtocol: Coordinator {
     var homeViewController: HomeViewController { get set }
     
     func pushSearchViewController()
+    
+    func pushFastSearchViewController(work: String)
+    
     func showProjectWriteViewController()
     func registerProject(viewController: UIViewController)
     func updateProject(viewController: UIViewController)
-    func pushProjectDetailViewController(project: Project)
-    func showLogin()
     func showModifyProject(project: Project)
+    func pushProjectDetailViewController(project: Project)
+    
+    func showLogin()
 }

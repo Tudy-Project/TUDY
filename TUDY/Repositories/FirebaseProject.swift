@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 struct FirebaseProject {
     
-    private var documentListener: ListenerRegistration?
+    static private var fastSearchProjectListener: ListenerRegistration?
     
     static func saveProjectData(_ project: Project, completion: ((Error?) -> Void)? = nil) {
         
@@ -69,6 +69,30 @@ struct FirebaseProject {
                     completion(project)
                 })
             }
+    }
+    
+    static func fetchProjectByWantedWorks(work: String, completion: @escaping([Project]) -> Void) {
+        var projects: [Project] = []
+        fastSearchProjectListener = Firestore.firestore()
+            .collection("PROJECT")
+            .whereField("wantedWorks", arrayContains: work)
+            .order(by: "writeDate", descending: true)
+            .addSnapshotListener { snapshot, error in
+                if let error = error {
+                    print("[DEBUG] 프로젝트 정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let project = Project(dict: dict)
+                    projects.append(project)
+                    completion(projects)
+                })
+            }
+    }
+    
+    static func removeFastSearchProjectListener() {
+        fastSearchProjectListener?.remove()
     }
     
     static func updateProjectHeart(_ update: Int, _ project: Project, completion: @escaping(Int) -> Void) {
