@@ -39,6 +39,8 @@
 		D8166C55285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8166C54285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift */; };
 		D83412962852D8BF00D1D835 /* TopBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83412952852D8BF00D1D835 /* TopBarCell.swift */; };
 		D83412982852E1F200D1D835 /* GroupChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83412972852E1F200D1D835 /* GroupChatListCell.swift */; };
+		D838D660287C086C009BE873 /* FirebaseFCMToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */; };
+		D838D662287C08D0009BE873 /* FCMToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D661287C08D0009BE873 /* FCMToken.swift */; };
 		D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */; };
@@ -86,6 +88,7 @@
 		D8C7F23F283B992D00424AE5 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */; };
 		D8C7F241283B99C100424AE5 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C7F240283B99C100424AE5 /* ChatListViewController.swift */; };
 		D8CA051528450E62006E59DC /* SubwayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA051428450E62006E59DC /* SubwayData.swift */; };
+		D8DD5C53286ED1E600B863D9 /* FastSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DD5C52286ED1E600B863D9 /* FastSearchViewController.swift */; };
 		D8E13EB12848ED3C00D8C9BF /* ChatState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E13EB02848ED3C00D8C9BF /* ChatState.swift */; };
 		D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794B283F22160051CDF1 /* SetNameViewController.swift */; };
 		D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */; };
@@ -151,6 +154,8 @@
 		D8166C54285AEA0F005CAA70 /* HomeCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D83412952852D8BF00D1D835 /* TopBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarCell.swift; sourceTree = "<group>"; };
 		D83412972852E1F200D1D835 /* GroupChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCell.swift; sourceTree = "<group>"; };
+		D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFCMToken.swift; sourceTree = "<group>"; };
+		D838D661287C08D0009BE873 /* FCMToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMToken.swift; sourceTree = "<group>"; };
 		D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserChatInfo.swift; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckDelegate.swift; sourceTree = "<group>"; };
@@ -198,6 +203,7 @@
 		D8C7F23E283B992D00424AE5 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		D8C7F240283B99C100424AE5 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
 		D8CA051428450E62006E59DC /* SubwayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayData.swift; sourceTree = "<group>"; };
+		D8DD5C52286ED1E600B863D9 /* FastSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastSearchViewController.swift; sourceTree = "<group>"; };
 		D8E13EB02848ED3C00D8C9BF /* ChatState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatState.swift; sourceTree = "<group>"; };
 		D8E3794B283F22160051CDF1 /* SetNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetNameViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetNameViewController.swift; sourceTree = SOURCE_ROOT; };
 		D8E3794D283F22280051CDF1 /* SetInterestedJobViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SetInterestedJobViewController.swift; path = TUDY/Presentations/Signup/TUDY/Presentations/Signup/ViewController/SetInterestedJobViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -259,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				4AB16F0B2844F3F500EB36A6 /* User.swift */,
+				D838D661287C08D0009BE873 /* FCMToken.swift */,
 				D8923B25285A063300233E64 /* UserChatInfo.swift */,
 				4AB16F0D2844F40000EB36A6 /* Project.swift */,
 				D87CBB59284477D4003397A5 /* SubwayDataManager.swift */,
@@ -375,6 +382,7 @@
 			isa = PBXGroup;
 			children = (
 				FFD4624B2834BB13002A2022 /* HomeViewController.swift */,
+				D8DD5C52286ED1E600B863D9 /* FastSearchViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -434,6 +442,7 @@
 				D8034E902857356A008C569F /* FirebaseChat.swift */,
 				D8C0266528599B93004CACFF /* FirebaseRealtimeChat.swift */,
 				D8F2FEB9285DA309002089DD /* FirebaseStorage.swift */,
+				D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */,
 				4ABDB4EB286C247E009200C5 /* FirestoreChat.swift */,
 			);
 			path = Repositories;
@@ -929,6 +938,7 @@
 				FF07DE96284E011B003BB46D /* BottomSheetViewController.swift in Sources */,
 				D8C7F229283B63BD00424AE5 /* TabCoordinator.swift in Sources */,
 				D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */,
+				D8DD5C53286ED1E600B863D9 /* FastSearchViewController.swift in Sources */,
 				FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */,
 				FFBECD232850D8550092B524 /* DevelopCell.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
@@ -952,6 +962,7 @@
 				D8C53A80284B595D000E7170 /* LoginCoordinatorDelegate.swift in Sources */,
 				FFD4624C2834BB13002A2022 /* HomeViewController.swift in Sources */,
 				4AB16F0E2844F40000EB36A6 /* Project.swift in Sources */,
+				D838D660287C086C009BE873 /* FirebaseFCMToken.swift in Sources */,
 				4AC095C72856EE7F0003BAFB /* UIViewController+Custom.swift in Sources */,
 				4AC095C928571D2E0003BAFB /* FirebaseProject.swift in Sources */,
 				D847E0042840B9F700BB4E08 /* UIToolbar+Custom.swift in Sources */,
@@ -959,6 +970,7 @@
 				D8E3794E283F22280051CDF1 /* SetInterestedJobViewController.swift in Sources */,
 				D893D318283B2EBC0057075F /* UIColor+Custom.swift in Sources */,
 				FFE69F3A285C17EE0015B858 /* HeartButton.swift in Sources */,
+				D838D662287C08D0009BE873 /* FCMToken.swift in Sources */,
 				D85ED4CB283E68CC00D0A006 /* LoginCoordinatorProtocol.swift in Sources */,
 				4AC095DD285B9B650003BAFB /* MessageCell.swift in Sources */,
 				D8C7F238283B986300424AE5 /* HomeCoordinatorProtocol.swift in Sources */,

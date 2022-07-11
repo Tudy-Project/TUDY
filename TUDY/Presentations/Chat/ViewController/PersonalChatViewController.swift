@@ -198,6 +198,7 @@ extension PersonalChatViewController {
     
     private func fetchMessage() {
         guard let chatInfo = self.chatInfo else { return }
+
         
         FirestoreChat.observeChat(chatInfo: chatInfo) { [weak self] message in
             if ((self?.messages.isEmpty) != nil) {
@@ -208,7 +209,7 @@ extension PersonalChatViewController {
             guard let messsageCount = self?.messages.count else { return }
             self?.personalChatCV.reloadData()
             self?.personalChatCV.layoutIfNeeded()
-            self?.personalChatCV.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
+            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
         }
     }
     

@@ -71,7 +71,7 @@ class MessageCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
@@ -117,6 +117,7 @@ class MessageCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
         
+
         addSubview(dayTimeLabel)
         dayTimeLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -146,14 +147,17 @@ class MessageCell: UICollectionViewCell {
     
     func configure() {
  
+
         guard let message = message else { return }
 
         let helper = MessageHelper(message: message)
         
         textView.text = message.content
+
         timeLabel.text = message.createdDate.chatDate()
         userNameLabel.text = message.sender.nickname
 //        dayTimeLabel.text = 
+
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive
