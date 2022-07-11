@@ -253,6 +253,11 @@ extension SetSubwayViewController {
                 print("유저 정보 DB 저장 실패 : \(error.localizedDescription)")
             }
         }
+        
+        if let token = UserDefaults.standard.object(forKey: "fcmToken") as? String {
+            FirebaseFCMToken.saveFCMToken(token: token)
+        }
+        
         didSendEventClosure?(.next)
     }
     
