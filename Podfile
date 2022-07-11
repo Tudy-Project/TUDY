@@ -10,6 +10,7 @@ target 'TUDY' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
+  pod 'Firebase/Messaging'
   pod 'GoogleSignIn'
   pod 'KakaoSDKCommon'  # 필수 요소를 담은 공통 모듈
   pod 'KakaoSDKAuth'  # 사용자 인증
