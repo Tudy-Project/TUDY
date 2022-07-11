@@ -38,6 +38,20 @@ class PersonalChatViewController: UIViewController {
         return cv
     }()
     
+    private func attributeTitleView(_ title: String) -> UIView {
+        let label: UILabel = UILabel()
+        let boldText: NSMutableAttributedString =
+        NSMutableAttributedString(string: title, attributes: [
+            .foregroundColor: UIColor.White,
+            .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+        ])
+        
+        let naviTitle: NSMutableAttributedString = boldText
+        label.attributedText = naviTitle
+        
+        return label
+    }
+    
     let picker = UIImagePickerController()
     var listener: ListenerRegistration?
 
@@ -103,6 +117,7 @@ extension PersonalChatViewController {
     }
     
     private func configureNavigationBar() {
+        navigationItem.titleView = attributeTitleView("개발자!")
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -124,16 +139,17 @@ extension PersonalChatViewController {
     
     private func fetchMessage() {
         guard let chatInfo = self.chatInfo else { return }
-
-        FirestoreChat.observeChat(chatInfo: chatInfo) { [unowned self] message in
-            if (self.messages.isEmpty) {
-                self.messages = message
+        
+        FirestoreChat.observeChat(chatInfo: chatInfo) { [weak self] message in
+            if ((self?.messages.isEmpty) != nil) {
+                self?.messages = message
             } else {
-                self.messages.append(message[message.count - 1])
+                self?.messages.append(message[message.count - 1])
             }
-            self.personalChatCV.reloadData()
-            self.personalChatCV.layoutIfNeeded()
-            self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: false)
+            guard let messsageCount = self?.messages.count else { return }
+            self?.personalChatCV.reloadData()
+            self?.personalChatCV.layoutIfNeeded()
+            self?.personalChatCV.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
         }
     }
     
