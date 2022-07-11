@@ -12,7 +12,9 @@ class MessageCell: UICollectionViewCell {
     
     //MARK: - Properties
     var message: Message? {
-        didSet { configure() }
+        didSet {
+            configure()
+        }
     }
 
     var bubbleLeftAnchor: NSLayoutConstraint!
@@ -20,7 +22,6 @@ class MessageCell: UICollectionViewCell {
     var timeLeftAnchor: NSLayoutConstraint!
     var timeRightAnchor: NSLayoutConstraint!
     
-        
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFill
@@ -53,11 +54,16 @@ class MessageCell: UICollectionViewCell {
         textview.textColor = .white
         return textview
     }()
-    
+
     lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.font = .caption11
         label.textColor = .DarkGray5
+        return label
+    }()
+    
+    lazy var dayTimeLabel: UILabel = {
+        let label = UILabel().label(text: "", font: UIFont.caption12, color: UIColor.DarkGray5, numberOfLines: 1)
         return label
     }()
     
@@ -66,6 +72,7 @@ class MessageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+
     }
     
     required init?(coder: NSCoder) {
@@ -73,6 +80,7 @@ class MessageCell: UICollectionViewCell {
     }
     
     func configure() {
+
         
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
@@ -119,13 +127,47 @@ class MessageCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
         
+
+        addSubview(dayTimeLabel)
+        dayTimeLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.6)
+            make.centerX.equalToSuperview()
+        }
+    }
+    
+//    override func prepareForReuse() {
+//        profileImageView.image = nil
+//        userNameLabel.text = nil
+//        textView.text = nil
+//        timeLabel.text = nil
+//
+//        profileImageView.snp.removeConstraints()
+//        userNameLabel.snp.removeConstraints()
+//        bubbleContainer.snp.removeConstraints()
+//        textView.snp.removeConstraints()
+//        timeLabel.snp.removeConstraints()
+//
+//        layoutIfNeeded()
+//    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+ 
+
         guard let message = message else { return }
 
         let helper = MessageHelper(message: message)
         
         textView.text = message.content
-        timeLabel.text = message.createdDate.chatListDate()
+
+        timeLabel.text = message.createdDate.chatDate()
         userNameLabel.text = message.sender.nickname
+//        dayTimeLabel.text = 
+
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive

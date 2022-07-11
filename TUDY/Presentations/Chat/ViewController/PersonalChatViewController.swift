@@ -21,6 +21,15 @@ class PersonalChatViewController: UIViewController {
             configureUI()
         }
     }
+    
+    enum Event {
+        case showChat(chatInfo: ChatInfo)
+        case showLogin
+    }
+    var didSendEventClosure: ((Event) -> Void)?
+    
+    var bottomLayoutConstrain : NSLayoutConstraint?
+
     private var otherUserInfo: User?
     private var messages = [Message]()
     private lazy var chatinputView: ChatInputAccessoryView = {
@@ -38,6 +47,20 @@ class PersonalChatViewController: UIViewController {
         return cv
     }()
     
+    private func attributeTitleView(_ title: String) -> UIView {
+        let label: UILabel = UILabel()
+        let boldText: NSMutableAttributedString =
+        NSMutableAttributedString(string: title, attributes: [
+            .foregroundColor: UIColor.White,
+            .font: UIFont.systemFont(ofSize: 18, weight: .bold)
+        ])
+        
+        let naviTitle: NSMutableAttributedString = boldText
+        label.attributedText = naviTitle
+        
+        return label
+    }
+    
     let picker = UIImagePickerController()
     var listener: ListenerRegistration?
 
@@ -49,6 +72,10 @@ class PersonalChatViewController: UIViewController {
         configureDelegate()
         getOtherUserInfo()
         hideKeyboardWhenTappedAround()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        chatinputView.messageInputTextView.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,6 +130,7 @@ extension PersonalChatViewController {
     }
     
     private func configureNavigationBar() {
+        navigationItem.titleView = attributeTitleView("개발자!")
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -111,6 +139,52 @@ extension PersonalChatViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem()
         }
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
+    }
+    
+    private func addKeyBoardNotification() {
+            // 1) 키보드가 올라올 때
+            NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+            // 2) 키보드가 내려갈 때
+            NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
+    
+    @objc private func keyBoardWillShow(_ noti : Notification){
+            guard let userInfo = noti.userInfo else {return}
+            
+            if let keyBoardFrame : NSValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                print( "cgRectVale : " ,keyBoardFrame.cgRectValue)
+                print("widht : " ,keyBoardFrame.cgRectValue.width)
+                print("height : " ,keyBoardFrame.cgRectValue.height)
+                            
+                bottomLayoutConstrain?.isActive = false
+                
+                UIView.animate(withDuration: 0) {
+                    self.bottomLayoutConstrain = self.personalChatCV.bottomAnchor.constraint(equalTo: self.chatinputView.bottomAnchor, constant: -keyBoardFrame.cgRectValue.height)
+                    
+                    self.bottomLayoutConstrain?.isActive = true
+                    
+                    self.view.layoutIfNeeded()
+                } completion: { _ in
+                    
+                    let indexPathItem = IndexPath(item: self.messages.count - 1, section: 0)
+                    self.personalChatCV.scrollToItem(at: indexPathItem, at: .bottom, animated: true)
+                }
+            }
+        }
+    
+    @objc private func keyBoardWillHide(_ noti : Notification){
+            
+      bottomLayoutConstrain?.isActive = false
+
+        self.bottomLayoutConstrain = self.personalChatCV.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+
+      UIView.animate(withDuration: 0) {
+
+          self.bottomLayoutConstrain?.isActive = true
+
+          self.view.layoutIfNeeded()
+      }
+
     }
 }
 // MARK: - extensions
@@ -125,15 +199,18 @@ extension PersonalChatViewController {
     private func fetchMessage() {
         guard let chatInfo = self.chatInfo else { return }
 
-        FirestoreChat.observeChat(chatInfo: chatInfo) { [unowned self] message in
-            if (self.messages.isEmpty) {
-                self.messages = message
+        
+        FirestoreChat.observeChat(chatInfo: chatInfo) { [weak self] message in
+            if ((self?.messages.isEmpty) != nil) {
+                self?.messages = message
             } else {
-                self.messages.append(message[message.count - 1])
+                self?.messages.append(message[message.count - 1])
             }
-            self.personalChatCV.reloadData()
-            self.personalChatCV.layoutIfNeeded()
-            self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: false)
+            guard let messsageCount = self?.messages.count else { return }
+            self?.personalChatCV.reloadData()
+            self?.personalChatCV.layoutIfNeeded()
+            self?.personalChatCV.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
+
         }
     }
     
@@ -254,6 +331,10 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
         self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
         self.personalChatCV.isPagingEnabled = false
         inputView.clearMessage()
+        
+        let bottomOffset = CGPoint(x: 0, y: personalChatCV.contentSize.height - personalChatCV.bounds.height + personalChatCV.contentInset.bottom)
+        personalChatCV.setContentOffset(bottomOffset, animated: true)
+
     }
 }
 
