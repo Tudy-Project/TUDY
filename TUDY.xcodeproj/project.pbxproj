@@ -43,6 +43,7 @@
 		D83412982852E1F200D1D835 /* GroupChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83412972852E1F200D1D835 /* GroupChatListCell.swift */; };
 		D838D660287C086C009BE873 /* FirebaseFCMToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */; };
 		D838D662287C08D0009BE873 /* FCMToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D661287C08D0009BE873 /* FCMToken.swift */; };
+		D838D664287D3438009BE873 /* FCMDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D663287D3438009BE873 /* FCMDataManager.swift */; };
 		D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */; };
@@ -160,6 +161,7 @@
 		D83412972852E1F200D1D835 /* GroupChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatListCell.swift; sourceTree = "<group>"; };
 		D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFCMToken.swift; sourceTree = "<group>"; };
 		D838D661287C08D0009BE873 /* FCMToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMToken.swift; sourceTree = "<group>"; };
+		D838D663287D3438009BE873 /* FCMDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMDataManager.swift; sourceTree = "<group>"; };
 		D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserChatInfo.swift; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckDelegate.swift; sourceTree = "<group>"; };
@@ -272,7 +274,6 @@
 				D838D661287C08D0009BE873 /* FCMToken.swift */,
 				D8923B25285A063300233E64 /* UserChatInfo.swift */,
 				4AB16F0D2844F40000EB36A6 /* Project.swift */,
-				D87CBB59284477D4003397A5 /* SubwayDataManager.swift */,
 				D8CA051428450E62006E59DC /* SubwayData.swift */,
 				D87CBB552843C42E003397A5 /* Subway.swift */,
 				D87CBB4F28439EF2003397A5 /* Job.swift */,
@@ -449,6 +450,8 @@
 				D8F2FEB9285DA309002089DD /* FirebaseStorage.swift */,
 				D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */,
 				4ABDB4EB286C247E009200C5 /* FirestoreChat.swift */,
+				D87CBB59284477D4003397A5 /* SubwayDataManager.swift */,
+				D838D663287D3438009BE873 /* FCMDataManager.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -918,6 +921,7 @@
 				FF85A4F02850822200DB124E /* CategoriesViewController.swift in Sources */,
 				FFBECD1F2850888E0092B524 /* DoubleSlider.swift in Sources */,
 				D8034E8B28572AC3008C569F /* GroupChatViewController.swift in Sources */,
+				D838D664287D3438009BE873 /* FCMDataManager.swift in Sources */,
 				D8C7F241283B99C100424AE5 /* ChatListViewController.swift in Sources */,
 				D85ED4D7283E691500D0A006 /* PrivateChatListCoordinatorProtocol.swift in Sources */,
 				D8E37957283F27FF0051CDF1 /* UITextField+Custom.swift in Sources */,
