@@ -185,6 +185,11 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                     print ("Error Apple sign in: %@", error)
                     return
                 }
+                
+                if let token = UserDefaults.standard.object(forKey: "fcmToken") as? String {
+                    FirebaseFCMToken.saveFCMToken(token: token)
+                }
+                
                 // 첫번째 로그인
                 if let _ = authResult?.user.displayName {
                     self.didSendEventClosure?(.showSignUp)
