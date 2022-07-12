@@ -13,7 +13,9 @@ class MessageCell: UICollectionViewCell {
     //MARK: - Properties
     var message: Message? {
         didSet {
+            
             configure()
+            
         }
     }
 
@@ -22,6 +24,7 @@ class MessageCell: UICollectionViewCell {
     var timeLeftAnchor: NSLayoutConstraint!
     var timeRightAnchor: NSLayoutConstraint!
     
+        
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFill

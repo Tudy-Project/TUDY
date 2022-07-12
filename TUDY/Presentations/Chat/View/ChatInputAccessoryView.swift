@@ -24,7 +24,7 @@ class ChatInputAccessoryView: UIView {
         return button
     }()
     
-    lazy var messageInputTextView: UITextView = {
+    private lazy var messageInputTextView: UITextView = {
         let textview = UITextView()
         textview.font = .sub14
         textview.layer.borderWidth = 1

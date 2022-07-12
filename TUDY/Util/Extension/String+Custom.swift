@@ -58,18 +58,16 @@ extension String {
     }
     
     func chatDate() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let hourMinuteFormatter = DateFormatter()
-        hourMinuteFormatter.dateFormat = "a h:mm"
+        let chatDateFormatter = DateFormatter()
+        chatDateFormatter.dateFormat = "a h:mm"
         
-        guard let date = dateFormatter.date(from: self) else { return "" }
-        return hourMinuteFormatter.string(from: date)
+        guard let date = chatDateFormatter.date(from: self) else { return "" }
+        return chatDateFormatter.string(from: date)
     }
     
     func chatChangedDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 M월 d일 (EEEE)"
+        dateFormatter.dateFormat = "yyyy년 M월 d일"
         
         guard let date = dateFormatter.date(from: self) else { return "" }
         return dateFormatter.string(from: date)

@@ -21,15 +21,6 @@ class PersonalChatViewController: UIViewController {
             configureUI()
         }
     }
-    
-    enum Event {
-        case showChat(chatInfo: ChatInfo)
-        case showLogin
-    }
-    var didSendEventClosure: ((Event) -> Void)?
-    
-    var bottomLayoutConstrain : NSLayoutConstraint?
-
     private var otherUserInfo: User?
     private var messages = [Message]()
     private lazy var chatinputView: ChatInputAccessoryView = {
@@ -72,10 +63,6 @@ class PersonalChatViewController: UIViewController {
         configureDelegate()
         getOtherUserInfo()
         hideKeyboardWhenTappedAround()
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        chatinputView.messageInputTextView.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,52 +126,6 @@ extension PersonalChatViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem()
         }
         navigationItem.rightBarButtonItem?.tintColor = .PointBlue
-    }
-    
-    private func addKeyBoardNotification() {
-            // 1) 키보드가 올라올 때
-            NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-            // 2) 키보드가 내려갈 때
-            NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        }
-    
-    @objc private func keyBoardWillShow(_ noti : Notification){
-            guard let userInfo = noti.userInfo else {return}
-            
-            if let keyBoardFrame : NSValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-                print( "cgRectVale : " ,keyBoardFrame.cgRectValue)
-                print("widht : " ,keyBoardFrame.cgRectValue.width)
-                print("height : " ,keyBoardFrame.cgRectValue.height)
-                            
-                bottomLayoutConstrain?.isActive = false
-                
-                UIView.animate(withDuration: 0) {
-                    self.bottomLayoutConstrain = self.personalChatCV.bottomAnchor.constraint(equalTo: self.chatinputView.bottomAnchor, constant: -keyBoardFrame.cgRectValue.height)
-                    
-                    self.bottomLayoutConstrain?.isActive = true
-                    
-                    self.view.layoutIfNeeded()
-                } completion: { _ in
-                    
-                    let indexPathItem = IndexPath(item: self.messages.count - 1, section: 0)
-                    self.personalChatCV.scrollToItem(at: indexPathItem, at: .bottom, animated: true)
-                }
-            }
-        }
-    
-    @objc private func keyBoardWillHide(_ noti : Notification){
-            
-      bottomLayoutConstrain?.isActive = false
-
-        self.bottomLayoutConstrain = self.personalChatCV.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
-
-      UIView.animate(withDuration: 0) {
-
-          self.bottomLayoutConstrain?.isActive = true
-
-          self.view.layoutIfNeeded()
-      }
-
     }
 }
 // MARK: - extensions
@@ -330,10 +271,6 @@ extension PersonalChatViewController: ChatInputAccessoryViewDelegate {
         self.personalChatCV.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
         self.personalChatCV.isPagingEnabled = false
         inputView.clearMessage()
-        
-        let bottomOffset = CGPoint(x: 0, y: personalChatCV.contentSize.height - personalChatCV.bounds.height + personalChatCV.contentInset.bottom)
-        personalChatCV.setContentOffset(bottomOffset, animated: true)
-
     }
 }
 
