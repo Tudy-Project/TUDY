@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GroupChatViewController: UIViewController {
+class GroupChatViewController: UICollectionViewController {
     
     // MARK: - Properties
     var chatInfo: ChatInfo? {

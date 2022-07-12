@@ -117,7 +117,7 @@ extension PersonalChatViewController {
     }
     
     private func configureNavigationBar() {
-        navigationItem.titleView = attributeTitleView("개발자!")
+//        navigationItem.titleView = attributeTitleView("개발자!")
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -150,7 +150,7 @@ extension PersonalChatViewController {
             guard let messsageCount = self?.messages.count else { return }
             self?.personalChatCV.reloadData()
             self?.personalChatCV.layoutIfNeeded()
-            self?.personalChatCV.scrollToItem(at: [0, messageCount - 1], at: .bottom, animated: false)
+            self?.personalChatCV.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
         }
     }
     

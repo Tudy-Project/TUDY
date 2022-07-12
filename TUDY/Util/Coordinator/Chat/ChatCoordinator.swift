@@ -45,7 +45,7 @@ extension ChatCoordinator {
         case .groupChat:
             chatViewController = GroupChatViewController()
         case .personalChat:
-            chatViewController = PersonalChatViewController()
+            chatViewController = NewPersonalChatViewController()
         }
         chatViewController?.chatInfo = chatInfo
         

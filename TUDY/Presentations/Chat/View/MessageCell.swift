@@ -120,7 +120,6 @@ class MessageCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
         
-
         addSubview(dayTimeLabel)
         dayTimeLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
