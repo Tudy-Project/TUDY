@@ -1,21 +1,20 @@
 //
-//  ChatInputAccessoryView.swift
+//  NewCustomInputAccessoryView.swift
 //  TUDY
 //
-//  Created by Hojin Jang on 2022/06/16.
+//  Created by Hojin Jang on 2022/07/12.
 //
 
 import UIKit
 
-protocol ChatInputAccessoryViewDelegate: class {
-    func inputView(_ inputView: ChatInputAccessoryView, wantsToSend message: String)
+protocol NewCustomInputAccessoryViewDelegate: class {
+    func inputView(_ inputView: NewCustomInputAccessoryView, wantsToSend message: String)
 }
 
-class ChatInputAccessoryView: UIView {
+class NewCustomInputAccessoryView: UIView {
     
-    // MARK: - Properties
-    
-    weak var delegate: ChatInputAccessoryViewDelegate?
+    // MARK: Properties
+    weak var delegate: NewCustomInputAccessoryViewDelegate?
     
     let photoButton: UIButton = {
         let button = UIButton(type: .system)
@@ -46,11 +45,11 @@ class ChatInputAccessoryView: UIView {
     }()
     
     
-    // MARK: - Lifecycle
+    // MARK: Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .DarkGray2
+        backgroundColor = .red
         autoresizingMask = .flexibleHeight
         
         addSubview(photoButton)
@@ -79,27 +78,23 @@ class ChatInputAccessoryView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override var intrinsicContentSize: CGSize {
         return .zero
     }
-}
-
-// MARK: - Extension
-
-extension ChatInputAccessoryView {
-
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
     @objc func handleSendMessage() {
         guard let message = messageInputTextView.text else { return }
         delegate?.inputView(self, wantsToSend: message)
+        
     }
     
-    
-    // MARK: - Helper
     func clearMessage() {
         messageInputTextView.text = nil
     
     }
 }
-
-

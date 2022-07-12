@@ -60,6 +60,7 @@ extension String {
     func chatDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
         let hourMinuteFormatter = DateFormatter()
         hourMinuteFormatter.dateFormat = "a h:mm"
         

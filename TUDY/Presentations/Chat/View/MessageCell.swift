@@ -13,7 +13,9 @@ class MessageCell: UICollectionViewCell {
     //MARK: - Properties
     var message: Message? {
         didSet {
+            
             configure()
+            
         }
     }
 
@@ -22,6 +24,7 @@ class MessageCell: UICollectionViewCell {
     var timeLeftAnchor: NSLayoutConstraint!
     var timeRightAnchor: NSLayoutConstraint!
     
+        
     lazy var profileImageView: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFill
@@ -72,16 +75,6 @@ class MessageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure() {
-
-        
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
@@ -127,7 +120,6 @@ class MessageCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
         
-
         addSubview(dayTimeLabel)
         dayTimeLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
