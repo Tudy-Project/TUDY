@@ -40,7 +40,7 @@ struct FirebaseFCMToken {
             .whereField("userID", isEqualTo: userID)
             .getDocuments { snapshot, error in
                 if let error = error {
-                    print("[DEBUG] 유저정보 가져오기 실패 \(error.localizedDescription)")
+                    print("[DEBUG] 토큰 가져오기 실패 \(error.localizedDescription)")
                     return
                 }
                 snapshot?.documents.forEach({ document in
