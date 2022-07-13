@@ -13,7 +13,9 @@ class MessageCell: UICollectionViewCell {
     //MARK: - Properties
     var message: Message? {
         didSet {
+            
             configure()
+            
         }
     }
 
