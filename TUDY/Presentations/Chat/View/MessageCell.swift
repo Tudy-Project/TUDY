@@ -71,7 +71,6 @@ class MessageCell: UICollectionViewCell {
     }()
     
     // MARK: - Lift Cycle
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -160,9 +159,12 @@ class MessageCell: UICollectionViewCell {
         userNameLabel.text = message.sender.nickname
 //        dayTimeLabel.text = 
 
-//        print("===========@@@@@@@@@@@@@@@@=============")
-//        print(message.createdDate)
-//        print("===========@@@@@@@@@@@@@@@@=============")
+        messageTimes.append(message.createdDate)
+
+        print("=============================================================MessageTimes=============================================================")
+        print(messageTimes)
+        
+        
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive
