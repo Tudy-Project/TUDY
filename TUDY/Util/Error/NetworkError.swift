@@ -14,6 +14,8 @@ enum NetworkError: Error {
     case missingDataError
     case decodingError
     case encodingError
+    case unknownError
+    case httpError(errorCode: Int)
     
     var errorDescription: String? {
         switch self {
@@ -29,6 +31,10 @@ enum NetworkError: Error {
             return "디코딩에 실패하였습니다."
         case .encodingError:
             return "인코딩에 실패하였습니다."
+        case .unknownError:
+            return "알 수 없는 에러입니다."
+        case .httpError(let errorCode):
+            return "HTTP 에러코드: \(errorCode) 입니다."
         }
     }
 }

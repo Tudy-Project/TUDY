@@ -44,6 +44,8 @@
 		D838D660287C086C009BE873 /* FirebaseFCMToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */; };
 		D838D662287C08D0009BE873 /* FCMToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D661287C08D0009BE873 /* FCMToken.swift */; };
 		D838D664287D3438009BE873 /* FCMDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D663287D3438009BE873 /* FCMDataManager.swift */; };
+		D838D666287E9DA1009BE873 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D665287E9DA1009BE873 /* Notification.swift */; };
+		D838D668287E9E05009BE873 /* MessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D667287E9E05009BE873 /* MessageRequest.swift */; };
 		D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */; };
@@ -162,6 +164,8 @@
 		D838D65F287C086C009BE873 /* FirebaseFCMToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFCMToken.swift; sourceTree = "<group>"; };
 		D838D661287C08D0009BE873 /* FCMToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMToken.swift; sourceTree = "<group>"; };
 		D838D663287D3438009BE873 /* FCMDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMDataManager.swift; sourceTree = "<group>"; };
+		D838D665287E9DA1009BE873 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		D838D667287E9E05009BE873 /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
 		D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserChatInfo.swift; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckDelegate.swift; sourceTree = "<group>"; };
@@ -281,6 +285,8 @@
 				D89615E32849E55300C86130 /* ChatInfo.swift */,
 				FFC79E2C28581D1C00E2A0DC /* UserInfo.swift */,
 				D8C0266128595C1F004CACFF /* Message.swift */,
+				D838D665287E9DA1009BE873 /* Notification.swift */,
+				D838D667287E9E05009BE873 /* MessageRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -950,6 +956,7 @@
 				D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */,
 				D8DD5C53286ED1E600B863D9 /* FastSearchViewController.swift in Sources */,
 				FFC658452848FA50008889C2 /* OptionSelectionBar.swift in Sources */,
+				D838D666287E9DA1009BE873 /* Notification.swift in Sources */,
 				FFBECD232850D8550092B524 /* DevelopCell.swift in Sources */,
 				D8C7F23A283B98B900424AE5 /* AppCoordinatorProtocol.swift in Sources */,
 				FF85A4F22850823500DB124E /* ProjectConditionsViewController.swift in Sources */,
@@ -967,6 +974,7 @@
 				D8F2FEBA285DA30A002089DD /* FirebaseStorage.swift in Sources */,
 				4AC095C5285116150003BAFB /* WorkCell.swift in Sources */,
 				4AB16F0C2844F3F500EB36A6 /* User.swift in Sources */,
+				D838D668287E9E05009BE873 /* MessageRequest.swift in Sources */,
 				D87CBB4A28432075003397A5 /* JobCell.swift in Sources */,
 				D87CBB5428439F4B003397A5 /* DetailJobButton.swift in Sources */,
 				4ACA6890287D00D7004706D4 /* NewCustomInputAccessoryView.swift in Sources */,
