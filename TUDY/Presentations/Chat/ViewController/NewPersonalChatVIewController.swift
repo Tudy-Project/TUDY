@@ -52,17 +52,47 @@ class NewPersonalChatViewController: UICollectionViewController {
         
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
-//        hideKeyboardWhenTappedAround()
-//        self.navigationController?.navigationBar.isHidden = false
-//        self.navigationController?.navigationBar.backgroundColor = .DarkGray2
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navAppear()
         tabDisappear()
-        
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardUp(notification:NSNotification) {
+        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+       
+            UIView.animate(
+                withDuration: 0.3
+                , animations: {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height + 100)
+                }
+            )
+        }
+    }
+    
+    @objc func keyboardDown(notification:NSNotification) {
+        self.view.transform = .identity
+//
+//        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+//
+//            UIView.animate(
+//                withDuration: 0.3
+//                , animations: {
+//                    self.view.transform = CGAffineTransform(translationX: 0, y: -100)
+//                }
+//            )
+//        }
     }
     
     override var inputAccessoryView: UIView? {
@@ -71,6 +101,16 @@ class NewPersonalChatViewController: UICollectionViewController {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        self.view.endEditing(true)
+//    }
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PersonalChatViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        collectionView.addGestureRecognizer(tap)
+        
     }
 }
 
@@ -87,7 +127,6 @@ extension NewPersonalChatViewController {
     }
     
     private func configureNavigationBar() {
-//        navigationItem.titleView = attributeTitleView("개발자!")
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -195,7 +234,10 @@ extension NewPersonalChatViewController {
         guard let chatInfo = self.chatInfo else { return }
 
         
-        FirestoreChat.fetchChat(chatInfo: chatInfo) { [weak self] message in
+        FirestoreChat.observeChat(chatInfo: chatInfo) { [weak self] message in
+            print("============================================================THIS IS OBSERVECHAT!============================================================")
+
+            
             if ((self?.messages.isEmpty) != nil) {
                 self?.messages = message
             } else {
@@ -245,9 +287,12 @@ extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
                 FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
                 collectionView.reloadData()
         }
-        self.collectionView.isPagingEnabled = true
+//        self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
-        self.collectionView.isPagingEnabled = false
+        print("===================")
+        print(self.messages[self.messages.count - 1].content)
+        print("===================")
+//        self.collectionView.isPagingEnabled = false
         inputView.clearMessage()
     }
 }

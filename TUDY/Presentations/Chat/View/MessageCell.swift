@@ -13,9 +13,7 @@ class MessageCell: UICollectionViewCell {
     //MARK: - Properties
     var message: Message? {
         didSet {
-            
             configure()
-            
         }
     }
 
@@ -23,6 +21,8 @@ class MessageCell: UICollectionViewCell {
     var bubbleRightAnchor: NSLayoutConstraint!
     var timeLeftAnchor: NSLayoutConstraint!
     var timeRightAnchor: NSLayoutConstraint!
+    
+    private var messageTimes = [String]()
     
         
     lazy var profileImageView: UIImageView = {
@@ -160,6 +160,9 @@ class MessageCell: UICollectionViewCell {
         userNameLabel.text = message.sender.nickname
 //        dayTimeLabel.text = 
 
+//        print("===========@@@@@@@@@@@@@@@@=============")
+//        print(message.createdDate)
+//        print("===========@@@@@@@@@@@@@@@@=============")
         
         bubbleLeftAnchor.isActive = helper.leftAnchorActive
         bubbleRightAnchor.isActive = helper.rightAnchorActive
