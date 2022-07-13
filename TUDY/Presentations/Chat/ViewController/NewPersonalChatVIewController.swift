@@ -71,6 +71,12 @@ class NewPersonalChatViewController: UICollectionViewController {
         tabDisappear()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
+            .map{ [unowned self] in
+                guard let userInfo = $0.usrinf
+            }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
