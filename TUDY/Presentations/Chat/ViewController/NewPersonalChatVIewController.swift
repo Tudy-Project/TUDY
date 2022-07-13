@@ -61,8 +61,7 @@ class NewPersonalChatViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         navAppear()
         tabDisappear()
-        
-        
+
     }
     
     override var inputAccessoryView: UIView? {
