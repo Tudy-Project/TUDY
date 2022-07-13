@@ -13,7 +13,7 @@ final class FCMDataManager {
     private static let urlString = "https://fcm.googleapis.com/fcm/send"
     
     // 숨겨야함
-    private static let serverKey = "AAAA-cFoBYI:APA91bE9fYLhVEGxP7i24YJtKRZEuqBq-ab5t7T5lGrZMnRX0tZS3wlqbmEx0h9GihJLD1C-wYh8G0AhiyV8lM3xgX-uyDoG4SaWimUK0ljwsdHj36ckj8uvulZlO_Nid10uhTYvBtIJ"
+    private static let serverKey = "key=AAAA-cFoBYI:APA91bE9fYLhVEGxP7i24YJtKRZEuqBq-ab5t7T5lGrZMnRX0tZS3wlqbmEx0h9GihJLD1C-wYh8G0AhiyV8lM3xgX-uyDoG4SaWimUK0ljwsdHj36ckj8uvulZlO_Nid10uhTYvBtIJ"
     
     private static func sendNotification(messageRequest: MessageRequest<Message>, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         
