@@ -73,7 +73,8 @@ final class FCMDataManager {
             case .success:
                 return
             case .failure(let error):
-                print("메세지 알림 전송 에러: \(error.localizedDescription)")
+                guard let errorDescription = error.errorDescription else { return }
+                print("메세지 알림 전송 에러: \(errorDescription)")
                 return
             }
         }
