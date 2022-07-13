@@ -9,12 +9,12 @@ import Foundation
 
 struct MessageRequest<T: Codable>: Codable {
     private var to: String
-    private var notification: Notification
+    private var notificationInfo: NotificationInfo
     private var data: T
     
     init(title: String, body: String, data: T, to: String) {
         self.to = to
-        self.notification = Notification(title: title, body: body)
+        self.notificationInfo = NotificationInfo(title: title, body: body)
         self.data = data
     }
 }

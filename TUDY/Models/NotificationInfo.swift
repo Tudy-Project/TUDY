@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Notification: Codable {
+struct NotificationInfo: Codable {
     private var title: String
     private var body: String
     
