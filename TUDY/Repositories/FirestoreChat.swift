@@ -41,6 +41,7 @@ struct FirestoreChat {
         let messageRef = Firestore.firestore().collection("Message").document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID)
         
         messageRef.getDocuments { snapshot, error in
+
             if let error = error {
                 print("DEBUG: 채팅 메세지 가져오기 실패 \(error.localizedDescription)")
                 return
@@ -61,6 +62,7 @@ struct FirestoreChat {
         let messageRef = Firestore.firestore().collection("Message").document(chatInfo.chatInfoID).collection(chatInfo.chatInfoID)
         
         messageRef.addSnapshotListener { snapshot, error in
+            print("============================================================THIS IS OBSERVECHAT!============================================================")
             var messages : [Message] = []
             if let error = error {
                 print("DEBUG: 채팅 메세지 가져오기 실패 \(error.localizedDescription)")
@@ -73,7 +75,6 @@ struct FirestoreChat {
             })
             completion(messages)
         }
-
     }
     
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 import FirebaseCore
 import FirebaseAuth
@@ -107,5 +108,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         print("didReceive: userInfo : ", userInfo)
         completionHandler()
+    }
+}
+
+extension UICollectionViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
 }
