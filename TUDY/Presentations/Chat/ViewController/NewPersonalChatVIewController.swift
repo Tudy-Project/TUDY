@@ -22,7 +22,6 @@ class NewPersonalChatViewController: UICollectionViewController {
         }
     }
     private var otherUserInfo: User?
-    private var otherUserToken: String?
     private var messages = [Message]()
     let picker = UIImagePickerController()
 
@@ -50,7 +49,6 @@ class NewPersonalChatViewController: UICollectionViewController {
         configureUI()
         configureDelegate()
         getOtherUserInfo()
-        getOtherUserToken()
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         hideKeyboardWhenTappedAround()
@@ -261,9 +259,17 @@ extension NewPersonalChatViewController {
         return otherID
     }
     
-    private func getOtherUserToken() {
+    private func getOtherUserToken(content : String) {
+        guard let chatinfo = self.chatInfo else { return }
+        guard let user = UserInfo.shared.user else { return }
+        
         FirebaseFCMToken.fetchFCMToken(userID: getOtherUserID()) { [weak self] token in
-            self?.otherUserToken = token
+            if (!content.isEmpty) {
+                    let message = Message(content: content, imageURL: "", sender: user, createdDate: Date().date())
+                    FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
+                    FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: token)
+                    self?.collectionView.reloadData()
+            }
         }
     }
     
@@ -281,26 +287,7 @@ extension NewPersonalChatViewController {
 extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
     func inputView(_ inputView: NewCustomInputAccessoryView, wantsToSend message: String) {
         print(#function)
-
-        guard let chatinfo = self.chatInfo else { return }
-        guard let user = UserInfo.shared.user else { return }
-        if let otherusertoken = otherUserToken {
-            if (!message.isEmpty) {
-                    let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
-                    FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
-                    FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: otherusertoken)
-                    collectionView.reloadData()
-            }
-
-        } else {
-            getOtherUserToken()
-            if (!message.isEmpty) {
-                    let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
-                    FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
-                FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: otherUserToken ?? "")
-                    collectionView.reloadData()
-            }
-        }
+        getOtherUserToken(content: message)
         self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
         self.collectionView.isPagingEnabled = false
