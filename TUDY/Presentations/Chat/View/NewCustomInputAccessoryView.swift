@@ -23,7 +23,9 @@ class NewCustomInputAccessoryView: UIView {
         return button
     }()
     
+
     lazy var messageInputTextView: UITextView = {
+
         let textview = UITextView()
         textview.font = .sub14
         textview.layer.borderWidth = 1
@@ -49,7 +51,9 @@ class NewCustomInputAccessoryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         backgroundColor = .DarkGray2
+
         autoresizingMask = .flexibleHeight
         
         addSubview(photoButton)
@@ -95,5 +99,6 @@ class NewCustomInputAccessoryView: UIView {
     
     func clearMessage() {
         messageInputTextView.text = nil
+
     }
 }

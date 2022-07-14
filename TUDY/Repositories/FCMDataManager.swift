@@ -15,7 +15,7 @@ final class FCMDataManager {
     // 숨겨야함
     private static let serverKey = "key=AAAA-cFoBYI:APA91bE9fYLhVEGxP7i24YJtKRZEuqBq-ab5t7T5lGrZMnRX0tZS3wlqbmEx0h9GihJLD1C-wYh8G0AhiyV8lM3xgX-uyDoG4SaWimUK0ljwsdHj36ckj8uvulZlO_Nid10uhTYvBtIJ"
     
-    private static func sendNotification(messageRequest: MessageRequest<Message>, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+    private static func sendNotification(messageRequest: MessageRequest, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidURL))
@@ -25,6 +25,7 @@ final class FCMDataManager {
             completion(.failure(.encodingError))
             return
         }
+        print(String(decoding: httpBody, as: UTF8.self))
         
         var request = URLRequest(url: url)
         request.httpMethod = "post"
@@ -50,6 +51,7 @@ final class FCMDataManager {
                 completion(.failure(.missingDataError))
                 return
             }
+            print(String(decoding: data, as: UTF8.self))
             completion(.success(data))
         }.resume()
     }
@@ -61,11 +63,18 @@ final class FCMDataManager {
         return try? JSONEncoder().encode(requestBody)
     }
     
-    static func sendMessage(_ message: Message, fcmToken: String) {
+    static func sendMessage(_ chatInfoID: String, _ message: Message, fcmToken: String) {
+        
+        let userNotification = PushNotification(
+            userID: message.sender.userID,
+            nickname: message.sender.nickname,
+            profileImageURL: message.sender.profileImageURL,
+            chatInfoID: chatInfoID)
+        
         let messageRequest = MessageRequest(
             title: message.sender.nickname,
             body: message.content,
-            data: message,
+            data: userNotification,
             to: fcmToken)
         
         sendNotification(messageRequest: messageRequest) { result in

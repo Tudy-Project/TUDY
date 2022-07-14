@@ -24,6 +24,7 @@ class MessageCell: UICollectionViewCell {
     var timeLeftAnchor: NSLayoutConstraint!
     var timeRightAnchor: NSLayoutConstraint!
     
+
     private var messageTimes = [String]()
     
         

@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct MessageRequest<T: Codable>: Codable {
+struct MessageRequest: Codable {
     private var to: String
-    private var notificationInfo: NotificationInfo
-    private var data: T
+    private var notification: NotificationInfo
+    private var data: PushNotification
     
-    init(title: String, body: String, data: T, to: String) {
+    init(title: String, body: String, data: PushNotification, to: String) {
         self.to = to
-        self.notificationInfo = NotificationInfo(title: title, body: body)
+        self.notification = NotificationInfo(title: title, body: body)
         self.data = data
     }
 }
