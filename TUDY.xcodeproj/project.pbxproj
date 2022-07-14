@@ -46,6 +46,7 @@
 		D838D664287D3438009BE873 /* FCMDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D663287D3438009BE873 /* FCMDataManager.swift */; };
 		D838D666287E9DA1009BE873 /* NotificationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D665287E9DA1009BE873 /* NotificationInfo.swift */; };
 		D838D668287E9E05009BE873 /* MessageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D667287E9E05009BE873 /* MessageRequest.swift */; };
+		D838D66A287EBA18009BE873 /* PushNotifiaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D838D669287EBA18009BE873 /* PushNotifiaction.swift */; };
 		D83B7346285A1B45001ADEE2 /* FirebaseUserChatInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */; };
 		D847DFFE283F2B3C00BB4E08 /* UIButton+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */; };
 		D847E000283F4B9600BB4E08 /* LoginCheckDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */; };
@@ -166,6 +167,7 @@
 		D838D663287D3438009BE873 /* FCMDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMDataManager.swift; sourceTree = "<group>"; };
 		D838D665287E9DA1009BE873 /* NotificationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInfo.swift; sourceTree = "<group>"; };
 		D838D667287E9E05009BE873 /* MessageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequest.swift; sourceTree = "<group>"; };
+		D838D669287EBA18009BE873 /* PushNotifiaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifiaction.swift; sourceTree = "<group>"; };
 		D83B7345285A1B45001ADEE2 /* FirebaseUserChatInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserChatInfo.swift; sourceTree = "<group>"; };
 		D847DFFD283F2B3C00BB4E08 /* UIButton+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Custom.swift"; sourceTree = "<group>"; };
 		D847DFFF283F4B9600BB4E08 /* LoginCheckDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckDelegate.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				D8C0266128595C1F004CACFF /* Message.swift */,
 				D838D665287E9DA1009BE873 /* NotificationInfo.swift */,
 				D838D667287E9E05009BE873 /* MessageRequest.swift */,
+				D838D669287EBA18009BE873 /* PushNotifiaction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -943,6 +946,7 @@
 				4AC095D02859D3600003BAFB /* PersonalBottomSheetTableViewCell.swift in Sources */,
 				D8C7F22D283B725400424AE5 /* CoordinatorFinishDelegate.swift in Sources */,
 				D8034E8D28572D16008C569F /* PersonalChatViewController.swift in Sources */,
+				D838D66A287EBA18009BE873 /* PushNotifiaction.swift in Sources */,
 				D87CBB5A284477D4003397A5 /* SubwayDataManager.swift in Sources */,
 				D8E3794C283F22160051CDF1 /* SetNameViewController.swift in Sources */,
 				FFAF4A0D2844D20200269EB3 /* ProjectDetailViewController.swift in Sources */,
