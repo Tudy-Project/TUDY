@@ -221,7 +221,7 @@ extension ChatListViewController {
         let userID = FirebaseUser.getUserID()
         let projectWriterID = projectWriter.userID
         
-        FirebaseChat.fetchChatInfo(chatState: .personalChat) { [unowned self] chatList in
+        FirebaseChat.fetchChatInfoIfSame(chatState: .personalChat) { [unowned self] chatList in
             for chat in chatList {
                 if chat.participantIDs.contains(userID) && chat.participantIDs.contains(projectWriterID) {
                     self.didSendEventClosure?(.showChat(chatInfo: chat))

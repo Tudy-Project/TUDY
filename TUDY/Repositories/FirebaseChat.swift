@@ -70,6 +70,30 @@ struct FirebaseChat {
     }
     
     // 자신의 채팅정보 가져오기
+    static func fetchChatInfoIfSame(chatState: ChatState, completion: @escaping ([ChatInfo]) -> Void) {
+        let collectionPath = collectionPath(chatState)
+        let uid = FirebaseUser.getUserID()
+        
+        Firestore.firestore()
+            .collection(collectionPath)
+            .whereField("participantIDs", arrayContains: uid)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("DEBUG: 채팅정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                var chatInfos: [ChatInfo] = []
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let chatInfo = ChatInfo(dict: dict)
+                    chatInfos.append(chatInfo)
+                })
+                chatInfos.sort { $0.latestMessageDate > $1.latestMessageDate }
+                completion(chatInfos)
+            }
+    }
+    
+    // 자신의 채팅정보 가져오기
     static func fetchChatInfo(chatState: ChatState, completion: @escaping ([ChatInfo]) -> Void) {
         let collectionPath = collectionPath(chatState)
         let uid = FirebaseUser.getUserID()
