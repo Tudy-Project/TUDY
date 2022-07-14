@@ -17,4 +17,5 @@ protocol TabCoordinatorProtocol: Coordinator {
     func currentPage() -> TabBarPage?
     func selectPage(_ page: TabBarPage)
     func setSelectedIndex(_ index: Int)
+    func showNotificationChatViewController(chatInfoID: String)
 }
