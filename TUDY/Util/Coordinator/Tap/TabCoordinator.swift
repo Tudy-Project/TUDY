@@ -54,6 +54,17 @@ extension TabCoordinator {
         tabBarController.selectedIndex = page.pageOrderNumber()
     }
     
+    func showNotificationChatViewController(chatInfoID: String) {
+        selectPage(.chat)
+        childCoordinators.forEach { coordinator in
+            if coordinator.type == .chat {
+                if let chatCoordinator = coordinator as? ChatCoordinator {
+                    chatCoordinator.pushNotificationChatViewController(chatInfoID: chatInfoID)
+                }
+            }
+        }
+    }
+    
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
         
         /// UITabBarController를 위한 delegate 설정

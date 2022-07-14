@@ -16,27 +16,27 @@ import FirebaseMessaging
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
         // 원격 알림 등록
         if #available(iOS 10.0, *) {
-          // For iOS 10 display notification (sent via APNS)
-          UNUserNotificationCenter.current().delegate = self
-
-          let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-          UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: { _, _ in }
-          )
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: { _, _ in }
+            )
         } else {
-          let settings: UIUserNotificationSettings =
+            let settings: UIUserNotificationSettings =
             UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-          application.registerUserNotificationSettings(settings)
+            application.registerUserNotificationSettings(settings)
         }
-
+        
         application.registerForRemoteNotifications()
         
         // 메세지 델리게이트
@@ -50,25 +50,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    // fcm 토큰 등록 되었을 때, firebase apns토큰과 연결 
+    // fcm 토큰 등록 되었을 때, firebase apns토큰과 연결
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
     }
-
+    
     // MARK: UISceneSession Lifecycle
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    
+    
 }
 
 extension AppDelegate: MessagingDelegate {
@@ -103,11 +103,25 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     // 푸시메세지를 받았을 때
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        let userInfo = response.notification.request.content.userInfo
-        print("didReceive: userInfo : ", userInfo)
-        completionHandler()
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void) {
+            
+            let userInfo = response.notification.request.content.userInfo
+            print("didReceive: userInfo : ", userInfo)
+            moveChatViewController(with: userInfo)
+            
+            completionHandler()
+        }
+    
+    private func moveChatViewController(with userInfo: [AnyHashable: Any]) {
+        guard let chatInfoID = userInfo["chatInfoID"] as? String else { return }
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+              let appCoordinator = sceneDelegate.appCoordinator,
+              let tabCoordinator = appCoordinator.childCoordinators[0] as? TabCoordinator else { return }
+        tabCoordinator.selectPage(.chat)
+        tabCoordinator.showNotificationChatViewController(chatInfoID: chatInfoID)
     }
 }
 
