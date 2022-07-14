@@ -65,6 +65,11 @@ extension ChatCoordinator {
         groupChatViewController.chatInfo = chatInfo
         navigationController.pushViewController(groupChatViewController, animated: true)
     }
+    
+    func pushNotificationChatViewController(chatInfoID: String) {
+        let chatListViewController = ChatListViewController()
+        chatListViewController.pushNotificationChatViewController(chatInfoID: chatInfoID)
+    }
 }
 
 // MARK: - CoordinatorFinishDelegate

@@ -129,6 +129,17 @@ extension ChatListViewController {
         }
     }
     
+    func pushNotificationChatViewController(chatInfoID: String) {
+        for chat in groupChatInfoList where chat.chatInfoID == chatInfoID {
+            didSendEventClosure?(.showChat(chatInfo: chat))
+            return
+        }
+        for chat in personalChatInfoList where chat.chatInfoID == chatInfoID {
+            didSendEventClosure?(.showChat(chatInfo: chat))
+            return
+        }
+    }
+    
     private func showGroupChatView() {
         groupChatListTableView.isHidden = false
         personalChatListTableView.isHidden = true
