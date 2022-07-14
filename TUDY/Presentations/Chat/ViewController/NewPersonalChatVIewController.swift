@@ -22,6 +22,7 @@ class NewPersonalChatViewController: UICollectionViewController {
         }
     }
     private var otherUserInfo: User?
+    private var otherUserToken: String?
     private var messages = [Message]()
     let picker = UIImagePickerController()
 
@@ -49,7 +50,7 @@ class NewPersonalChatViewController: UICollectionViewController {
         configureUI()
         configureDelegate()
         getOtherUserInfo()
-        
+        getOtherUserToken()
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         hideKeyboardWhenTappedAround()
@@ -72,39 +73,6 @@ class NewPersonalChatViewController: UICollectionViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardUp(notification:NSNotification) {
-        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-       
-            UIView.animate(
-                withDuration: 0.2
-                , animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: 40-keyboardRectangle.height)
-                }
-            )
-        }
-    }
-    
-    @objc func keyboardDown(notification:NSNotification) {
-        self.view.transform = .identity
-        
-        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-       
-            UIView.animate(
-                withDuration: 0.2
-                , animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: 0)
-                }
-            )
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -303,6 +271,12 @@ extension NewPersonalChatViewController {
         return otherID
     }
     
+    private func getOtherUserToken() {
+        FirebaseFCMToken.fetchFCMToken(userID: getOtherUserID()) { [weak self] token in
+            self?.otherUserToken = token
+        }
+    }
+    
     private func getOtherUserInfo() {
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
@@ -320,18 +294,17 @@ extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
 
         guard let chatinfo = self.chatInfo else { return }
         guard let user = UserInfo.shared.user else { return }
+        guard let otherusertoken = otherUserToken else { return }
         
         if (!message.isEmpty) {
                 let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
                 FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
+                FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: otherusertoken)
                 collectionView.reloadData()
         }
 
 //        self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
-        print("===================")
-        print(self.messages[self.messages.count - 1].content)
-        print("===================")
 //        self.collectionView.isPagingEnabled = false
         inputView.clearMessage()
     }
