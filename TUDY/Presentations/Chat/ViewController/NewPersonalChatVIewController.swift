@@ -52,17 +52,59 @@ class NewPersonalChatViewController: UICollectionViewController {
         
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
-//        hideKeyboardWhenTappedAround()
-//        self.navigationController?.navigationBar.isHidden = false
-//        self.navigationController?.navigationBar.backgroundColor = .DarkGray2
+        hideKeyboardWhenTappedAround()
+        
     }
     
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+         let touch = touches.first as! UITouch
+         if touch.view == collectionView {
+             self.chatinputView.messageInputTextView.resignFirstResponder()
+         }
+     }
+    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navAppear()
         tabDisappear()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardUp(notification:NSNotification) {
+        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+       
+            UIView.animate(
+                withDuration: 0.2
+                , animations: {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: 40-keyboardRectangle.height)
+                }
+            )
+        }
+    }
+    
+    @objc func keyboardDown(notification:NSNotification) {
+        self.view.transform = .identity
         
-        
+        if let keyboardFrame:NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+       
+            UIView.animate(
+                withDuration: 0.2
+                , animations: {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: 0)
+                }
+            )
+        }
     }
     
     override var inputAccessoryView: UIView? {
@@ -78,7 +120,7 @@ class NewPersonalChatViewController: UICollectionViewController {
 extension NewPersonalChatViewController {
     func configureUI() {
         collectionView.backgroundColor = .DarkGray1
-        
+
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -87,7 +129,7 @@ extension NewPersonalChatViewController {
     }
     
     private func configureNavigationBar() {
-//        navigationItem.titleView = attributeTitleView("개발자!")
+
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -196,6 +238,9 @@ extension NewPersonalChatViewController {
 
         
         FirestoreChat.fetchChat(chatInfo: chatInfo) { [weak self] message in
+
+            print("============================================================THIS IS OBSERVECHAT!============================================================")
+
             if ((self?.messages.isEmpty) != nil) {
                 self?.messages = message
             } else {
@@ -203,8 +248,11 @@ extension NewPersonalChatViewController {
             }
             guard let messsageCount = self?.messages.count else { return }
             self?.collectionView.reloadData()
-            self?.collectionView.layoutIfNeeded()
+
+
             self?.collectionView.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
+            self?.collectionView.layoutIfNeeded()
+
         }
     }
     
@@ -245,9 +293,22 @@ extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
                 FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
                 collectionView.reloadData()
         }
-        self.collectionView.isPagingEnabled = true
+
+//        self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
-        self.collectionView.isPagingEnabled = false
+        print("===================")
+        print(self.messages[self.messages.count - 1].content)
+        print("===================")
+//        self.collectionView.isPagingEnabled = false
         inputView.clearMessage()
     }
 }
+
+//extension NewPersonalChatViewController {
+//    func scrollToBottom() {
+//        let offsetY = self.collectionViewLayout.collectionViewContentSize.height - self.bounds.size.height
+//        self.
+//        self.setContentOffset(CGPoint(x: 0, y: offsetY > 0 ? offsetY : 0 ), animated: true)
+//    }
+//}
+

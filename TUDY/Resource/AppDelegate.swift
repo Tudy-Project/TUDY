@@ -110,3 +110,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler()
     }
 }
+
+extension UICollectionViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+}
