@@ -63,12 +63,13 @@ final class FCMDataManager {
         return try? JSONEncoder().encode(requestBody)
     }
     
-    static func sendMessage(_ message: Message, fcmToken: String) {
+    static func sendMessage(_ chatInfoID: String, _ message: Message, fcmToken: String) {
         
-        let userNotification = UserNotification(
+        let userNotification = PushNotification(
             userID: message.sender.userID,
             nickname: message.sender.nickname,
-            profileImageURL: message.sender.profileImageURL)
+            profileImageURL: message.sender.profileImageURL,
+            chatInfoID: chatInfoID)
         
         let messageRequest = MessageRequest(
             title: message.sender.nickname,
