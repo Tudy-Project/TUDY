@@ -54,9 +54,7 @@ class NewPersonalChatViewController: UICollectionViewController {
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         hideKeyboardWhenTappedAround()
-        
     }
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          let touch = touches.first as! UITouch
@@ -65,7 +63,6 @@ class NewPersonalChatViewController: UICollectionViewController {
          }
      }
     
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navAppear()
@@ -121,7 +118,6 @@ class NewPersonalChatViewController: UICollectionViewController {
 extension NewPersonalChatViewController {
     func configureUI() {
         collectionView.backgroundColor = .DarkGray1
-
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -130,7 +126,6 @@ extension NewPersonalChatViewController {
     }
     
     private func configureNavigationBar() {
-
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -239,9 +234,7 @@ extension NewPersonalChatViewController {
 
         
         FirestoreChat.fetchChat(chatInfo: chatInfo) { [weak self] message in
-
             print("============================================================THIS IS OBSERVECHAT!============================================================")
-
             if ((self?.messages.isEmpty) != nil) {
                 self?.messages = message
             } else {
@@ -249,11 +242,8 @@ extension NewPersonalChatViewController {
             }
             guard let messsageCount = self?.messages.count else { return }
             self?.collectionView.reloadData()
-
-
             self?.collectionView.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
             self?.collectionView.layoutIfNeeded()
-
         }
     }
     
@@ -294,18 +284,26 @@ extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
 
         guard let chatinfo = self.chatInfo else { return }
         guard let user = UserInfo.shared.user else { return }
-        guard let otherusertoken = otherUserToken else { return }
-        
-        if (!message.isEmpty) {
-                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
-                FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
-                FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: otherusertoken)
-                collectionView.reloadData()
-        }
+        if let otherusertoken = otherUserToken {
+            if (!message.isEmpty) {
+                    let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
+                    FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
+                    FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: otherusertoken)
+                    collectionView.reloadData()
+            }
 
-//        self.collectionView.isPagingEnabled = true
+        } else {
+            getOtherUserToken()
+            if (!message.isEmpty) {
+                    let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
+                    FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
+                FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: otherUserToken ?? "")
+                    collectionView.reloadData()
+            }
+        }
+        self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
-//        self.collectionView.isPagingEnabled = false
+        self.collectionView.isPagingEnabled = false
         inputView.clearMessage()
     }
 }
