@@ -21,6 +21,54 @@ struct FirebaseChat {
         }
     }
     
+    // chatInfoID로 채팅정보 가져오기
+    static func fetchChatInfoByChatInfoID(chatInfoID: String, completion: @escaping (ChatInfo) -> Void) {
+        var savedChatInfo: ChatInfo?
+        let uid = FirebaseUser.getUserID()
+        let groupChatCollectionPath = collectionPath(.groupChat)
+        let personalChatCollectionPaht = collectionPath(.personalChat)
+        
+        Firestore.firestore()
+            .collection(groupChatCollectionPath)
+            .whereField("participantIDs", arrayContains: uid)
+            .whereField("chatInfoID", isEqualTo: chatInfoID)
+            .addSnapshotListener({ snapshot, error in
+                if let error = error {
+                    print("DEBUG: 채팅정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let chatInfo = ChatInfo(dict: dict)
+                    savedChatInfo = chatInfo
+                    completion(chatInfo)
+                    return
+                })
+            })
+        
+        if let _ = savedChatInfo {
+            return
+        }
+
+        
+        Firestore.firestore()
+            .collection(personalChatCollectionPaht)
+            .whereField("participantIDs", arrayContains: uid)
+            .whereField("chatInfoID", isEqualTo: chatInfoID)
+            .addSnapshotListener({ snapshot, error in
+                if let error = error {
+                    print("DEBUG: 채팅정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let chatInfo = ChatInfo(dict: dict)
+                    completion(chatInfo)
+                    return
+                })
+            })
+    }
+    
     // 자신의 채팅정보 가져오기
     static func fetchChatInfo(chatState: ChatState, completion: @escaping ([ChatInfo]) -> Void) {
         let collectionPath = collectionPath(chatState)

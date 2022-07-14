@@ -68,6 +68,14 @@ extension ChatCoordinator {
     
     func pushNotificationChatViewController(chatInfoID: String) {
         let chatListViewController = ChatListViewController()
+        chatListViewController.didSendEventClosure = { event in
+            switch event {
+            case .showChat(let chatInfo):
+                self.pushChatViewController(chatInfo: chatInfo)
+            case .showLogin:
+                self.loginDelegate?.prepareLoginCoordinator()
+            }
+        }
         chatListViewController.pushNotificationChatViewController(chatInfoID: chatInfoID)
     }
 }

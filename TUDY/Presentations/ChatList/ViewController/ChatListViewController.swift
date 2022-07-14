@@ -130,13 +130,9 @@ extension ChatListViewController {
     }
     
     func pushNotificationChatViewController(chatInfoID: String) {
-        for chat in groupChatInfoList where chat.chatInfoID == chatInfoID {
-            didSendEventClosure?(.showChat(chatInfo: chat))
-            return
-        }
-        for chat in personalChatInfoList where chat.chatInfoID == chatInfoID {
-            didSendEventClosure?(.showChat(chatInfo: chat))
-            return
+        FirebaseChat.fetchChatInfoByChatInfoID(chatInfoID: chatInfoID) { [weak self] chatInfo in
+            print("푸시알림")
+            self?.didSendEventClosure?(.showChat(chatInfo: chatInfo))
         }
     }
     
