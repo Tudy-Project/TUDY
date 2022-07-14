@@ -49,13 +49,10 @@ class NewPersonalChatViewController: UICollectionViewController {
         configureUI()
         configureDelegate()
         getOtherUserInfo()
-        
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
 
         hideKeyboardWhenTappedAround()
-        
     }
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          let touch = touches.first as! UITouch
@@ -64,7 +61,6 @@ class NewPersonalChatViewController: UICollectionViewController {
          }
      }
     
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navAppear()
@@ -120,7 +116,6 @@ class NewPersonalChatViewController: UICollectionViewController {
 extension NewPersonalChatViewController {
     func configureUI() {
         collectionView.backgroundColor = .DarkGray1
-
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -129,7 +124,6 @@ extension NewPersonalChatViewController {
     }
     
     private func configureNavigationBar() {
-
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -238,9 +232,7 @@ extension NewPersonalChatViewController {
 
         
         FirestoreChat.fetchChat(chatInfo: chatInfo) { [weak self] message in
-
             print("============================================================THIS IS OBSERVECHAT!============================================================")
-
             if ((self?.messages.isEmpty) != nil) {
                 self?.messages = message
             } else {
@@ -248,11 +240,8 @@ extension NewPersonalChatViewController {
             }
             guard let messsageCount = self?.messages.count else { return }
             self?.collectionView.reloadData()
-
-
             self?.collectionView.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
             self?.collectionView.layoutIfNeeded()
-
         }
     }
     
@@ -270,6 +259,20 @@ extension NewPersonalChatViewController {
         return otherID
     }
     
+    private func getOtherUserToken(content : String) {
+        guard let chatinfo = self.chatInfo else { return }
+        guard let user = UserInfo.shared.user else { return }
+        
+        FirebaseFCMToken.fetchFCMToken(userID: getOtherUserID()) { [weak self] token in
+            if (!content.isEmpty) {
+                    let message = Message(content: content, imageURL: "", sender: user, createdDate: Date().date())
+                    FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
+                    FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: token)
+                    self?.collectionView.reloadData()
+            }
+        }
+    }
+    
     private func getOtherUserInfo() {
         FirebaseUser.fetchOtherUser(userID: getOtherUserID()) { [weak self] user in
             self?.otherUserInfo = user
@@ -284,22 +287,10 @@ extension NewPersonalChatViewController {
 extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
     func inputView(_ inputView: NewCustomInputAccessoryView, wantsToSend message: String) {
         print(#function)
-
-        guard let chatinfo = self.chatInfo else { return }
-        guard let user = UserInfo.shared.user else { return }
-        
-        if (!message.isEmpty) {
-                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
-                FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
-                collectionView.reloadData()
-        }
-
-//        self.collectionView.isPagingEnabled = true
+        getOtherUserToken(content: message)
+        self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
-        print("===================")
-        print(self.messages[self.messages.count - 1].content)
-        print("===================")
-//        self.collectionView.isPagingEnabled = false
+        self.collectionView.isPagingEnabled = false
         inputView.clearMessage()
     }
 }
