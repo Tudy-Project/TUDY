@@ -820,6 +820,7 @@ PODS:
   - SDWebImage (5.12.6):
     - SDWebImage/Core (= 5.12.6)
   - SDWebImage/Core (5.12.6)
+  - SideMenu (6.5.0)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
@@ -834,6 +835,7 @@ DEPENDENCIES:
   - KakaoSDKCommon
   - KakaoSDKUser
   - SDWebImage (~> 5.0)
+  - SideMenu
   - SnapKit (~> 5.6.0)
 
 SPEC REPOS:
@@ -868,6 +870,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - SDWebImage
+    - SideMenu
     - SnapKit
 
 SPEC CHECKSUMS:
@@ -901,8 +904,9 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   SDWebImage: a47aea9e3d8816015db4e523daff50cfd294499d
+  SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: e9f70d589919e1eaeef7c0f988b9447a11ebb617
+PODFILE CHECKSUM: 4b979ad76ac84321d7b773c7302c94650a0fcce5
 
 COCOAPODS: 1.11.2
