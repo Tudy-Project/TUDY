@@ -69,6 +69,7 @@ class NewPersonalChatViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         navAppear()
         tabDisappear()
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -119,6 +120,7 @@ class NewPersonalChatViewController: UICollectionViewController {
 extension NewPersonalChatViewController {
     func configureUI() {
         collectionView.backgroundColor = .DarkGray1
+
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -127,6 +129,7 @@ extension NewPersonalChatViewController {
     }
     
     private func configureNavigationBar() {
+
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         navigationItem.backBarButtonItem?.title = ""
         if (UserInfo.shared.user?.userID == chatInfo?.projectMasterID) {
@@ -235,7 +238,9 @@ extension NewPersonalChatViewController {
 
         
         FirestoreChat.fetchChat(chatInfo: chatInfo) { [weak self] message in
+
             print("============================================================THIS IS OBSERVECHAT!============================================================")
+
             if ((self?.messages.isEmpty) != nil) {
                 self?.messages = message
             } else {
@@ -244,8 +249,10 @@ extension NewPersonalChatViewController {
             guard let messsageCount = self?.messages.count else { return }
             self?.collectionView.reloadData()
 
+
             self?.collectionView.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
             self?.collectionView.layoutIfNeeded()
+
         }
     }
     
@@ -286,6 +293,7 @@ extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
                 FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
                 collectionView.reloadData()
         }
+
 //        self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
         print("===================")
@@ -303,3 +311,4 @@ extension NewPersonalChatViewController: NewCustomInputAccessoryViewDelegate {
 //        self.setContentOffset(CGPoint(x: 0, y: offsetY > 0 ? offsetY : 0 ), animated: true)
 //    }
 //}
+
