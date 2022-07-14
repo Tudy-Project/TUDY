@@ -18,5 +18,6 @@ target 'TUDY' do
   pod 'KakaoSDKAuth'  # 사용자 인증
   pod 'KakaoSDKUser'  # 카카오 로그인, 사용자 관리
   pod 'SDWebImage', '~> 5.0' # 이미지
+  pod 'SideMenu'
 
 end

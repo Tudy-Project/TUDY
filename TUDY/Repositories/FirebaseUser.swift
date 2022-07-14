@@ -105,6 +105,24 @@ struct FirebaseUser {
             }
     }
     
+    /// 단체채팅방 모든 유저 정보 가져오기
+    static func fetchAllOtherUser(userID: [String], completion: @escaping ([User]) -> Void) {
+        userPath
+            .whereField("userID", isEqualTo: userID)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("[DEBUG] 유저정보 가져오기 실패 \(error.localizedDescription)")
+                    return
+                }
+                snapshot?.documents.forEach({ document in
+                    let dict = document.data()
+                    let user = [User(dict: dict)]
+                    completion(user)
+                })
+            }
+    }
+    
+    
     /// 자신의 User정보가 업데이트 되면 호출되는 함수
     static func addUserSnapshotListener() {
         let userID = getUserID()

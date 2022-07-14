@@ -31,14 +31,19 @@ class GroupChatViewController: UICollectionViewController {
         return iv
     }()
     
+    private var otherUserInfoArr = [String]()
+    private var otherAllUserArr = [User]()
     private var messages = [Message]()
     let picker = UIImagePickerController()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchMessage()
         configureUI()
         configureNavigationBar()
+        chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
+        configureDelegate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,17 +66,22 @@ extension GroupChatViewController {
     
     // MARK: - Methods
     private func configureUI() {
+        collectionView.backgroundColor = .DarkGray1
+        collectionView.register(MessageCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.alwaysBounceVertical = true
+        collectionView.keyboardDismissMode = .interactive
         configureNavigationBar()
-        view.backgroundColor = .DarkGray1
     }
     
     private func configureNavigationBar() {
-//        navigationItem.titleView = attributeTitleView("개발자!")
         navigationController?.navigationBar.backgroundColor = .DarkGray2
-        navigationItem.backBarButtonItem?.title = ""
-        navigationItem.rightBarButtonItem?.tintColor = .PointBlue
+        self.navigationItem.title = self.chatInfo?.chatTitle
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ham"), style: .plain, target: self, action: #selector(navbarbuttonClicked(_:)))
     }
     
+    @objc func navbarbuttonClicked(_ sender: Any) {
+        print("hey")
+    }
     
     override var inputAccessoryView: UIView? {
         get { return chatinputView }
@@ -79,6 +89,10 @@ extension GroupChatViewController {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+    
+    func configureDelegate() {
+        picker.delegate = self
     }
 }
 
@@ -126,18 +140,107 @@ extension GroupChatViewController: UIImagePickerControllerDelegate, UINavigation
     }
 }
 
+extension GroupChatViewController {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? MessageCell else { return UICollectionViewCell() }
+        cell.message = messages[indexPath.row]
+        cell.message?.sender = messages[indexPath.row].sender
+
+        return cell
+    }
+}
+
+extension GroupChatViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let estimatedSizeCell = MessageCell(frame: frame)
+        estimatedSizeCell.message = messages[indexPath.row]
+        estimatedSizeCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = estimatedSizeCell.systemLayoutSizeFitting(targetSize)
+        
+        return .init(width: view.frame.width, height: estimatedSize.height)
+    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return .init(top: 16, left: 0, bottom: 16, right: 0)
+    }
+}
+
+extension GroupChatViewController {
+    private func fetchMessage() {
+        guard let chatInfo = self.chatInfo else { return }
+
+        
+        FirestoreChat.fetchChat(chatInfo: chatInfo) { [weak self] message in
+            print("============================================================THIS IS OBSERVECHAT!============================================================")
+            if ((self?.messages.isEmpty) != nil) {
+                self?.messages = message
+            } else {
+                self?.messages.append(message[message.count - 1])
+            }
+            guard let messsageCount = self?.messages.count else { return }
+            self?.collectionView.reloadData()
+            self?.collectionView.scrollToItem(at: [0, messsageCount - 1], at: .bottom, animated: false)
+            self?.collectionView.layoutIfNeeded()
+        }
+    }
+    
+    private func getAllOtherUserID() -> [String]{
+        let myinfo = UserInfo.shared
+        
+        if let chatInfo = chatInfo {
+            for others in chatInfo.participantIDs {
+                if (myinfo.user?.userID != others) {
+                    otherUserInfoArr.append(others)
+                }
+            }
+        }
+        return otherUserInfoArr
+    }
+    
+    private func getOtherUserToken(content : String) {
+        guard let chatinfo = self.chatInfo else { return }
+        guard let user = UserInfo.shared.user else { return }
+        getOtherUserInfo()
+        for otheruser in otherUserInfoArr {
+            FirebaseFCMToken.fetchFCMToken(userID: otheruser) { [weak self] token in
+                if (!content.isEmpty) {
+                        let message = Message(content: content, imageURL: "", sender: user, createdDate: Date().date())
+                        print("message : \(message)")
+                        FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
+                        FCMDataManager.sendMessage(chatinfo.chatInfoID, message, fcmToken: token)
+                        self?.collectionView.reloadData()
+                }
+            }
+        }
+        
+    }
+    
+    private func getOtherUserInfo() {
+        FirebaseUser.fetchAllOtherUser(userID: getAllOtherUserID()) { [weak self] user in
+            self?.otherAllUserArr = user
+        }
+    }
+ 
+}
+
 extension GroupChatViewController: NewCustomInputAccessoryViewDelegate {
     func inputView(_ inputView: NewCustomInputAccessoryView, wantsToSend message: String) {
         print(#function)
 
         guard let chatinfo = self.chatInfo else { return }
         guard let user = UserInfo.shared.user else { return }
-        
-        if (!message.isEmpty) {
-                let message = Message(content: message, imageURL: "", sender: user, createdDate: Date().date())
-                FirestoreChat.saveChat(chatInfo: chatinfo, message: message)
-                collectionView.reloadData()
-        }
+        print("===========IS IT WORKING? =============")
+        getOtherUserToken(content: message)
+        print("===========IS IT WORKING? =============")
         self.collectionView.isPagingEnabled = true
         self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
         self.collectionView.isPagingEnabled = false
