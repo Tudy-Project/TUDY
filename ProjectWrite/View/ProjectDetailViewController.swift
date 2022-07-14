@@ -291,7 +291,9 @@ extension ProjectDetailViewController {
         
         scrollView.addSubview(contentView)
         contentView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.bottom.leading.trailing.equalToSuperview()
+            make.width.equalTo(scrollView.snp.width)
+            make.height.equalTo(1000)
         }
         
         contentView.addSubview(hashtagCollectionView)
@@ -335,7 +337,7 @@ extension ProjectDetailViewController {
             make.top.equalTo(detailDesc.snp.bottom).offset(20)
             make.height.equalTo(80)
             make.leading.equalToSuperview().offset(30)
-            make.trailing.equalToSuperview().offset(-30)
+            make.trailing.equalToSuperview().offset(-10)
         }
         
         contentView.addSubview(uploadDate)
