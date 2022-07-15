@@ -41,4 +41,21 @@ extension UIView {
         view.clipsToBounds = true
         return view
     }
+    
+    func edgeTo(_ view: UIView) {
+        view.addSubview(self)
+        self.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    func pinMenuTo(_ view: UIView, with constant: CGFloat) {
+        view.addSubview(self)
+        self.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.leading.equalTo(view.snp.leading).offset(-constant)
+        }
+    }
 }
