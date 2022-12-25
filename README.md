@@ -48,8 +48,6 @@
 
 ## 기술적 도전
 
-### 소셜로그인
+### [소셜로그인](https://luen.tistory.com/200)
 
-### Coordinator 패턴
-
-### Firebase
+### [Coordinator 패턴](https://luen.tistory.com/199)
