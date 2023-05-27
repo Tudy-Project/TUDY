@@ -10,12 +10,20 @@ import SnapKit
 import KakaoSDKUser
 import Firebase
 import FirebaseDatabase
+import SideMenu
 
 private let reuseIdentifier = "MessageCell"
 
 class GroupChatViewController: UICollectionViewController {
     
     // MARK: - Properties
+    enum MenuState {
+        case opened
+        case closed
+    }
+    
+    private var menuState: MenuState = .closed
+    
     var chatInfo: ChatInfo? {
         didSet {
             configureUI()
@@ -31,11 +39,21 @@ class GroupChatViewController: UICollectionViewController {
         return iv
     }()
     
+    var isSlideInMenuPresented = false
+    lazy var slideInMenuPadding: CGFloat = self.view.frame.width * 0.3
     private var otherUserInfoArr = [String]()
     private var otherAllUserArr = [User]()
     private var messages = [Message]()
     let picker = UIImagePickerController()
     
+    lazy var menuView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .red
+        return view
+    }()
+    
+    private let sideMenu = SideMenuNavigationController(rootViewController: UIViewController())
+
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +62,9 @@ class GroupChatViewController: UICollectionViewController {
         configureNavigationBar()
         chatinputView.photoButton.addTarget(self, action: #selector(handlephoto), for: .touchUpInside)
         configureDelegate()
+//        view.addSubview(menuView)
+        SideMenuManager.default.rightMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,11 +97,38 @@ extension GroupChatViewController {
     private func configureNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .DarkGray2
         self.navigationItem.title = self.chatInfo?.chatTitle
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ham"), style: .plain, target: self, action: #selector(navbarbuttonClicked(_:)))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ham"), style: .plain, target: self, action: #selector(sideMenuButtonClicked(_:)))
     }
     
-    @objc func navbarbuttonClicked(_ sender: Any) {
-        print("hey")
+    @objc func sideMenuButtonClicked(_ sender: Any) {
+  
+        present(sideMenu, animated: true)
+//        switch menuState {
+//            case .closed:
+//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+//                self.menuView.frame.origin.x = self.view.frame.size.width - 100
+//            } completion: { [weak self] done in
+//                if done {
+//                    self?.menuState = .opened
+//                }
+//            }
+//        case .opened:
+//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+//                self.menuView.frame.origin.x = 0
+//            } completion: { [weak self] done in
+//                if done {
+//                    self?.menuState = .closed
+//                }
+//            }
+//        }
+        
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+//            self.view.frame.origin.x = self.isSlideInMenuPresented ? 0 : self.view.frame.width - self.slideInMenuPadding
+//        } completion: { (finished) in
+//            print("finished : \(finished)")
+//            self.isSlideInMenuPresented.toggle()
+//        }
+
     }
     
     override var inputAccessoryView: UIView? {
